@@ -32,6 +32,11 @@ summary {
   cursor: pointer;
   font-size: 12px;
 }
+#report-choice button {
+  flex: 1;
+  padding: 7px 8px;
+  white-space: nowrap;
+}
 #report-status {
   margin: 0;
 }
