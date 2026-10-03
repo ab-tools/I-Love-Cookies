@@ -103,14 +103,12 @@ export function extractButtons(banner: Element): ButtonCandidate[] {
     return true;
   });
   return outermost
-    .filter((el) => {
-      // Links sized only by their content (0 px high) are seen through their first visible child.
-      const box = isOnScreen(el) ? el : Array.from(el.querySelectorAll('*')).find(isOnScreen);
-      return box !== undefined && isHitTestable(el, banner, box) && !(el as HTMLButtonElement).disabled;
-    })
-    .map((el) => {
+    .flatMap((el) => {
+      // Links sized only by their content (0 px high) are seen – and clicked – through their first visible
+      // child; the click bubbles up to the link, while a handler on the child would not see a click on the link.
+      const box = isOnScreen(el) ? el : (Array.from(el.querySelectorAll<HTMLElement>('*')).find(isOnScreen) ?? null);
+      if (!box || !isHitTestable(el, banner, box) || (el as HTMLButtonElement).disabled) return [];
       const label = labelOf(el);
-      return { element: el, label, cls: classifyLabel(label), navigates: navigatesAway(el) };
-    })
-    .filter((b) => b.label.length > 0);
+      return label ? [{ element: box, label, cls: classifyLabel(label), navigates: navigatesAway(el) }] : [];
+    });
 }
