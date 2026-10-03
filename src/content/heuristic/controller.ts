@@ -1,7 +1,7 @@
 import { isOnScreen } from '../dom';
 import { findConsentBanners } from './banner';
 import { extractButtons } from './candidates';
-import { acceptBanner, type HeuristicResult } from './flow';
+import { acceptBanner, hasToggles, type HeuristicResult } from './flow';
 import { decide } from './policy';
 import type { ButtonClass } from './text';
 
@@ -11,7 +11,7 @@ export interface HeuristicScan {
   fingerprint: string;
   /** Up to 10 "CLASS:label" entries for logs and reports. */
   buttons: string[];
-  decision: 'click' | 'settings' | 'none';
+  decision: 'click' | 'settings' | 'save' | 'none';
   top: boolean;
 }
 
@@ -78,7 +78,7 @@ export class HeuristicController {
       area: Math.round(banner.area * 100) / 100,
       fingerprint: fingerprint(banner.element),
       buttons: buttons.slice(0, 10).map((b) => `${b.cls}:${b.label}`.slice(0, 60)),
-      decision: decide(buttons).action,
+      decision: decide(buttons, hasToggles(banner.element)).action,
       top: window === window.top,
     };
   }

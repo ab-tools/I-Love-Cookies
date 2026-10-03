@@ -146,6 +146,18 @@ describe('acceptBanner', () => {
     expect(clicks).toEqual(['settings', 'save']); // legitimate-interest switch (already on) untouched
   });
 
+  it('selects everything and saves when the banner shows its categories right away', async () => {
+    document.body.innerHTML = `
+      <dialog open id="cmp" data-rect="200,200,600,300">${BANNER_TEXT}
+        <label><input type="checkbox" id="maps"> Kartendienste</label>
+        <button id="none">Alle abwählen</button><button id="save">Speichern</button></dialog>`;
+    track();
+    const result = await acceptBanner(document.getElementById('cmp')!);
+    expect(result).toMatchObject({ done: true, toggled: 1, clicked: ['Speichern'] });
+    expect((document.getElementById('maps') as HTMLInputElement).checked).toBe(true);
+    expect(clicks).toEqual(['save']);
+  });
+
   it('uses "accept all" inside the settings layer when there is one', async () => {
     document.body.innerHTML = `
       <div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT}

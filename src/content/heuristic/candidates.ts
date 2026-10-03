@@ -49,8 +49,8 @@ function navigatesAway(el: HTMLElement): boolean {
  * hidden control, never clicked. Covered by something outside the banner (another popup on top of it): still
  * the banner's button.
  */
-function isHitTestable(el: HTMLElement, banner: Element): boolean {
-  const rect = el.getBoundingClientRect();
+function isHitTestable(el: HTMLElement, banner: Element, box: Element = el): boolean {
+  const rect = box.getBoundingClientRect();
   const root = el.getRootNode() as Document | ShadowRoot;
   const hit = (root.elementFromPoint ?? document.elementFromPoint).call(root, rect.left + rect.width / 2, rect.top + rect.height / 2);
   if (!hit) return true; // no layout information (e.g. tests) – do not block
@@ -103,7 +103,11 @@ export function extractButtons(banner: Element): ButtonCandidate[] {
     return true;
   });
   return outermost
-    .filter((el) => isOnScreen(el) && isHitTestable(el, banner) && !(el as HTMLButtonElement).disabled)
+    .filter((el) => {
+      // Links sized only by their content (0 px high) are seen through their first visible child.
+      const box = isOnScreen(el) ? el : Array.from(el.querySelectorAll('*')).find(isOnScreen);
+      return box !== undefined && isHitTestable(el, banner, box) && !(el as HTMLButtonElement).disabled;
+    })
     .map((el) => {
       const label = labelOf(el);
       return { element: el, label, cls: classifyLabel(label), navigates: navigatesAway(el) };

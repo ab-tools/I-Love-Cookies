@@ -48,6 +48,14 @@ export async function enableAllToggles(container: Element): Promise<{ toggled: n
   return { toggled, total: toggles.length };
 }
 
+/** The container has category switches the user could turn on. */
+export function hasToggles(container: Element): boolean {
+  const roots: (Element | ShadowRoot)[] = [container];
+  const own = shadowRootOf(container);
+  if (own) roots.push(own);
+  return roots.flatMap((r) => toggleElements(r)).some((t) => !isDisabled(t));
+}
+
 async function waitFor<T>(probe: () => T | null | undefined, timeoutMs: number): Promise<T | null> {
   const deadline = Date.now() + timeoutMs;
   for (;;) {
@@ -69,7 +77,8 @@ function click(button: ButtonCandidate, result: HeuristicResult) {
  */
 export async function acceptBanner(banner: Element): Promise<HeuristicResult> {
   const result: HeuristicResult = { done: false, clicked: [], toggled: 0, partial: false };
-  const decision = decide(extractButtons(banner));
+  const decision = decide(extractButtons(banner), hasToggles(banner));
+  if (decision.action === 'save') return selectAllAndSave(banner, result);
   if (decision.action === 'click') {
     click(decision.button, result);
     result.done = true;
@@ -93,14 +102,18 @@ export async function acceptBanner(banner: Element): Promise<HeuristicResult> {
     return result;
   }
 
-  const buttons = extractButtons(layer).filter((b) => !isVetoed(b));
-  const acceptAll = buttons.find((b) => b.cls === 'ACCEPT_ALL');
+  const acceptAll = extractButtons(layer).find((b) => !isVetoed(b) && b.cls === 'ACCEPT_ALL');
   if (acceptAll) {
     click(acceptAll, result);
     result.done = true;
     return result;
   }
-  const selectAll = buttons.find((b) => b.cls === 'SELECT_ALL');
+  return selectAllAndSave(layer, result);
+}
+
+/** Settings layer: "select all" if offered, every category switched on (never off), then save. */
+async function selectAllAndSave(layer: Element, result: HeuristicResult): Promise<HeuristicResult> {
+  const selectAll = extractButtons(layer).find((b) => !isVetoed(b) && b.cls === 'SELECT_ALL');
   if (selectAll) {
     click(selectAll, result);
     await sleep(300);

@@ -2,6 +2,7 @@ import {
   ACCEPT,
   ACKNOWLEDGE,
   AGE,
+  CLOSE,
   ALL,
   LOGIN,
   NECESSARY,
@@ -66,6 +67,7 @@ const RE = {
   acknowledge: compile(ACKNOWLEDGE),
   settings: compile(SETTINGS),
   selectAll: compile(SELECT_ALL),
+  close: compile(CLOSE),
 };
 
 /**
@@ -91,6 +93,7 @@ export function classifyLabel(text: string): ButtonClass {
   if (RE.save.test(label)) return 'SAVE';
   if (RE.selectAll.test(label)) return 'SELECT_ALL';
   const all = RE.all.test(label);
+  if (RE.close.test(label) && !accepting) return 'OTHER';
   if (RE.settings.test(label) && !(accepting && all)) return 'SETTINGS';
   if (accepting) return all ? 'ACCEPT_ALL' : 'ACCEPT';
   if (RE.acknowledge.test(label)) return 'ACKNOWLEDGE';

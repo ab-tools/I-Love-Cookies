@@ -1,0 +1,44 @@
+[
+  {
+    "name": "eu-cookie-compliance-banner",
+    "comment": "Drupal EU Cookie Compliance. Replaces autoconsent's rule: its popup check is a <body> class some sites keep after consent. Clicks \"accept all\" where the banner has categories, otherwise \"agree\".",
+    "prehideSelectors": [
+      "#sliding-popup"
+    ],
+    "detectCmp": [
+      {
+        "exists": "#sliding-popup .eu-cookie-compliance-banner"
+      }
+    ],
+    "detectPopup": [
+      {
+        "visible": "#sliding-popup .eu-cookie-compliance-banner",
+        "check": "any"
+      }
+    ],
+    "optIn": [
+      {
+        "if": {
+          "visible": "#sliding-popup .accept-all",
+          "check": "any"
+        },
+        "then": [
+          {
+            "click": "#sliding-popup .accept-all"
+          }
+        ],
+        "else": [
+          {
+            "waitForThenClick": "#sliding-popup .agree-button"
+          }
+        ]
+      }
+    ],
+    "optOut": [],
+    "test": [
+      {
+        "cookieContains": "cookie-agreed=2"
+      }
+    ]
+  }
+]

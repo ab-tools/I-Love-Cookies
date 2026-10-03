@@ -398,6 +398,7 @@ export const ACCEPT = [
   'luba',
   'piekrītu',
   'pieņemt',
+  'apstiprināt (visas|visus|visu)',
   'atļaut',
   'sutinku',
   'priimti',
@@ -479,8 +480,42 @@ export const ALL = [
   'for free',
 ];
 
+/** Closing a dialog without answering it ("Close consent manager" is no settings button). */
+export const CLOSE = [
+  'close',
+  'schließen',
+  'schliessen',
+  'fermer',
+  'chiudi',
+  'cerrar',
+  'fechar',
+  'sluiten',
+  'zamknij',
+  'zavřít',
+  'zatvori',
+  'bezár',
+  'închide',
+  'stäng',
+  'luk',
+  'lukk',
+  'sulje',
+  'sulge',
+  'aizvērt',
+  'uždaryti',
+  'kapat',
+  'закрыть',
+  'закрити',
+  'затвори',
+  'κλείσιμο',
+];
+
 /** Acknowledging a notice that offers no choice: OK / got it / understood. */
 export const ACKNOWLEDGE = [
+  'continue to (the )?(site|website)',
+  'weiter zur (seite|website|webseite)',
+  'continuer vers le site',
+  'continua (sul|al) sito',
+  'ga verder naar de (site|website)',
   'ok',
   'okay',
   'okey',
