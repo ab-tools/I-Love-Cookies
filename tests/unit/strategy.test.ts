@@ -61,11 +61,22 @@ describe('MAIN-world snippets', () => {
   });
 
   it('calls the documented accept-all API', async () => {
+    const w = window as unknown as Record<string, unknown>;
     let called = false;
-    (window as unknown as Record<string, unknown>).Didomi = { setUserAgreeToAll: () => (called = true) };
+    const didomi = { setUserAgreeToAll: () => (called = true) };
+    // A ready Didomi SDK runs pushed callbacks immediately.
+    w.Didomi = didomi;
+    w.didomiOnReady = { push: (callback: (d: typeof didomi) => void) => callback(didomi) };
     expect(await ilcSnippets.ILC_API_DIDOMI()).toBe(true);
     expect(called).toBe(true);
-    delete (window as unknown as Record<string, unknown>).Didomi;
+    delete w.Didomi;
+    delete w.didomiOnReady;
+
+    let allowed = false;
+    w.OneTrust = { AllowAll: () => (allowed = true) };
+    expect(await ilcSnippets.ILC_API_ONETRUST()).toBe(true);
+    expect(allowed).toBe(true);
+    delete w.OneTrust;
   });
 
   it('reads TCF and Consent Mode signals', async () => {
@@ -95,7 +106,7 @@ describe('MAIN-world snippets', () => {
       tcf: Record<string, unknown>;
       gcm: { updated: boolean; values: Record<string, string> };
     };
-    expect(signals.tcf).toMatchObject({ purposesTotal: 3, purposesConsented: 2, storageConsented: true, legitimateInterestObjected: 1, vendorsConsented: 2 });
+    expect(signals.tcf).toMatchObject({ purposesTotal: 3, purposesConsented: 2, storageConsented: true, vendorsConsented: 2 });
     expect(signals.gcm).toEqual({ updated: true, values: { ad_storage: 'granted', analytics_storage: 'granted' } });
     delete w.__tcfapi;
     delete w.dataLayer;

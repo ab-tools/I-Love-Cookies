@@ -1,5 +1,7 @@
 import type { AutoConsentCMPRule, RuleBundle } from '@duckduckgo/autoconsent';
 import bundle from '../rules/generated/rules.json';
+import consentOMatic from '../rules/consent-o-matic.json';
+import type { ComRule } from '../content/consent-o-matic';
 
 interface GeneratedBundle {
   upstreamVersion: string;
@@ -12,7 +14,7 @@ const BUNDLE = bundle as unknown as GeneratedBundle;
 export const RULES_INFO = {
   upstreamVersion: BUNDLE.upstreamVersion,
   builtAt: BUNDLE.builtAt,
-  count: BUNDLE.autoconsent.length,
+  count: BUNDLE.autoconsent.length + (consentOMatic as unknown[]).length,
 };
 
 const patternCache = new Map<string, RegExp | null>();
@@ -48,6 +50,8 @@ export function selectRules(
   });
 }
 
-export function rulesForFrame(url: string, mainFrame: boolean): RuleBundle {
-  return { autoconsent: selectRules(BUNDLE.autoconsent, { url, mainFrame }) };
+export type IlcRuleBundle = RuleBundle & { consentOMatic: ComRule[] };
+
+export function rulesForFrame(url: string, mainFrame: boolean): IlcRuleBundle {
+  return { autoconsent: selectRules(BUNDLE.autoconsent, { url, mainFrame }), consentOMatic: consentOMatic as unknown as ComRule[] };
 }

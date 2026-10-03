@@ -11,8 +11,6 @@ export interface TcfSignal {
   purposesConsented: number;
   /** Purpose 1 (store/access information on a device) – the basis of every consent. */
   storageConsented?: boolean;
-  /** Purposes for which the user objected to legitimate interest. */
-  legitimateInterestObjected: number;
   vendorsConsented: number;
 }
 
@@ -34,6 +32,8 @@ export interface VerificationInput {
   popupVisible: boolean | null;
   /** The CMP's dialog element is on screen (reliable, unlike CMP-specific popup checks). */
   popupOnScreen?: boolean;
+  /** popupOnScreen could be checked (the dialog element is known). */
+  popupCheckable?: boolean;
   /** The page navigated to a different URL as a result of our action. */
   navigatedAway: boolean;
   signals: ConsentSignals | null;
@@ -50,11 +50,10 @@ export const GCM_TYPES = ['ad_storage', 'analytics_storage', 'ad_user_data', 'ad
 export function readSignals(signals: ConsentSignals | null): { verdict: 'full' | 'partial' | 'none'; reason?: string } {
   const tcf = signals?.tcf;
   if (tcf && tcf.gdprApplies !== false && tcf.purposesTotal > 0 && tcf.eventStatus !== 'cmpuishown') {
-    // TCF does not say which purposes a site requests; purposes it never asks for stay false.
-    const full = tcf.storageConsented !== false && tcf.purposesConsented > 0 && tcf.legitimateInterestObjected === 0;
-    const reason =
-      `TCF: ${tcf.purposesConsented}/${tcf.purposesTotal} purposes, ${tcf.vendorsConsented} vendors consented` +
-      (tcf.legitimateInterestObjected ? `, ${tcf.legitimateInterestObjected} LI objections` : '');
+    // TCF does not say which purposes a site requests; purposes it never asks for stay false
+    // (for consent and legitimate interest alike).
+    const full = tcf.storageConsented !== false && tcf.purposesConsented > 0;
+    const reason = `TCF: ${tcf.purposesConsented}/${tcf.purposesTotal} purposes, ${tcf.vendorsConsented} vendors consented`;
     return { verdict: full ? 'full' : 'partial', reason };
   }
   const gcm = signals?.gcm;
@@ -80,7 +79,9 @@ export function evaluateOutcome(input: VerificationInput): VerificationResult {
   if (input.popupOnScreen) {
     return { outcome: 'FAILED', reasons: ['consent dialog still on screen', ...(signals.reason ? [signals.reason] : [])] };
   }
-  if (input.popupVisible === true) {
+  // The CMP still reports its popup, but its dialog element is not on screen: the CMP check is stale.
+  const popupVisible = input.popupVisible === true && input.popupCheckable ? false : input.popupVisible;
+  if (popupVisible === true) {
     // Some CMP rules keep reporting their (now hidden) container as visible. If the site itself
     // confirms full consent, trust the site.
     if (signals.verdict === 'full') {
@@ -89,7 +90,7 @@ export function evaluateOutcome(input: VerificationInput): VerificationResult {
     return { outcome: 'FAILED', reasons: ['consent popup is still visible', ...(signals.reason ? [signals.reason] : [])] };
   }
 
-  const reasons = [input.popupVisible === false ? 'consent popup closed' : 'consent popup frame removed'];
+  const reasons = [popupVisible === false ? 'consent popup closed' : 'consent popup frame removed'];
   if (signals.verdict !== 'none') {
     reasons.push(signals.reason!);
     return { outcome: signals.verdict === 'full' ? 'FULL' : 'PARTIAL', reasons };

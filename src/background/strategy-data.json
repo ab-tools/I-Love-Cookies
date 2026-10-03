@@ -1,0 +1,272 @@
+{
+  "generatedFrom": [
+    "cmp-rule",
+    "cmp-api"
+  ],
+  "strategies": {
+    "civic-cookie-control": {
+      "primary": "api",
+      "rule": {
+        "success": 1,
+        "total": 3
+      },
+      "api": {
+        "success": 3,
+        "total": 3
+      },
+      "apiValidated": true
+    },
+    "Complianz banner": {
+      "primary": "rule",
+      "rule": {
+        "success": 2,
+        "total": 2
+      },
+      "api": {
+        "success": 0,
+        "total": 2
+      },
+      "apiValidated": false
+    },
+    "Complianz opt-out": {
+      "primary": "rule",
+      "rule": {
+        "success": 2,
+        "total": 3
+      },
+      "api": {
+        "success": 0,
+        "total": 3
+      },
+      "apiValidated": false
+    },
+    "consentmanager-ncmp": {
+      "primary": "rule",
+      "rule": {
+        "success": 0,
+        "total": 2
+      },
+      "api": {
+        "success": 0,
+        "total": 2
+      },
+      "apiValidated": false
+    },
+    "consentmanager.net": {
+      "primary": "rule",
+      "rule": {
+        "success": 3,
+        "total": 5
+      },
+      "api": {
+        "success": 3,
+        "total": 5
+      },
+      "apiValidated": true
+    },
+    "consentmo": {
+      "primary": "rule",
+      "rule": {
+        "success": 0,
+        "total": 1
+      },
+      "api": {
+        "success": 0,
+        "total": 1
+      },
+      "apiValidated": false
+    },
+    "cookiebot.be": {
+      "primary": "rule",
+      "rule": {
+        "success": 2,
+        "total": 2
+      },
+      "api": {
+        "success": 0,
+        "total": 2
+      },
+      "apiValidated": false
+    },
+    "cookiefirst.com": {
+      "primary": "rule",
+      "rule": {
+        "success": 2,
+        "total": 2
+      },
+      "api": {
+        "success": 0,
+        "total": 2
+      },
+      "apiValidated": false
+    },
+    "cookiehub": {
+      "primary": "rule",
+      "rule": {
+        "success": 1,
+        "total": 1
+      },
+      "api": {
+        "success": 1,
+        "total": 1
+      },
+      "apiValidated": false
+    },
+    "cookieyes": {
+      "primary": "rule",
+      "rule": {
+        "success": 2,
+        "total": 2
+      },
+      "api": {
+        "success": 2,
+        "total": 2
+      },
+      "apiValidated": false
+    },
+    "Cybotcookiebot": {
+      "primary": "rule",
+      "rule": {
+        "success": 0,
+        "total": 5
+      },
+      "api": {
+        "success": 0,
+        "total": 5
+      },
+      "apiValidated": false
+    },
+    "didomi": {
+      "primary": "rule",
+      "rule": {
+        "success": 4,
+        "total": 4
+      },
+      "api": {
+        "success": 4,
+        "total": 4
+      },
+      "apiValidated": true
+    },
+    "funding-choices": {
+      "primary": "rule",
+      "rule": {
+        "success": 3,
+        "total": 4
+      },
+      "api": {
+        "success": 0,
+        "total": 4
+      },
+      "apiValidated": false
+    },
+    "generic banner": {
+      "primary": "rule",
+      "rule": {
+        "success": 0,
+        "total": 2
+      },
+      "api": {
+        "success": 0,
+        "total": 2
+      },
+      "apiValidated": false
+    },
+    "iubenda": {
+      "primary": "rule",
+      "rule": {
+        "success": 3,
+        "total": 3
+      },
+      "api": {
+        "success": 1,
+        "total": 3
+      },
+      "apiValidated": false
+    },
+    "iubenda-rti": {
+      "primary": "rule",
+      "rule": {
+        "success": 2,
+        "total": 2
+      },
+      "api": {
+        "success": 1,
+        "total": 1
+      },
+      "apiValidated": false
+    },
+    "Klaro": {
+      "primary": "rule",
+      "rule": {
+        "success": 3,
+        "total": 3
+      },
+      "api": {
+        "success": 1,
+        "total": 2
+      },
+      "apiValidated": false
+    },
+    "moz-allocine.fr": {
+      "primary": "rule",
+      "rule": {
+        "success": 1,
+        "total": 1
+      },
+      "api": {
+        "success": 0,
+        "total": 1
+      },
+      "apiValidated": false
+    },
+    "moz-cookiehub.com": {
+      "primary": "rule",
+      "rule": {
+        "success": 1,
+        "total": 1
+      },
+      "api": {
+        "success": 0,
+        "total": 1
+      },
+      "apiValidated": false
+    },
+    "Onetrust": {
+      "primary": "rule",
+      "rule": {
+        "success": 3,
+        "total": 4
+      },
+      "api": {
+        "success": 0,
+        "total": 5
+      },
+      "apiValidated": false
+    },
+    "shopify": {
+      "primary": "rule",
+      "rule": {
+        "success": 3,
+        "total": 3
+      },
+      "api": {
+        "success": 0,
+        "total": 3
+      },
+      "apiValidated": false
+    },
+    "usercentrics-api": {
+      "primary": "rule",
+      "rule": {
+        "success": 8,
+        "total": 10
+      },
+      "api": {
+        "success": 7,
+        "total": 10
+      },
+      "apiValidated": true
+    }
+  }
+}

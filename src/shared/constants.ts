@@ -25,6 +25,15 @@ export const LIMITS = {
   settleMs: 1500,
   /** Max time for one frame to answer a verification request. */
   verifyTimeoutMs: 5000,
+  /** How long to wait for a CMP's JavaScript API to become ready, and the polling interval. */
+  apiReadyTimeoutMs: 6000,
+  apiPollMs: 400,
+  /** Head start of autoconsent rules over Consent-O-Matic rules for the same popup. */
+  lowPriorityDelayMs: 2000,
+  /** Head start of rules before the generic heuristic acts on a banner it found. */
+  heuristicGraceMs: 2500,
+  /** Max duration of one generic accept (incl. settings flow). */
+  heuristicActMs: 20000,
   /** Entries kept in the per-tab action log. */
   logEntries: 60,
 } as const;

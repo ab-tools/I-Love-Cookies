@@ -35,7 +35,7 @@ export function isVisible(el: Element): boolean {
   const rect = el.getBoundingClientRect();
   if (rect.width === 0 || rect.height === 0) return false;
   const style = getComputedStyle(el);
-  return style.visibility !== 'hidden' && style.display !== 'none' && Number(style.opacity) > 0;
+  return style.visibility !== 'hidden' && style.display !== 'none' && style.opacity !== '0';
 }
 
 /** Visible and at least partly inside the viewport. */

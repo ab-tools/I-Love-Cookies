@@ -1,0 +1,7477 @@
+[
+ {
+  "name": "moz-gravatar.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(gravatar\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".a8c-cookie-banner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".a8c-cookie-banner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".a8c-cookie-banner-accept-all-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-microsoft.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(microsoft\\.com|office\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#cookie-banner, #wcpConsentBannerCtrl"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#cookie-banner, #wcpConsentBannerCtrl",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "div._2j0fmugLb1FgYz6KPuB91w  > button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-stackoverflow.blog",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(stackoverflow\\.blog|stackoverflow\\.co|stackoverflowteams\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".js-consent-banner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".js-consent-banner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".js-accept-cookies"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-linkedin.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(linkedin\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.global-alert-banner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.global-alert-banner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "div.global-alert-banner button[action-type=ACCEPT]"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-nytimes.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(nytimes\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#fides-banner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#fides-banner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.fides-accept-all-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-forbes.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(forbes\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".root__XMKIj"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".root__XMKIj",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".root__OblK1:not(.secondaryButton__N1rJw)"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-netflix.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(netflix\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#cookie-disclosure"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#cookie-disclosure",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#cookie-disclosure-accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-bing.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(bing\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#bnp_cookie_banner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#bnp_cookie_banner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#bnp_btn_accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-chollometro.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(chollometro\\.com|dealabs\\.com|hotukdeals\\.com|mydealz\\.de|pepper\\.com|pepper\\.it|pepper\\.pl|preisjaeger\\.at)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "[data-t=\"cookiesMessage\"]"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "[data-t=\"cookiesMessage\"]",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "[data-t=\"acceptAllBtn\"]"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-bitly.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(bitly\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#banner-cookie"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#banner-cookie",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "span#banner-cookie--button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-yahoo.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(yahoo\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#consent-page"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#consent-page",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.accept-all"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-etsy.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(etsy\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "button.wt-btn--filled"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "button.wt-btn--filled",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "div#gdpr-single-choice-overlay"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-wsj.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(wsj\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.message-column main-container"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.message-column main-container",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.agree-btn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-wix.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(wix\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.aspXfg"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.aspXfg",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.RMlTST"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-google.ad",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(google\\.ad|google\\.ae|google\\.al|google\\.am|google\\.as|google\\.at|google\\.az|google\\.ba|google\\.be|google\\.bf|google\\.bg|google\\.bi|google\\.bj|google\\.bs|google\\.bt|google\\.by|google\\.ca|google\\.cat|google\\.cd|google\\.cf|google\\.cg|google\\.ch|google\\.ci|google\\.cl|google\\.cm|google\\.cn|google\\.co\\.ao|google\\.co\\.bw|google\\.co\\.ck|google\\.co\\.cr|google\\.co\\.id|google\\.co\\.il|google\\.co\\.in|google\\.co\\.jp|google\\.co\\.ke|google\\.co\\.kr|google\\.co\\.ls|google\\.co\\.ma|google\\.co\\.mz|google\\.co\\.nz|google\\.co\\.th|google\\.co\\.tz|google\\.co\\.ug|google\\.co\\.uk|google\\.co\\.uz|google\\.co\\.ve|google\\.co\\.vi|google\\.co\\.za|google\\.co\\.zm|google\\.co\\.zw|google\\.com|google\\.com\\.af|google\\.com\\.ag|google\\.com\\.ai|google\\.com\\.ar|google\\.com\\.au|google\\.com\\.bd|google\\.com\\.bh|google\\.com\\.bn|google\\.com\\.bo|google\\.com\\.br|google\\.com\\.bz|google\\.com\\.co|google\\.com\\.cu|google\\.com\\.cy|google\\.com\\.do|google\\.com\\.ec|google\\.com\\.eg|google\\.com\\.et|google\\.com\\.fj|google\\.com\\.gh|google\\.com\\.gi|google\\.com\\.gt|google\\.com\\.hk|google\\.com\\.jm|google\\.com\\.kh|google\\.com\\.kw|google\\.com\\.lb|google\\.com\\.ly|google\\.com\\.mm|google\\.com\\.mt|google\\.com\\.mx|google\\.com\\.my|google\\.com\\.na|google\\.com\\.ng|google\\.com\\.ni|google\\.com\\.np|google\\.com\\.om|google\\.com\\.pa|google\\.com\\.pe|google\\.com\\.pg|google\\.com\\.ph|google\\.com\\.pk|google\\.com\\.pr|google\\.com\\.py|google\\.com\\.qa|google\\.com\\.sa|google\\.com\\.sb|google\\.com\\.sg|google\\.com\\.sl|google\\.com\\.sv|google\\.com\\.tj|google\\.com\\.tr|google\\.com\\.tw|google\\.com\\.ua|google\\.com\\.uy|google\\.com\\.vc|google\\.com\\.vn|google\\.cv|google\\.cz|google\\.de|google\\.dj|google\\.dk|google\\.dm|google\\.dz|google\\.ee|google\\.es|google\\.fi|google\\.fm|google\\.fr|google\\.ga|google\\.ge|google\\.gg|google\\.gl|google\\.gm|google\\.gr|google\\.gy|google\\.hn|google\\.hr|google\\.ht|google\\.hu|google\\.ie|google\\.im|google\\.iq|google\\.is|google\\.it|google\\.je|google\\.jo|google\\.kg|google\\.ki|google\\.kz|google\\.la|google\\.li|google\\.lk|google\\.lt|google\\.lu|google\\.lv|google\\.md|google\\.me|google\\.mg|google\\.mk|google\\.ml|google\\.mn|google\\.ms|google\\.mu|google\\.mv|google\\.mw|google\\.ne|google\\.nl|google\\.no|google\\.nr|google\\.nu|google\\.pl|google\\.pn|google\\.ps|google\\.pt|google\\.ro|google\\.rs|google\\.ru|google\\.rw|google\\.sc|google\\.se|google\\.sh|google\\.si|google\\.sk|google\\.sm|google\\.sn|google\\.so|google\\.sr|google\\.st|google\\.td|google\\.tg|google\\.tl|google\\.tm|google\\.tn|google\\.to|google\\.tt|google\\.vg|google\\.vu|google\\.ws)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.spoKVd"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.spoKVd",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#L2AGLb"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-dr.dk",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(dr\\.dk)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.submitButton"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.submitButton",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.submitAll"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-iltalehti.fi",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(iltalehti\\.fi)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.almacmp-controls"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.almacmp-controls",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#almacmp-modalConfirmBtn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-onet.pl",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(onet\\.pl|fakt\\.pl|plejada\\.pl|medonet\\.pl|businessinsider\\.com\\.pl)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cmp-popup_popup"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cmp-popup_popup",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.cmp-intro_acceptAll"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-skroutz.gr",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(skroutz\\.gr)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.actions"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.actions",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#accept-all"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-emag.bg",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(emag\\.bg|emag\\.hu|emag\\.ro)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".cookie-banner-buttons"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".cookie-banner-buttons",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".js-accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-kupujemprodajem.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(kupujemprodajem\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.CookieConsent_holder__ZsT3G"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.CookieConsent_holder__ZsT3G",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.CookieConsent_button__FJrIc"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-bazos.sk",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(bazos\\.sk|bazos\\.cz)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.fucking-eu-cookies"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.fucking-eu-cookies",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-dagbladet.no",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(dagbladet\\.no|sol\\.no)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.css-pp-box"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.css-pp-box",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.css-pp-ok"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-olx.ua",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(olx\\.ua)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#cookiesBar"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#cookiesBar",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.cookie-close"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-corriere.it",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(corriere\\.it)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.privacy-cp-wall"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.privacy-cp-wall",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#privacy-cp-wall-accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-tv2.no",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(tv2\\.no)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#cookie-banner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#cookie-banner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.cookie-banner__button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-censor.net",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(censor\\.net)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.button"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.button",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#usage_notice_button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-blocket.se",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(blocket\\.se)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.Modal__Content-sc-1sm9281-2"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.Modal__Content-sc-1sm9281-2",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#accept-ufti"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-fakti.bg",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(fakti\\.bg)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.fc-footer-buttons"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.fc-footer-buttons",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.fc-primary-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-gsis.gr",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(gsis\\.gr)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#popup-buttons"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#popup-buttons",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.eu-cookie-compliance-secondary-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-vodafone.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(vodafone\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#__tealiumGDPRecModal"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#__tealiumGDPRecModal",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".t_cm_ec_continue_button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-vodafone.cz",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(vodafone\\.cz)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".vfcc__overlay"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".vfcc__overlay",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "[value=\"allowAll\"]"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-vodafone.pf",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(vodafone\\.pf)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#cpnb"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#cpnb",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#cpnb-accept-btn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-vodafone.pt",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(vodafone\\.pt)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#cookiesModal"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#cookiesModal",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".ebu-cookies-layer__modal-buttons > .confirm"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-op.fi",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(op\\.fi)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.ocm-footer"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.ocm-footer",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#ocm-button.ocm-button--accept-all"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-marktplaats.nl",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(marktplaats\\.nl)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.gdpr-consent-modal-footer"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.gdpr-consent-modal-footer",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#gdpr-consent-banner-accept-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-veikkaus.fi",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(veikkaus\\.fi)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.iOMuvDyuoMKpVRzmevldA3KUmWI2t3RJ"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.iOMuvDyuoMKpVRzmevldA3KUmWI2t3RJ",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#save-all-action"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-zamunda.net",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(zamunda\\.net)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.gdprcookie"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.gdprcookie",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-lemonde.fr",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(lemonde\\.fr)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.gdpr-lmd-wall"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.gdpr-lmd-wall",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.gdpr-lmd-button--main"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-gazzetta.it",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(gazzetta\\.it)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.privacy-cp-wall"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.privacy-cp-wall",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#privacy-cp-wall-accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-watson.ch",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(watson\\.ch)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.button"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.button",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.cookiebtn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-theweathernetwork.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(theweathernetwork\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.woahbar"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.woahbar",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.close-accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-dmi.dk",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(dmi\\.dk)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.coi-button-group"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.coi-button-group",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.coi-banner__accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-alza.sk",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(alza\\.sk)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cookies-info__buttons"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cookies-info__buttons",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.js-cookies-info-accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-cbc.ca",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(cbc\\.ca)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.privacyNotification"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.privacyNotification",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.noticeButton"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-bazar.bg",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(bazar\\.bg)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.fc-footer-buttons"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.fc-footer-buttons",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.fc-primary-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-etuovi.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(etuovi\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.almacmp-controls"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.almacmp-controls",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#almacmp-modalConfirmBtn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-startsiden.no",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(startsiden\\.no|abcnyheter\\.no)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#startsiden-gdpr-disclaimer"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#startsiden-gdpr-disclaimer",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a#startsiden-gdpr-disclaimer-confirm"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-wetter.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(wetter\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#cmp-consent"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#cmp-consent",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#cmp-btn-accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-ampparit.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(ampparit\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#almacmp-footer--layer1"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#almacmp-footer--layer1",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#almacmp-modalConfirmBtn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-publi24.ro",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(publi24\\.ro)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#cookieContent"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#cookieContent",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a#cookieAccept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-belgium.be",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(belgium\\.be)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.orejime-Notice"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.orejime-Notice",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.orejime-Notice-saveButton"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-service-public.fr",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(service-public\\.fr)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.orejime-Notice"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.orejime-Notice",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.orejime-Notice-saveButton"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-sparkasse.at",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(sparkasse\\.at)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#popin_tc_privacy_container_button"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#popin_tc_privacy_container_button",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#popin_tc_privacy_button_2"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-alza.cz",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(alza\\.cz)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cookies-info__buttons"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cookies-info__buttons",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.js-cookies-info-accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-tagesanzeiger.ch",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(tagesanzeiger\\.ch)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.as-oil-l-wrapper-layout-max-width"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.as-oil-l-wrapper-layout-max-width",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.as-js-optin"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-kauppalehti.fi",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(kauppalehti\\.fi)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.almacmp-controls"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.almacmp-controls",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#almacmp-modalConfirmBtn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-alo.bg",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(alo\\.bg)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#consent-info"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#consent-info",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#button_i_accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-rabobank.nl",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(rabobank\\.nl)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.sfc-col-lg-3"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.sfc-col-lg-3",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.sfc-button--primary-white"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-eluniversal.com.mx",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(eluniversal\\.com\\.mx)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#popup-buttons"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#popup-buttons",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.eu-cookie-compliance-default-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-meteo.be",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(meteo\\.be)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.kmcc-cookie-bar__footer__preferences__second"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.kmcc-cookie-bar__footer__preferences__second",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a#kmcc-accept-all-cookies"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-nordea.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(nordea\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.wscrBannerContent"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.wscrBannerContent",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.wscrOk"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-globo.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(globo\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#cookie-banner-lgpd"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#cookie-banner-lgpd",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.cookie-banner-lgpd_accept-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-sberbank.ru",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(sberbank\\.ru)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.kitt-cookie-warning__content"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.kitt-cookie-warning__content",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.kitt-cookie-warning__close"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-danas.rs",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(danas\\.rs)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#cookie-notice"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#cookie-notice",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a#cn-accept-cookie"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-dnb.no",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(dnb\\.no)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#consent-accept"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#consent-accept",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.consent-accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-nv.ua",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(nv\\.ua)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cookie-label__btn-set"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cookie-label__btn-set",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.js-cookies-hide"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-swisscom.ch",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(swisscom\\.ch)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.modal__body"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.modal__body",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.button--primary"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-nettiauto.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(nettiauto\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.almacmp-controls"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.almacmp-controls",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#almacmp-modalConfirmBtn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-dnevnik.bg",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(dnevnik\\.bg)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#cookies-banner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#cookies-banner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.cookies-banner-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-linker.hr",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(linker\\.hr)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#cookies-overlay"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#cookies-overlay",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.cookies-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-sfr.fr",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(sfr\\.fr)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#CkC"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#CkC",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.A"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-online-filmek.me",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(online-filmek\\.me)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cc_banner-wrapper"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cc_banner-wrapper",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.cc_btn_accept_all"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-aemet.es",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(aemet\\.es)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#popup_cookies"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#popup_cookies",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "div.boton_cookies"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-supersport.hr",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(supersport\\.hr)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cookie-popup"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cookie-popup",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.blue"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-yousee.dk",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(yousee\\.dk)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.coi-button-group"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.coi-button-group",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#acceptButton"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-liberoquotidiano.it",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(liberoquotidiano\\.it)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#pubtech-cmp"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#pubtech-cmp",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#pt-accept-all"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-telenor.no",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(telenor\\.no)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#__tealiumGDPRecModal"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#__tealiumGDPRecModal",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a#consent_prompt_submit"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-2gis.ru",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(2gis\\.ru)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "footer._nlniiu"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "footer._nlniiu",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "div._euwdl0"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-pomponik.pl",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(pomponik\\.pl)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.rodo-popup-buttons"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.rodo-popup-buttons",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.rodo-popup-agree"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-avanza.se",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(avanza\\.se)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cookie-banner-content"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cookie-banner-content",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.accept-cookie-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-gp.se",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(gp\\.se)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.stampenCookieContainer"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.stampenCookieContainer",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "input.btn-secondary"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-migros.ch",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(migros\\.ch)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "section#cookie-banner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "section#cookie-banner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.mat-button-base"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-katalozi.net",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(katalozi\\.net)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cli-bar-container"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cli-bar-container",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a#wt-cli-accept-all-btn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-mall.cz",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(mall\\.cz)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.legal-consent"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.legal-consent",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.rounded-button--tertiary"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-nordea.fi",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(nordea\\.fi)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#CookieReportsPanel"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#CookieReportsPanel",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.wscrOk"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-bakecaincontrii.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(bakecaincontrii\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.alert-secondary"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.alert-secondary",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.btn-primary"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-deepl.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(deepl\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div[data-testid=\"dl-cookieBanner\"]"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div[data-testid=\"dl-cookieBanner\"]",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button[data-testid=\"cookie-banner-strict-accept-all\"]"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-yettel.bg",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(yettel\\.bg)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#c-right"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#c-right",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a#accept-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-pricerunner.dk",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(pricerunner\\.dk)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#consent"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#consent",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.pr-riqlv6"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-tvp.pl",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(tvp\\.pl)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#ip"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#ip",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "div.tvp-covl__ab"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-coolblue.nl",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(coolblue\\.nl)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".js-cookie-notification__form"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".js-cookie-notification__form",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button[name=accept_cookie]"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-swedbank.se",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(swedbank\\.se)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cookie-initial-buttons"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cookie-initial-buttons",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#cookie-banner-initial-accept-all"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-argos.co.uk",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(argos\\.co\\.uk)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.consent_prompt_footer"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.consent_prompt_footer",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#consent_prompt_submit"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-rtp.pt",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(rtp\\.pt)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#rgpd"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#rgpd",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#btn-agree-all"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-altex.ro",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(altex\\.ro)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#notice-cookie-block"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#notice-cookie-block",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "span.inline-block"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-lidl.sk",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(lidl\\.sk)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cookie-alert-extended-controls"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cookie-alert-extended-controls",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.cookie-alert-extended-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-today.ua",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(today\\.ua)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.politic_confidel"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.politic_confidel",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-telia.fi",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(telia\\.fi)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#coi-banner-wrapper"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#coi-banner-wrapper",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.coi-banner__accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-intersport.fi",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(intersport\\.fi|k-ruoka\\.fi)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".kc-onsent"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".kc-onsent",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#kc-acceptAndHide"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-cdiscount.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(cdiscount\\.com|laposte\\.net|laposte\\.fr)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#tc-privacy-wrapper"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#tc-privacy-wrapper",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#footer_tc_privacy_button_2"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-labanquepostale.fr",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(labanquepostale\\.fr)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#tc-privacy-wrapper"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#tc-privacy-wrapper",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#footer_tc_privacy_button_3"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-halooglasi.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(halooglasi\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cookie-policy"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cookie-policy",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "p.cookie-policy-btn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-mall.sk",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(mall\\.sk)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.legal-consent"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.legal-consent",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.rounded-button--tertiary"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-elcorteingles.es",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(elcorteingles\\.es)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cookies-buttons"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cookies-buttons",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a#cookies-agree"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-petel.bg",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(petel\\.bg|sagepub\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cc-cookies"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cc-cookies",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.cc-cookie-accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-verkkouutiset.fi",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(verkkouutiset\\.fi)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#gravitoCMP-modal-layer1"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#gravitoCMP-modal-layer1",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#modalConfirmBtn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-dagospia.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(dagospia\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".pt-VnJ"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".pt-VnJ",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#pt-accept-all"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-finansavisen.no",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(finansavisen\\.no)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#finansavisen-gdpr-disclaimer"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#finansavisen-gdpr-disclaimer",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a#finansavisen-gdpr-disclaimer-confirm"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-borger.dk",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(borger\\.dk)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cookie-banner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cookie-banner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#AcceptCookieLawButton"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-uio.no",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(uio\\.no)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#privacy-policy-link-wrapper"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#privacy-policy-link-wrapper",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.info-link-close"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-frognews.bg",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(frognews\\.bg)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cookies-notify"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cookies-notify",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.cookies-agree"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-021.rs",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(021\\.rs|photobucket\\.com|brandenburg\\.de)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cc-compliance"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cc-compliance",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.cc-dismiss"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-gordonua.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(gordonua\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cookie-label"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cookie-label",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.js-cookies-hide"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-meteomedia.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(meteomedia\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.woahbar"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.woahbar",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.close-accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-prisjakt.nu",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(prisjakt\\.nu)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#cookie-banner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#cookie-banner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#AcceptButton-cookie-banner"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-milenio.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(milenio\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#camus-cookie-disclaimer"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#camus-cookie-disclaimer",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.primary"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-nordnet.no",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(nordnet\\.no)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.ModalInner__Backdrop-sc-1ghkydj-1"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.ModalInner__Backdrop-sc-1ghkydj-1",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#cookie-accept-all-secondary"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-limundo.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(limundo\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#info-modal"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#info-modal",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#btnInfo"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-tencent.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(tencent\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cookie-pop"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cookie-pop",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "div.accept-btn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-springer.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(springer\\.com|nature\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".cc-banner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".cc-banner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.cc-banner__button-accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-fc2.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(fc2\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.CoZ9Nu8Z"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.CoZ9Nu8Z",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.fZYtinTR"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-coinmarketcap.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(coinmarketcap\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#cmc-cookie-policy-banner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#cmc-cookie-policy-banner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "div.cmc-cookie-policy-banner__close"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-w3schools.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(w3schools\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.sn-inner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.sn-inner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "div#accept-choices"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-eventbrite.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(eventbrite\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#_evidon_banner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#_evidon_banner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#_evidon-accept-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-ilovepdf.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(ilovepdf\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#toast-container"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#toast-container",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a#okck"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-wetransfer.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(wetransfer\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.welcome__cookie-notice"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.welcome__cookie-notice",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.welcome__button--accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-healthline.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(healthline\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.css-103nllw"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.css-103nllw",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.css-quk35p"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-ft.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(ft\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.o-cookie-message"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.o-cookie-message",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.o-cookie-message__button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-huawei.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(huawei\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.ReadPolicy"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.ReadPolicy",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.close"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-pubmatic.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(pubmatic\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#_evidon_banner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#_evidon_banner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#_evidon-accept-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-kaspersky.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(kaspersky\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "section.CookieBanner_notificationBar__nn49h"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "section.CookieBanner_notificationBar__nn49h",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.CookieBanner_button__P6xCl"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-taboola.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(taboola\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.tbp-container"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.tbp-container",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a#tbp-consent-confirm"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-oup.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(oup\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#cookieMessage_content"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#cookieMessage_content",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.cookiepolicycontinue"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-nbcnews.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(nbcnews\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#cx_bottom_banner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#cx_bottom_banner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#cx_button_close"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-android.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(android\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cookie-banner__cta"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cookie-banner__cta",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.cta--is-1"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-dnsmadeeasy.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(dnsmadeeasy\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cc-window"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cc-window",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.cc-dismiss"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-wikihow.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(wikihow\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#gdpr"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#gdpr",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "div#gdpr_accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-zoho.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(zoho\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.zbottom-cookie-container"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.zbottom-cookie-container",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "div.zbc-cta-accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-usnews.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(usnews\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.modal-window"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.modal-window",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#gdpr-modal-agree"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-academia.edu",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(academia\\.edu)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.DesignSystem"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.DesignSystem",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "span.js-dismiss-cookie-banner"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-unesco.org",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(unesco\\.org)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cookies"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cookies",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.eu-cookie-compliance-default-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-change.org",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(change\\.org)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "[data-testid=\"cookie-wall-modal\"]"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "[data-testid=\"cookie-wall-modal\"]",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "[data-testid=\"cookie-wall-accept\"]"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-akismet.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(akismet\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "form.a8c-cookie-banner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "form.a8c-cookie-banner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.a8c-cookie-banner__accept-all-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-notion.so",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(notion\\.so)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "section.jsx-539809080"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "section.jsx-539809080",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "span.flex-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-columbia.edu",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(columbia\\.edu)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#cu-privacy-notice"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#cu-privacy-notice",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.cu-privacy-notice-close"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-worldbank.org",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(worldbank\\.org)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "section#cookieconsentpopup"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "section#cookieconsentpopup",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.accept-consent"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-cricbuzz.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(cricbuzz\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#feedback-bar"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#feedback-bar",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#close_feedback_btn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-sberdevices.ru",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(sberdevices\\.ru)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.footer_footer__ZK5Q_"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.footer_footer__ZK5Q_",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.color-secondary"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-typeform.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(typeform\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cookie-consent-area"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cookie-consent-area",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.cookie-accept-btn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-wpengine.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(wpengine\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.opt-in-modal__inner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.opt-in-modal__inner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.js-opt-in-consent-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-ubuntu.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(ubuntu\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#modal"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#modal",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#cookie-policy-button-accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-vox.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(vox\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#privacy-consent"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#privacy-consent",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#privacy-consent-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-psychologytoday.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(psychologytoday\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#cookiebanner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#cookiebanner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.c-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-ring.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(ring\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.consent-banner-buttons"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.consent-banner-buttons",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.consent--accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-evernote.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(evernote\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cookie-notice"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cookie-notice",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.accept-cookies"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-gearbest.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(gearbest\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cookiePolicy"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cookiePolicy",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "span.cookiePolicy-close"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-biomedcentral.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(biomedcentral\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cc-banner__content"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cc-banner__content",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.cc-banner__button-accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-reg.ru",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(reg\\.ru)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.b-policy-info"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.b-policy-info",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "span.b-policy-info__cross"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-ucla.edu",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(ucla\\.edu)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cookie"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cookie",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#cookie-policy-btn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-playstation.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(playstation\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#_evidon-message"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#_evidon-message",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#_evidon-accept-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-lenovo.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(lenovo\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#_evidon-banner-content"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#_evidon-banner-content",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#_evidon-banner-acceptbutton"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-mdpi.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(mdpi\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#cookie-notification"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#cookie-notification",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.button--default"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-figma.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(figma\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".css-1243dq3"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".css-1243dq3",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".css-15sam98"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-crunchyroll.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(crunchyroll\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#_evidon-message"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#_evidon-message",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#_evidon-decline-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-uber.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(uber\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.css-fPpfoE"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.css-fPpfoE",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.css-ZtxlD"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-asus.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(asus\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#cookie-policy-info"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#cookie-policy-info",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".btn-ok"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-sharethrough.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(sharethrough\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.unic-bar"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.unic-bar",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#unic-agree"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-xing.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(xing\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.sc-36lcln-0"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.sc-36lcln-0",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#consent-accept-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-substack.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(substack\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#cookie-banner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#cookie-banner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "span#cookie-banner-close"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-elegantthemes.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(elegantthemes\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.et_cookie_consent"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.et_cookie_consent",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a#et_cookie_consent_allow"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-mercadolibre.com.ar",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(mercadolibre\\.com\\.ar)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cookie-consent-banner-opt-out"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cookie-consent-banner-opt-out",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.cookie-consent-banner-opt-out__action"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-remove.bg",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(remove\\.bg)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.vue-component"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.vue-component",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.btn-success"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-nokia.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(nokia\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".eu-cookie-compliance-banner.eu-cookie-compliance-banner-info.eu-cookie-compliance-banner--categories"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".eu-cookie-compliance-banner.eu-cookie-compliance-banner-info.eu-cookie-compliance-banner--categories",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".agree-button.eu-cookie-compliance-default-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-anchor.fm",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(anchor\\.fm)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cookieBanner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cookieBanner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.closeButton"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-aboutcookies.org",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(aboutcookies\\.org)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.banner-overlay"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.banner-overlay",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.button-accept-cookie"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-jamanetwork.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(jamanetwork\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.widget-GdprCookieBanner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.widget-GdprCookieBanner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.js-gdpr-cookie-acceptLink"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-www.nhs.uk",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(www\\.nhs\\.uk)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#nhsuk-cookie-banner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#nhsuk-cookie-banner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#nhsuk-cookie-banner__link_accept_analytics"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-nikkei.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(nikkei\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.modalStyle_modrqv7"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.modalStyle_modrqv7",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.button_b1lbbqqt"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-cookiehub.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(cookiehub\\.com|semrush\\.com|vodafone\\.is)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".ch2-dialog"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".ch2-dialog",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".ch2-allow-all-btn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-duke.edu",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(duke\\.edu)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cc-window"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cc-window",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.cc-dismiss"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-usc.edu",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(usc\\.edu)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#cookie-law-info-bar"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#cookie-law-info-bar",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a#cookie_action_close_header"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-canva.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(canva\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.e4Qmjw"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.e4Qmjw",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.NT2yCg"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-dailymail.co.uk",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(dailymail\\.co\\.uk)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.container_1gQfi"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.container_1gQfi",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.primary_2xk2l"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-shopify.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(shopify\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".cookie-notice-banner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".cookie-notice-banner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button[data-component-name=\"consent\"]"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-alibaba.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(alibaba\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#GDPR-cookies-notice"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#GDPR-cookies-notice",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "div.gdpr-agree-btn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-turbopages.org",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(turbopages\\.org)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.gmjWml"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.gmjWml",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.kcLcLu"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-nrk.no",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(nrk\\.no)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.nrk-masthead__info-banner--cookie"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.nrk-masthead__info-banner--cookie",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "span.nrk-sr"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-pravda.com.ua",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(pravda\\.com\\.ua)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#checkUPcookies"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#checkUPcookies",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "div.ok"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-digi24.ro",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(digi24\\.ro)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#gdpr"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#gdpr",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "div.gdpr-trigger"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-digisport.ro",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(digisport\\.ro)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#gdpr"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#gdpr",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "div.gdpr-trigger"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-ilmatieteenlaitos.fi",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(ilmatieteenlaitos\\.fi)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.consent-container"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.consent-container",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.allow-all-cookies-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-shmu.sk",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(shmu\\.sk)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#cc_div"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#cc_div",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#c-p-bn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-tsn.ua",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(tsn\\.ua)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.c-alert__box"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.c-alert__box",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#cookieBtn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-kukaj.io",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(kukaj\\.io)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cookieWarning"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cookieWarning",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "i.fa-times"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-smhi.se",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(smhi\\.se)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.polopolyNotification"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.polopolyNotification",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.notificationButton"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-wykop.pl",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(wykop\\.pl)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".ulheJb0a"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".ulheJb0a",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".qxOn2zvg.e1sXLPUy"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-ceneo.pl",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(ceneo\\.pl)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#js_cookie-monster"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#js_cookie-monster",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.js_cookie-monster-agree"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-polovniautomobili.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(polovniautomobili\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.jsGdprNoticeHolder"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.jsGdprNoticeHolder",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.js-accept-cookies"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-aliexpress.ru",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(aliexpress\\.ru)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.SnowPrivacyPolicyBanner_SnowPrivacyPolicyBanner__privacyPolicyBanner__1jg07"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.SnowPrivacyPolicyBanner_SnowPrivacyPolicyBanner__privacyPolicyBanner__1jg07",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.snow-ali-kit_Button-Floating__button__ph4zrl"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-arukereso.hu",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(arukereso\\.hu)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#cookie-disclaimer"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#cookie-disclaimer",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.dismiss"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-glasistre.hr",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(glasistre\\.hr)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cookieinfo"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cookieinfo",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "div.cookieinfo-close"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-ria.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(ria\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.c-notifier-container"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.c-notifier-container",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "label.c-notifier-btn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-sverigesradio.se",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(sverigesradio\\.se)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#cookie-popover"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#cookie-popover",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#acceptAllCookiesBtn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-naslovi.net",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(naslovi\\.net)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#gdpr-box"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#gdpr-box",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.btn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-dedeman.ro",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(dedeman\\.ro)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cookie-bar-wrap"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cookie-bar-wrap",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.orange-gradient"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-allocine.fr",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(allocine\\.fr)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#cmp-main"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#cmp-main",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.jad_cmp_paywall_button-cookies"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-komplett.no",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(komplett\\.no)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cookie-consent-overlay"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cookie-consent-overlay",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.primary"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-chmi.cz",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(chmi\\.cz)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#cookieConsentContainer"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#cookieConsentContainer",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "div.cookieButton"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-anwb.nl",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(anwb\\.nl)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#TRCO-application"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#TRCO-application",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.PONCHO-button--decide"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-se.pl",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(se\\.pl)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#consent-modal-yr73k"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#consent-modal-yr73k",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.shared-module_w-full_3cBSk"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-idealmedia.io",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(idealmedia\\.io)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#cookiescript_injected"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#cookiescript_injected",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "div#cookiescript_accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-pki.goog",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(pki\\.goog)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#cookieBar"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#cookieBar",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.cookieBarConsentButton"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-theverge.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(theverge\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.duet--cta--cookie-banner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.duet--cta--cookie-banner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "div.duet--cta--cookie-banner button.py-12"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-tandfonline.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(tandfonline\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.banner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.banner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#cookie-accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-uol.com.br",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(uol\\.com\\.br)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.banner-lgpd-consent-container"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.banner-lgpd-consent-container",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.banner-lgpd-consent__accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-decathlon.nc",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(decathlon\\.nc|decathlon\\.re|magnite\\.com|mecklenburg-vorpommern\\.de|omv\\.com|omv\\.at|omv\\.bg|omv\\.de|omv\\.nz|omv\\.no|omv\\.ro|omv\\.co\\.rs|omv\\.sk|omv\\.cz|omv\\.tn|omv\\.ae|omv\\.hu|omv\\.si|omv-gas\\.com|omv-gas\\.at|omv-gas\\.be|omv-gas\\.de|omv-gas\\.hu|omv-gas\\.nl|omv-gas\\.com\\.tr|omv-gas-storage\\.com|omvpetrom\\.com|petrom\\.ro|petrom\\.md|avanti\\.at|avanti-tankstellen\\.de|diskonttanken\\.at|tocimceneje\\.si)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".cc-window.cc-banner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".cc-window.cc-banner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".cc-btn.cc-allow"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-inc.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(inc\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.bcpNotificationBar"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.bcpNotificationBar",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.bcpConsentButton"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-braze.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(braze\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div.cc-window"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div.cc-window",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a.cc-dismiss"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-adjust.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(adjust\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#cookiebanner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#cookiebanner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "a#cookie-allow-all"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-hubspot.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(hubspot\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#hs-eu-cookie-confirmation"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#hs-eu-cookie-confirmation",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#hs-eu-confirmation-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-steamcommunity.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(steamcommunity\\.com|steampowered\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#cookiePrefPopup"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#cookiePrefPopup",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#acceptAllButton"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-arte.tv",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(arte\\.tv|urssaf\\.fr)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".tc-privacy-wrapper.tc-privacy-override.tc-privacy-wrapper"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".tc-privacy-wrapper.tc-privacy-override.tc-privacy-wrapper",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#footer_tc_privacy_button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-ups.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(ups\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".implicit_privacy_prompt"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".implicit_privacy_prompt",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".implicit_privacy_prompt > .close_btn_thick"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-deutschetelekomitsolutions.sk",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(deutschetelekomitsolutions\\.sk)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#modals"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#modals",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#modals #accept-all"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-magentacloud.de",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(magentacloud\\.de|magentasport\\.de|t-systems\\.com|t-systems\\.jobs|telekom-hauptstadtrepraesentanz\\.com|telekom\\.com|telekom\\.de|telekom\\.jobs)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#__tealiumGDPRecModal"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#__tealiumGDPRecModal",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#consentAcceptAll"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-telekom.mk",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(telekom\\.mk)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#cookiesModal"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#cookiesModal",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#cookiesModal #all-cookies-btn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-telekom.sk",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(telekom\\.sk)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#gdpr-component"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#gdpr-component",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#acceptAllQuick"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-fandom.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(fandom\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div[data-tracking-opt-in-overlay=\"true\"]"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div[data-tracking-opt-in-overlay=\"true\"]",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "div[data-tracking-opt-in-accept=\"true\"]"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-mediamarkt.at",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(mediamarkt\\.at|mediamarkt\\.be|mediamarkt\\.de|mediamarkt\\.es|mediamarkt\\.nl|mediamarkt\\.pl|saturn\\.de)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "[data-test=\"mms-privacy-layer\"]"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "[data-test=\"mms-privacy-layer\"]",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#pwa-consent-layer-accept-all-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-mediamarktsaturn.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(mediamarktsaturn\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".cookiesjsr-banner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".cookiesjsr-banner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".allowAll"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-obi.de",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(obi\\.de)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".disc-cp-modal__modal"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".disc-cp-modal__modal",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".js-disc-cp-accept-all"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-vegetology.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(vegetology\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div[data-name=\"comp-banner\"]"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div[data-name=\"comp-banner\"]",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "div[data-name=\"comp-banner\"] button[aria-label=\"Dismiss\"]"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-openwrt.org",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(openwrt\\.org)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".cookielaw-banner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".cookielaw-banner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".cookielaw-banner .btn-default"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-computerbase.de",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(computerbase\\.de)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "dialog.consent"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "dialog.consent",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#cookie-consent-button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-reichelt.de",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(reichelt\\.de)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#cookieconsent"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#cookieconsent",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button#cookieok"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-lieferando.de",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(lieferando\\.de|lieferando\\.at|just-eat\\.ch)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "[data-qa=\"privacy-settings\"]"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "[data-qa=\"privacy-settings\"]",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button[data-qa=\"privacy-settings-action-info\"]"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-hdblog.it",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(hdblog\\.it|hdmotori\\.it)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#cl-consent"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#cl-consent",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.cl-consent__btn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-startnext.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(startnext\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div#toast-container"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div#toast-container",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.js-cookie-accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-voelkner.de",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(voelkner\\.de)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#js_reveal_cookie_content"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#js_reveal_cookie_content",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button[data-cookie_consent=\"1\"]"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-deezer.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(deezer\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "[data-testid=\"cookie-banner\"]"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "[data-testid=\"cookie-banner\"]",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button[data-testid=\"gdpr-btn-accept-all\"]"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-akyga.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(akyga\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#cookiesPrivacyPolicyContainerWrapper"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#cookiesPrivacyPolicyContainerWrapper",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#cookiesPrivacyPolicyAllowBtn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-bequiet.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(bequiet\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".cookie-banner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".cookie-banner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".cookie-accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-creative.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(creative\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".ck-notiz"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".ck-notiz",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "[name=\"accept\"]"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-dreammachines.by",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(dreammachines\\.by|dreammachines\\.eu|dreammachines\\.io|dreammachines\\.nl|dreammachines\\.pl|dreammachines\\.ru)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#qkies_info"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#qkies_info",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#Cookies_consent_btn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-krux.tech",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(krux\\.tech|silentiumpc\\.com|spcgear\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#cookie-law-info-bar"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#cookie-law-info-bar",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#wt-cli-accept-all-btn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-endorfy.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(endorfy\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#moove_gdpr_cookie_info_bar"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#moove_gdpr_cookie_info_bar",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".moove-gdpr-infobar-allow-all"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-cablexpert.be",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(cablexpert\\.be|cablexpert\\.com|cablexpert\\.de|cablexpert\\.gr|cablexpert\\.nl|energenie\\.com|gembird\\.be|gembird\\.com|gembird\\.com\\.pl|gembird\\.es|gembird\\.nl|gembird3\\.com|gembird3\\.nl|gmb-online\\.nl|gmb\\.nl)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#Footer_Cookie"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#Footer_Cookie",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#Footer_butAccept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-gainward.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(gainward\\.com|palit\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#pp_info"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#pp_info",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "[value=\"Accept\"]"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-seasonic.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(seasonic\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#cp-overlay"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#cp-overlay",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#cp-yes"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-synology.cn",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(synology\\.cn|synology\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".syno_cookie_element"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".syno_cookie_element",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".btn_accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-teamgroupinc.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(teamgroupinc\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".privacyArea"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".privacyArea",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".acceptAll"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-tp-link.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(tp-link\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#tp-cookie"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#tp-cookie",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".tp-cookie-accept-all"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-transcend-info.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(transcend-info\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#legal_notice"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#legal_notice",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "[onclick*=\"cookie_Agree()\"]"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-verbatim.co.il",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(verbatim\\.co\\.il)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#cc-window"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#cc-window",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#btn-allowAllCookie"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-zotac.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(zotac\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".cc-window"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".cc-window",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".cc-dismiss"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-nazwa.pl",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(nazwa\\.pl)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".new-policy-box"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".new-policy-box",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".modal-box__buttons--save-all"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-dell.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(dell\\.com|dell\\.eu|delltechnologies\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".cc-window"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".cc-window",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".cc-allow"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-adoptium.net",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(adoptium\\.net|eclipse\\.dev|eclipse\\.org|glassfish\\.org|jakarta\\.ee|mbse-capella\\.org|oniroproject\\.org|open-vsx\\.org|openmdm\\.org|osgi\\.org|planeteclipse\\.org)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".cc-window"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".cc-window",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".cc-allow"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-cbinsights.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(cbinsights\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".CookieBanner_cookieBanner__R_BOh"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".CookieBanner_cookieBanner__R_BOh",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".CookieBanner_buttonContainer__NOZxH:nth-child(1) button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-teamspeak.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(teamspeak\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#gdpr-cookie-message"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#gdpr-cookie-message",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#gdpr-cookie-accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-ondo.finance",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(ondo\\.finance)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "div[data-testid=\"cookie-popover\"]"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "div[data-testid=\"cookie-popover\"]",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button[data-testid=\"allow-all-cookies-button\"]"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-androidpolice.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(androidpolice\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".kDNyTh.hbTFXs"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".kDNyTh.hbTFXs",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "button.fcQwZX"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-hfm-frankfurt.de",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(hfm-frankfurt\\.de)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#cookieman-modal"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#cookieman-modal",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "[data-cookieman-accept-all]"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-comdirect.de",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(comdirect\\.de)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#privacy-init-wall"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#privacy-init-wall",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#privacy-init-wall-button-accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-deskmodder.de",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(deskmodder\\.de|zyxel\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#cookiescript_injected_wrapper"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#cookiescript_injected_wrapper",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#cookiescript_accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-dpd.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(dpd\\.com|dpdgroup\\.com|edf\\.fr|totalenergies\\.fr)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#tc-privacy-wrapper"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#tc-privacy-wrapper",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#popin_tc_privacy_button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-but.fr",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(but\\.fr)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#tc-privacy-wrapper"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#tc-privacy-wrapper",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#popin_tc_privacy_button"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-auto5.be",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(auto5\\.be|bouyguestelecom\\.fr|enedis\\.fr|fortuneo\\.fr|lcl\\.fr|norauto-franchise\\.com|norauto-pro\\.com|norauto\\.es|norauto\\.fr|norauto\\.it|norauto\\.pt|tf1\\.fr|tf1info\\.fr)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#tc-privacy-wrapper"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#tc-privacy-wrapper",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#popin_tc_privacy_button_3"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-quechoisir.org",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(quechoisir\\.org|quechoisirensemble\\.fr)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#tc-privacy-wrapper"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#tc-privacy-wrapper",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#popin_tc_privacy_button_2"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-laredoute.fr",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(laredoute\\.fr)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#tc-privacy-wrapper"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#tc-privacy-wrapper",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#popin_tc_privacy_button_2"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-ovh.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(ovh\\.com|ovhcloud\\.com|ovhtelecom\\.fr)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#tc-privacy-wrapper"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#tc-privacy-wrapper",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#header_tc_privacy_button_3"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-stepstone.de",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(stepstone\\.de)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#GDPRConsentManagerContainer"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#GDPRConsentManagerContainer",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#ccmgt_explicit_accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-autoscout24.at",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(autoscout24\\.at|autoscout24\\.de)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#as24-cmp-popup"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#as24-cmp-popup",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "[data-testid=\"as24-cmp-accept-all-button\"]"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-jw.org",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(jw\\.org)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".lnc-firstRunPopup"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".lnc-firstRunPopup",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".lnc-acceptCookiesButton"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-gamestar.de",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(gamestar\\.de)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#cmp-modal"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#cmp-modal",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".cmp-accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-1und1.de",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(1und1\\.de)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#consent-wall"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#consent-wall",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#consent_wall_optin"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-kaufmich.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(kaufmich\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#ccm-widget"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#ccm-widget",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".ccm--save-settings"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-kicker.de",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(kicker\\.de)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#kick__logi-container"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#kick__logi-container",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".kick__data-grid__main .kick__btn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-withings.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(withings\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".cookie_consent_withings"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".cookie_consent_withings",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#cookieBtnAll"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-creditmutuel.fr",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(creditmutuel\\.fr)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#cookieLB"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#cookieLB",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".ei_btn_typ_validate"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-ldlc.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(ldlc\\.com|ldlc\\.pro|materiel\\.net)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#cookieConsentBanner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#cookieConsentBanner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#cookieConsentAcceptButton"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-rueducommerce.fr",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(rueducommerce\\.fr)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#modalTpl"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#modalTpl",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#rgpd-btn-index-accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-yazio.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(yazio\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#cm"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#cm",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#c-bns #c-p-bn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-canalplus.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(canalplus\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#privacy-manager-popin"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#privacy-manager-popin",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#accept-btn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-credit-agricole.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(credit-agricole\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#tarteaucitronAlertBig"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#tarteaucitronAlertBig",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-credit-agricole.de",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(credit-agricole\\.de)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#tarteaucitronWelcome"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#tarteaucitronWelcome",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".allow"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-credit-agricole.fr",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(credit-agricole\\.fr)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#tc-privacy-wrapper"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#tc-privacy-wrapper",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#popin_tc_privacy_button_2"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-credit-agricole.pl",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(credit-agricole\\.pl)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#ppms_cm_popup_overlay"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#ppms_cm_popup_overlay",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#ppms_cm_agree-to-all"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-decathlon.com.sa",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(decathlon\\.com\\.sa|decathlon\\.gp|decathlon\\.mq)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#shopify-pc__banner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#shopify-pc__banner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#shopify-pc__banner__btn-accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-intersport.bg",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(intersport\\.bg|intersport\\.com\\.cy|intersport\\.gr|intersport\\.ro)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#fancybox-container-1"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#fancybox-container-1",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".js-accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-intersport.de",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(intersport\\.de)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".cookie-banner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".cookie-banner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".js--cookie-banner-accept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-intersport.fo",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(intersport\\.fo)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#cookieConsentModal"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#cookieConsentModal",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#acceptAllCookiesBtn"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-intersport.mk",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(intersport\\.mk)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#modal-cookie-info"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#modal-cookie-info",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".cookie-agree"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-orange.be",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(orange\\.be)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#__tealiumGDPRecModal"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#__tealiumGDPRecModal",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#consent_prompt_submit"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-orange.es",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(orange\\.es)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#__tealiumGDPRecModal"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#__tealiumGDPRecModal",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "#consent_optin"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-orange.jobs",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(orange\\.jobs)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": ".fancybox-type-html"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": ".fancybox-type-html",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".js-consent-all-submit"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-rp-online.de",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(rp-online\\.de)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "main[data-consent-main]"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "main[data-consent-main]",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": "custom-button#consentAccept"
+   }
+  ],
+  "optOut": []
+ },
+ {
+  "name": "moz-thenextweb.com",
+  "runContext": {
+   "main": true,
+   "frame": false,
+   "urlPattern": "^https?://([^/]*\\.)?(thenextweb\\.com)(:\\d+)?/"
+  },
+  "detectCmp": [
+   {
+    "exists": "#cookie-consent-banner"
+   }
+  ],
+  "detectPopup": [
+   {
+    "visible": "#cookie-consent-banner",
+    "check": "any"
+   }
+  ],
+  "optIn": [
+   {
+    "waitForThenClick": ".cookie-consent-banner__btn-primary"
+   }
+  ],
+  "optOut": []
+ }
+]

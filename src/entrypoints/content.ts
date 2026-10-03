@@ -1,12 +1,14 @@
 // autoconsent from its TS sources, so its snippet registry can be extended.
 import AutoConsent from '@autoconsent-src/web';
 import { snippets } from '@autoconsent-src/eval-snippets';
-import type { BackgroundMessage, ContentScriptMessage } from '@duckduckgo/autoconsent';
+import type { BackgroundMessage, Config, ContentScriptMessage, RuleBundle } from '@duckduckgo/autoconsent';
 import { ilcSnippets } from '../background/snippets';
 import { browser } from 'wxt/browser';
 import type { FrameVerification, IlcContentMessage } from '../shared/messages';
 import { isScrollLocked } from '../content/scroll';
 import { clickDeep, isDeepVisible, isOnScreen } from '../content/dom';
+import { ConsentOMaticCMP, type ComRule } from '../content/consent-o-matic';
+import { HeuristicController } from '../content/heuristic/controller';
 
 /**
  * Runs in every frame at document_start (isolated world).
@@ -22,20 +24,37 @@ export default defineContentScript({
     // Lets rule eval steps use our snippet IDs; they are executed by the background.
     Object.assign(snippets, ilcSnippets);
 
-    const consent = new AutoConsent(async (message: ContentScriptMessage) => {
+    const send = async (message: unknown) => {
       try {
         await browser.runtime.sendMessage(message);
       } catch {
         // background restarting or extension reloaded – autoconsent retries where needed
       }
-    });
+    };
+    const heuristic: HeuristicController = new HeuristicController(
+      (message) => void send(message),
+      (): boolean => consent.state.detectedPopups.length > 0,
+    );
+    const consent: IlcAutoConsent = new IlcAutoConsent(send, heuristic);
 
     browser.runtime.onMessage.addListener((message: unknown, _sender, sendResponse) => {
       const msg = message as IlcContentMessage | { type?: string };
       if (msg?.type === 'ilc:verify') {
-        verifyFrame(consent, (msg as Extract<IlcContentMessage, { type: 'ilc:verify' }>).acceptButton).then(sendResponse, () =>
+        verifyFrame(consent, heuristic, msg as Extract<IlcContentMessage, { type: 'ilc:verify' }>).then(sendResponse, () =>
           sendResponse(null),
         );
+        return true;
+      }
+      if (msg?.type === 'ilc:optIn') {
+        void consent.optInWith((msg as Extract<IlcContentMessage, { type: 'ilc:optIn' }>).cmp);
+        return false;
+      }
+      if (msg?.type === 'ilc:heuristicScan') {
+        sendResponse(heuristic.scan());
+        return false;
+      }
+      if (msg?.type === 'ilc:heuristicAct') {
+        heuristic.act().then(sendResponse, (error: unknown) => sendResponse({ done: false, clicked: [], toggled: 0, partial: false, reason: String(error) }));
         return true;
       }
       if (msg?.type === 'ilc:click') {
@@ -59,8 +78,47 @@ export default defineContentScript({
   },
 });
 
-async function verifyFrame(consent: AutoConsent, acceptButton?: readonly string[]): Promise<FrameVerification> {
-  const cmp = consent.foundCmp;
+/** autoconsent plus Consent-O-Matic rules and the generic heuristic (both only when enabled). */
+class IlcAutoConsent extends AutoConsent {
+  constructor(
+    send: (message: ContentScriptMessage) => Promise<void>,
+    private readonly heuristic: HeuristicController,
+  ) {
+    super(send);
+  }
+
+  override parseDeclarativeRules(bundle: RuleBundle & { consentOMatic?: ComRule[] }) {
+    super.parseDeclarativeRules(bundle);
+    for (const rule of bundle.consentOMatic ?? []) this.rules.push(new ConsentOMaticCMP(rule));
+  }
+
+  /** autoconsent keeps only the last found CMP; several rules may match one popup – use the named one. */
+  async optInWith(name: string) {
+    const cmp = this.rules.find((rule) => rule.name === name);
+    if (cmp) this.foundCmp = cmp;
+    return this.doOptIn();
+  }
+
+  cmpNamed(name: string | undefined) {
+    return (name && this.rules.find((rule) => rule.name === name)) || this.foundCmp;
+  }
+
+  override initialize(config: Partial<Config>, declarativeRules: RuleBundle | null) {
+    super.initialize(config, declarativeRules);
+    if (config.enabled) this.heuristic.start();
+  }
+}
+
+async function verifyFrame(
+  consent: IlcAutoConsent,
+  heuristic: HeuristicController,
+  { cmp: cmpName, acceptButton, heuristic: byHeuristic }: Extract<IlcContentMessage, { type: 'ilc:verify' }>,
+): Promise<FrameVerification> {
+  if (byHeuristic) {
+    const onScreen = heuristic.bannerOnScreen();
+    return { popupVisible: onScreen, popupOnScreen: onScreen === true, popupCheckable: onScreen !== null, scrollLocked: isScrollLocked(), url: location.href };
+  }
+  const cmp = consent.cmpNamed(cmpName);
   let popupVisible: boolean | null = null;
   if (cmp) {
     const timeout = new Promise<boolean>((resolve) => setTimeout(() => resolve(false), 4000));
@@ -76,5 +134,6 @@ async function verifyFrame(consent: AutoConsent, acceptButton?: readonly string[
         return false;
       }
     });
-  return { popupVisible, popupOnScreen, scrollLocked: isScrollLocked(), url: location.href };
+  const popupCheckable = acceptButton !== undefined || (cmp?.prehideSelectors ?? []).length > 0;
+  return { popupVisible, popupOnScreen, popupCheckable, scrollLocked: isScrollLocked(), url: location.href };
 }

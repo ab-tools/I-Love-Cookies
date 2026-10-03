@@ -1,11 +1,15 @@
+import { browser } from 'wxt/browser';
 import type { Strategy } from '../shared/messages';
 import type { ilcSnippets } from './snippets';
+import measured from './strategy-data.json';
 
 export type ApiSnippetId = Extract<keyof typeof ilcSnippets, `ILC_API_${string}`>;
 
 /**
  * Per-CMP strategy, keyed by autoconsent CMP name. Default: autoconsent's opt-in rule.
  * `api` (the CMP's accept-all JavaScript call) is the fallback when the rule fails or the popup stays open.
+ * strategy-data.json (measured on real sites) makes the API primary
+ * where it measured clearly better than the rule.
  */
 export interface CmpStrategy {
   primary: Strategy;
@@ -16,13 +20,19 @@ export interface CmpStrategy {
 
 const withApi = (id: ApiSnippetId): CmpStrategy => ({ primary: 'rule', api: id });
 
+const USERCENTRICS_ACCEPT = [
+  '#usercentrics-cmp-ui, #usercentrics-root',
+  'button[data-action-type="accept"], button[data-testid="uc-accept-all-button"]',
+];
+
 export const CMP_STRATEGIES: Record<string, CmpStrategy> = {
   Onetrust: withApi('ILC_API_ONETRUST'),
   // Current Cookiebot dialog ("Alle zulassen"); older variants fall back to the rule.
   Cybotcookiebot: { primary: 'click', api: 'ILC_API_COOKIEBOT', acceptButton: ['#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll'] },
   'cookiebot.be': withApi('ILC_API_COOKIEBOT'),
-  'usercentrics-api': withApi('ILC_API_USERCENTRICS'),
-  'usercentrics-button': withApi('ILC_API_USERCENTRICS'),
+  // Accept button in Usercentrics' shadow DOM (v3 and v2 UI).
+  'usercentrics-api': { primary: 'click', api: 'ILC_API_USERCENTRICS', acceptButton: USERCENTRICS_ACCEPT },
+  'usercentrics-button': { primary: 'click', api: 'ILC_API_USERCENTRICS', acceptButton: USERCENTRICS_ACCEPT },
   didomi: withApi('ILC_API_DIDOMI'),
   'consentmanager.net': withApi('ILC_API_CONSENTMANAGER'),
   'consentmanager-ncmp': withApi('ILC_API_CONSENTMANAGER'),
@@ -46,6 +56,25 @@ export const CMP_STRATEGIES: Record<string, CmpStrategy> = {
   shopify: withApi('ILC_API_SHOPIFY'),
 };
 
+interface MeasuredStrategy {
+  primary: Strategy;
+}
+const MEASURED = (measured as { strategies: Record<string, MeasuredStrategy> }).strategies;
+
 export function strategyFor(cmp: string): CmpStrategy {
-  return CMP_STRATEGIES[cmp] ?? { primary: 'rule' };
+  const base = CMP_STRATEGIES[cmp] ?? { primary: 'rule' };
+  return MEASURED[cmp]?.primary === 'api' && base.api ? { ...base, primary: 'api' } : base;
+}
+
+/**
+ * Strategy actually used. E2E builds can force one strategy for measurements
+ * ('rule' = rule only without API fallback, 'api' = API first).
+ */
+export async function effectiveStrategy(cmp: string): Promise<CmpStrategy> {
+  const strategy = strategyFor(cmp);
+  if (import.meta.env.MODE !== 'e2e') return strategy;
+  const { e2eForceStrategy } = await browser.storage.local.get('e2eForceStrategy');
+  if (e2eForceStrategy === 'rule') return { primary: 'rule' };
+  if (e2eForceStrategy === 'api' && strategy.api) return { ...strategy, primary: 'api' };
+  return strategy;
 }

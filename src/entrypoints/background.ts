@@ -52,6 +52,19 @@ async function handleE2eMessage(msg: { action: string }, tabId: number) {
       return { ok: true };
     case 'getState':
       return getTabState(tabId);
+    case 'wipe':
+      // Fresh-profile equivalent for automated tests: all site data, plus our per-site daily counters.
+      await browser.browsingData.remove({ since: 0 }, { cookies: true, localStorage: true, indexedDB: true, cache: true, serviceWorkers: true });
+      await browser.storage.local.remove(Object.keys(await browser.storage.local.get(null)).filter((k) => k.startsWith('daily:')));
+      return { ok: true };
+    case 'disable':
+      await updateSettings({ onboardingAccepted: true, enabled: false });
+      return { ok: true };
+    case 'force:rule':
+    case 'force:api':
+    case 'force:none':
+      await browser.storage.local.set({ e2eForceStrategy: msg.action.slice('force:'.length) });
+      return { ok: true };
     default:
       return { error: `unknown action ${msg.action}` };
   }

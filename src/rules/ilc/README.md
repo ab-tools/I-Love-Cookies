@@ -8,3 +8,5 @@ Every rule **must** have non-empty `optIn` steps that click the "accept all" but
 Cosmetic (hide-only) rules are rejected – we answer banners, we never just hide them.
 
 If a fix applies to a rule that exists upstream, prefer contributing it to autoconsent.
+
+`mozilla.json` is converted from Mozilla's cookie-banner-rules-list – do not edit it by hand.

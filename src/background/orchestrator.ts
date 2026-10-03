@@ -13,8 +13,10 @@ import { getSettings, isSitePaused, siteOf } from '../shared/settings';
 import { evaluateOutcome, isSuccess, type ConsentSignals, type VerificationResult } from '../shared/verifier';
 import { rulesForFrame } from './rules';
 import { allSnippets } from './snippets';
-import { strategyFor } from './strategy';
+import { effectiveStrategy } from './strategy';
 import { updateBadge } from './badge';
+import type { HeuristicScan } from '../content/heuristic/controller';
+import type { HeuristicResult } from '../content/heuristic/flow';
 
 type Snippets = Record<string, (...args: unknown[]) => unknown>;
 const SNIPPETS = allSnippets as unknown as Snippets;
@@ -133,6 +135,16 @@ export async function runSnippet(tabId: number, frameId: number, snippetId: stri
   return injection?.result;
 }
 
+/** Calls a CMP API snippet until the CMP reports ready (snippet returns true) or the timeout expires. */
+async function runApi(tabId: number, frameId: number, snippetId: string): Promise<boolean> {
+  const deadline = Date.now() + LIMITS.apiReadyTimeoutMs;
+  do {
+    if (await runSnippet(tabId, frameId, snippetId).catch(() => false)) return true;
+    await sleep(LIMITS.apiPollMs);
+  } while (Date.now() < deadline);
+  return false;
+}
+
 function autoconsentConfig(enabled: boolean, debug: boolean): Partial<Config> {
   return {
     enabled,
@@ -184,6 +196,10 @@ export function handleContentMessage(msg: ContentScriptMessage, tabId: number, f
       return withTab(tabId, () => onOptInResult(tabId, frameId, msg.cmp, msg.result));
     case 'autoconsentDone':
       return withTab(tabId, () => onDone(tabId, frameId, msg.cmp, msg.totalClicks));
+    case 'ilc:heuristicFound' as string:
+      return withTab(tabId, () => onHeuristicFound(tabId, frameId, msg as unknown as HeuristicScan));
+    case 'ilc:userDecided' as string:
+      return withTab(tabId, () => onUserDecided(tabId, frameId));
     case 'autoconsentError':
       return withTab(tabId, async () => {
         const state = await loadState(tabId);
@@ -239,22 +255,43 @@ async function onEval(tabId: number, frameId: number, id: string, snippetId?: st
   await sendToFrame(tabId, frameId, { type: 'evalResp', id, result }).catch(() => undefined);
 }
 
-async function onPopupFound(tabId: number, frameId: number, cmp: string, waiting = false) {
+async function onPopupFound(tabId: number, frameId: number, cmp: string, waiting = false, deferred = false) {
   const state = await loadState(tabId);
   if (!state || state.phase === 'paused' || state.phase === 'stuck') return;
+
+  // Consent-O-Matic rules only act if no autoconsent rule handles the popup.
+  if (cmp.startsWith('com-') && !deferred) {
+    const docId = documentIds.get(tabId);
+    setTimeout(() => {
+      if (documentIds.get(tabId) === docId) void withTab(tabId, () => onPopupFound(tabId, frameId, cmp, false, true));
+    }, LIMITS.lowPriorityDelayMs);
+    return;
+  }
+  if (cmp.startsWith('com-') && state.cmp && !state.cmp.startsWith('com-') && state.phase !== 'idle') {
+    log(state, frameId, `popup ${cmp} ignored – handled by ${state.cmp}`);
+    await saveState(state);
+    return;
+  }
 
   // Single actor per tab: another frame is clicking right now → retry shortly (the claim is released as soon
   // as that frame reports its result, at the latest when it expires).
   const now = Date.now();
-  if (state.claim && state.claim.frameId !== frameId && state.claim.until > now) {
+  if (state.claim && state.claim.until > now && !(state.claim.frameId === frameId && state.cmp === cmp)) {
     if (!waiting) {
       log(state, frameId, `popup ${cmp} waits for frame ${state.claim.frameId}`);
       await saveState(state);
     }
     const docId = documentIds.get(tabId);
     setTimeout(() => {
-      if (documentIds.get(tabId) === docId) void withTab(tabId, () => onPopupFound(tabId, frameId, cmp, true));
+      if (documentIds.get(tabId) === docId) void withTab(tabId, () => onPopupFound(tabId, frameId, cmp, true, deferred));
     }, Math.min(250, state.claim.until - now + 50));
+    return;
+  }
+
+  // A second rule matching the same, already accepted popup.
+  if (state.phase === 'done' && isSuccess(state.outcome) && state.cmp !== cmp) {
+    log(state, frameId, `popup ${cmp} ignored – consent already given via ${state.cmp}`);
+    await saveState(state);
     return;
   }
 
@@ -269,7 +306,7 @@ async function onPopupFound(tabId: number, frameId: number, cmp: string, waiting
   state.attempts[frameId] = attempts;
   await bumpDaily(state.site, 'attempts');
 
-  const strategy = strategyFor(cmp);
+  const strategy = await effectiveStrategy(cmp);
   state.cmp = cmp;
   state.frameId = frameId;
   state.apiTried = false;
@@ -302,11 +339,11 @@ async function onPopupFound(tabId: number, frameId: number, cmp: string, waiting
     state.strategy = 'api';
     state.apiTried = true;
     await saveState(state);
-    const ok = await runSnippet(tabId, frameId, strategy.api).catch(() => false);
+    const ok = await runApi(tabId, frameId, strategy.api);
     if (ok) {
       state.claim = undefined;
       await saveState(state);
-      void scheduleVerify(tabId, frameId, 0);
+      void scheduleVerify(tabId, frameId, LIMITS.settleMs);
       return;
     }
     log(state, frameId, 'CMP API not available – falling back to rule');
@@ -315,7 +352,7 @@ async function onPopupFound(tabId: number, frameId: number, cmp: string, waiting
   state.strategy = 'rule';
   log(state, frameId, `popup ${cmp}: clicking "accept all" (autoconsent rule)`);
   await saveState(state);
-  await sendToFrame(tabId, frameId, { type: 'optIn' }).catch(() => undefined);
+  await sendToFrame(tabId, frameId, { type: 'ilc:optIn', cmp }).catch(() => undefined);
 }
 
 async function onOptInResult(tabId: number, frameId: number, cmp: string, result: boolean) {
@@ -345,7 +382,7 @@ async function onOptInResult(tabId: number, frameId: number, cmp: string, result
   clearTimeout(doneTimers.get(key));
   doneTimers.set(
     key,
-    setTimeout(() => void scheduleVerify(tabId, frameId, 0), LIMITS.doneTimeoutMs),
+    setTimeout(() => void scheduleVerify(tabId, frameId, LIMITS.settleMs), LIMITS.doneTimeoutMs),
   );
 }
 
@@ -355,7 +392,7 @@ async function onRuleFailed(tabId: number, frameId: number, cmp: string) {
   if (!state || state.frameId !== frameId || state.phase !== 'acting') return;
   await tryApiFallback(state, frameId, cmp);
   // Even without an API the rule may have worked late (e.g. slow iframe) – the verifier decides.
-  void scheduleVerify(tabId, frameId, 0);
+  void scheduleVerify(tabId, frameId, LIMITS.settleMs);
 }
 
 async function onDone(tabId: number, frameId: number, cmp: string, clicks: number) {
@@ -368,11 +405,11 @@ async function onDone(tabId: number, frameId: number, cmp: string, clicks: numbe
 
 /** Returns true if a CMP API exists for this CMP and the call succeeded. */
 async function tryApiFallback(state: TabState, frameId: number, cmp: string): Promise<boolean> {
-  const { api } = strategyFor(cmp);
+  const { api } = await effectiveStrategy(cmp);
   if (!api || state.apiTried) return false;
   state.apiTried = true;
   log(state, frameId, `trying CMP API fallback (${api})`);
-  const ok = Boolean(await runSnippet(state.tabId, frameId, api).catch(() => false));
+  const ok = await runApi(state.tabId, frameId, api);
   log(state, frameId, ok ? 'CMP API called' : 'CMP API not available');
   if (ok) state.strategy = 'api' satisfies Strategy;
   await saveState(state);
@@ -400,7 +437,12 @@ async function verify(tabId: number, frameId: number, docId: number | undefined)
   setPhase(state, 'verifying');
   await saveState(state);
 
-  const verifyMsg = { type: 'ilc:verify', acceptButton: state.cmp ? strategyFor(state.cmp).acceptButton : undefined } as const;
+  const verifyMsg = {
+    type: 'ilc:verify',
+    cmp: state.strategy === 'heuristic' ? undefined : state.cmp,
+    heuristic: state.strategy === 'heuristic',
+    acceptButton: state.cmp && state.strategy !== 'heuristic' ? (await effectiveStrategy(state.cmp)).acceptButton : undefined,
+  } as const;
   let frame = await askFrame<FrameVerification>(tabId, frameId, verifyMsg, LIMITS.verifyTimeoutMs);
   if ((frame?.popupVisible || frame?.popupOnScreen) && state.cmp && (await tryApiFallback(state, frameId, state.cmp))) {
     await sleep(LIMITS.settleMs);
@@ -413,6 +455,7 @@ async function verify(tabId: number, frameId: number, docId: number | undefined)
   const result = evaluateOutcome({
     popupVisible: frame ? frame.popupVisible : null,
     popupOnScreen: frame?.popupOnScreen ?? false,
+    popupCheckable: frame?.popupCheckable ?? false,
     navigatedAway: false,
     signals,
   });
@@ -434,6 +477,87 @@ async function finish(state: TabState, frameId: number, result: VerificationResu
   log(state, frameId, `result: ${result.outcome} – ${result.reasons.join('; ')}`);
   if (!isSuccess(result.outcome)) await bumpDaily(state.site, 'failures');
   await saveState(state);
+  if (result.outcome === 'FAILED' && state.strategy !== 'heuristic' && !state.heuristicTried) {
+    const docId = documentIds.get(state.tabId);
+    setTimeout(() => {
+      if (documentIds.get(state.tabId) === docId) void withTab(state.tabId, () => heuristicFallback(state.tabId));
+    }, 500);
+  }
+}
+
+// ---------------------------------------------------------------------------------------------
+// Generic heuristic (banners no rule handles)
+// ---------------------------------------------------------------------------------------------
+
+async function onHeuristicFound(tabId: number, frameId: number, scan: HeuristicScan) {
+  const state = await loadState(tabId);
+  if (!state || state.phase === 'paused' || state.phase === 'stuck') return;
+  log(state, frameId, `generic banner ${scan.fingerprint} (score ${scan.score}): ${scan.buttons.join(' | ')}`);
+  await saveState(state);
+  // Rules get a head start: act only if nothing handled a popup in the meantime.
+  const docId = documentIds.get(tabId);
+  setTimeout(() => {
+    if (documentIds.get(tabId) !== docId) return;
+    void withTab(tabId, async () => {
+      const current = await loadState(tabId);
+      if (current?.phase === 'idle') await runHeuristic(tabId, frameId);
+    });
+  }, LIMITS.heuristicGraceMs);
+}
+
+/** After a rule failed: look for a banner in every frame and handle the best one generically. */
+async function heuristicFallback(tabId: number) {
+  const state = await loadState(tabId);
+  if (!state || state.heuristicTried || state.phase !== 'done' || state.outcome !== 'FAILED') return;
+  const frames = (await browser.webNavigation.getAllFrames({ tabId }).catch(() => null)) ?? [{ frameId: 0 }];
+  let best: { frameId: number; scan: HeuristicScan } | null = null;
+  for (const { frameId } of frames) {
+    const scan = await askFrame<HeuristicScan>(tabId, frameId, { type: 'ilc:heuristicScan' }, 2000);
+    if (!scan || scan.decision === 'none') continue;
+    if (!best || scan.score > best.scan.score || (scan.score === best.scan.score && scan.top)) best = { frameId, scan };
+  }
+  if (!best) return;
+  log(state, best.frameId, `rule failed – generic banner ${best.scan.fingerprint}: ${best.scan.buttons.join(' | ')}`);
+  await runHeuristic(tabId, best.frameId);
+}
+
+async function runHeuristic(tabId: number, frameId: number) {
+  const state = await loadState(tabId);
+  if (!state || state.heuristicTried) return;
+  const now = Date.now();
+  if (state.claim && state.claim.until > now) return;
+  state.heuristicTried = true;
+  state.cmp ??= 'generic banner';
+  state.strategy = 'heuristic';
+  state.frameId = frameId;
+  state.outcome = undefined;
+  state.reasons = undefined;
+  state.actionUrl = state.url;
+  state.claim = { frameId, until: now + LIMITS.heuristicActMs };
+  setPhase(state, 'acting');
+  log(state, frameId, 'generic banner: accepting');
+  await saveState(state);
+  await bumpDaily(state.site, 'attempts');
+
+  const result = await askFrame<HeuristicResult>(tabId, frameId, { type: 'ilc:heuristicAct' }, LIMITS.heuristicActMs);
+  state.claim = undefined;
+  if (!result?.done) {
+    await finish(state, frameId, { outcome: 'FAILED', reasons: [`generic banner: ${result?.reason ?? 'no answer from frame'}`] });
+    return;
+  }
+  const toggles = result.toggled ? `, ${result.toggled} toggles switched on` : '';
+  log(state, frameId, `generic banner: clicked ${result.clicked.map((c) => `"${c}"`).join(' → ')}${toggles}`);
+  await saveState(state);
+  void scheduleVerify(tabId, frameId, LIMITS.settleMs);
+}
+
+async function onUserDecided(tabId: number, frameId: number) {
+  const state = await loadState(tabId);
+  if (!state || state.phase === 'done') return;
+  state.pausedReason = 'you made a choice in the banner';
+  setPhase(state, 'paused');
+  log(state, frameId, 'user clicked in the banner – staying out');
+  await saveState(state);
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -451,7 +575,21 @@ export function onTopLevelCommitted(tabId: number, url: string) {
     const previous = await loadState(tabId);
     const next = freshState(tabId, url);
     const acting = previous && (previous.phase === 'acting' || previous.phase === 'verifying');
-    if (previous && acting && baseDomain(previous.site) === baseDomain(next.site)) {
+    const samePage = (a: string, b: string) => {
+      const [x, y] = [new URL(a), new URL(b)];
+      return x.origin === y.origin && x.pathname === y.pathname;
+    };
+    if (previous && acting && previous.strategy === 'heuristic' && !samePage(previous.actionUrl ?? previous.url, url)) {
+      // A generic click must never navigate away.
+      next.cmp = previous.cmp;
+      next.strategy = previous.strategy;
+      next.outcome = 'UNSAFE';
+      next.reasons = [`generic banner click navigated to ${url.split('?')[0]}`];
+      next.phase = 'done';
+      next.log = previous.log;
+      log(next, 0, 'navigation after generic click – UNSAFE');
+      await bumpDaily(next.site, 'failures');
+    } else if (previous && acting && baseDomain(previous.site) === baseDomain(next.site)) {
       // CMPs often reload or redirect right after "accept all" (e.g. consent.example.com → example.com)
       // – that's a success signal, not an error.
       next.cmp = previous.cmp;

@@ -6,7 +6,6 @@ const tcf = (partial: Partial<TcfSignal>): TcfSignal => ({
   gdprApplies: true,
   purposesTotal: 10,
   purposesConsented: 10,
-  legitimateInterestObjected: 0,
   vendorsConsented: 400,
   ...partial,
 });
@@ -38,6 +37,12 @@ describe('evaluateOutcome', () => {
     expect(result.outcome).toBe('FAILED');
   });
 
+  it('treats a stale CMP popup check as closed when its dialog element is not on screen', () => {
+    const input = { popupVisible: true, popupOnScreen: false, navigatedAway: false, signals: null };
+    expect(evaluateOutcome({ ...input, popupCheckable: true }).outcome).toBe('LIKELY_FULL');
+    expect(evaluateOutcome({ ...input, popupCheckable: false }).outcome).toBe('FAILED');
+  });
+
   it('ignores TCF data while the CMP UI is still shown', () => {
     const signals = { tcf: tcf({ eventStatus: 'cmpuishown' }), gcm: null };
     expect(evaluateOutcome({ popupVisible: false, navigatedAway: false, signals }).outcome).toBe('LIKELY_FULL');
@@ -56,11 +61,6 @@ describe('evaluateOutcome', () => {
 
   it('is PARTIAL without consent to device storage (purpose 1)', () => {
     const signals = { tcf: tcf({ purposesConsented: 3, storageConsented: false }), gcm: null };
-    expect(evaluateOutcome({ popupVisible: false, navigatedAway: false, signals }).outcome).toBe('PARTIAL');
-  });
-
-  it('is PARTIAL when legitimate interest was objected', () => {
-    const signals = { tcf: tcf({ legitimateInterestObjected: 2 }), gcm: null };
     expect(evaluateOutcome({ popupVisible: false, navigatedAway: false, signals }).outcome).toBe('PARTIAL');
   });
 

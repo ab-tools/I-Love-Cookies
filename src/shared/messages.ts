@@ -8,8 +8,11 @@ export type Phase =
   | 'paused' // disabled for this site / globally / onboarding not accepted
   | 'stuck'; // loop guard hit – needs attention
 
-/** rule = autoconsent opt-in rule · api = CMP JavaScript API · click = known accept button (also in shadow DOM) */
-export type Strategy = 'rule' | 'api' | 'click';
+/**
+ * rule = autoconsent opt-in rule · api = CMP JavaScript API · click = known accept button (also in shadow DOM)
+ * · heuristic = generic banner detection without a rule
+ */
+export type Strategy = 'rule' | 'api' | 'click' | 'heuristic';
 
 export interface LogEntry {
   t: number;
@@ -27,6 +30,8 @@ export interface TabState {
   cmp?: string;
   frameId?: number;
   strategy?: Strategy;
+  /** Generic heuristic already used in this document. */
+  heuristicTried?: boolean;
   /** API fallback already tried for the current popup. */
   apiTried?: boolean;
   outcome?: Outcome;
@@ -50,14 +55,20 @@ export type UiMessage =
 /** Messages from the background to our part of the content script. */
 export type IlcContentMessage =
   /** acceptButton: the popup counts as on screen while this element is visible. */
-  | { type: 'ilc:verify'; acceptButton?: readonly string[] }
-  | { type: 'ilc:click'; chain: readonly string[] };
+  | { type: 'ilc:verify'; cmp?: string; acceptButton?: readonly string[]; heuristic?: boolean }
+  /** Opt in with exactly this CMP (several rules may have detected the same popup). */
+  | { type: 'ilc:optIn'; cmp: string }
+  | { type: 'ilc:click'; chain: readonly string[] }
+  | { type: 'ilc:heuristicScan' }
+  | { type: 'ilc:heuristicAct' };
 
 export interface FrameVerification {
   /** autoconsent's popup check; null if no CMP instance in this frame */
   popupVisible: boolean | null;
   /** The CMP's dialog element is actually on screen. */
   popupOnScreen: boolean;
+  /** popupOnScreen is meaningful (the CMP's dialog element is known). */
+  popupCheckable: boolean;
   scrollLocked: boolean;
   url: string;
 }

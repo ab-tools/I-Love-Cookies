@@ -49,7 +49,6 @@ function readConsentSignals() {
             /* ignore */
           }
           const consents = (tcData.purpose && tcData.purpose.consents) || {};
-          const li = (tcData.purpose && tcData.purpose.legitimateInterests) || {};
           const ids = Object.keys(consents);
           finish({
             eventStatus: tcData.eventStatus,
@@ -57,8 +56,6 @@ function readConsentSignals() {
             purposesTotal: ids.length,
             purposesConsented: ids.filter((id) => consents[id]).length,
             storageConsented: Boolean(consents['1']),
-            // A purpose disclosed for legitimate interest but set to false means the user objected.
-            legitimateInterestObjected: Object.keys(li).filter((id) => li[id] === false && !consents[id]).length,
             vendorsConsented: Object.values((tcData.vendor && tcData.vendor.consents) || {}).filter(Boolean).length,
           });
         });
@@ -88,12 +85,14 @@ function apiCookiebot() {
 }
 async function apiUsercentrics() {
   if (window.__ucCmp && typeof window.__ucCmp.acceptAllConsents === 'function') {
+    if (typeof window.__ucCmp.isInitialized === 'function' && !(await window.__ucCmp.isInitialized())) return false;
     await window.__ucCmp.acceptAllConsents();
     if (typeof window.__ucCmp.saveConsents === 'function') await window.__ucCmp.saveConsents();
     if (typeof window.__ucCmp.closeCmp === 'function') await window.__ucCmp.closeCmp();
     return true;
   }
   if (window.UC_UI && typeof window.UC_UI.acceptAllConsents === 'function') {
+    if (typeof window.UC_UI.isInitialized === 'function' && !window.UC_UI.isInitialized()) return false;
     await window.UC_UI.acceptAllConsents();
     if (typeof window.UC_UI.closeCMP === 'function') window.UC_UI.closeCMP();
     return true;
@@ -101,11 +100,16 @@ async function apiUsercentrics() {
   return false;
 }
 function apiDidomi() {
-  if (window.Didomi && typeof window.Didomi.setUserAgreeToAll === 'function') {
-    window.Didomi.setUserAgreeToAll();
-    return true;
-  }
-  return false;
+  if (!window.Didomi && !window.didomiOnReady) return false;
+  // didomiOnReady runs the callback once the SDK is ready (immediately if it already is).
+  return new Promise((resolve) => {
+    window.didomiOnReady = window.didomiOnReady || [];
+    window.didomiOnReady.push((didomi) => {
+      didomi.setUserAgreeToAll();
+      resolve(true);
+    });
+    setTimeout(() => resolve(false), 900);
+  });
 }
 function apiConsentmanager() {
   if (typeof window.__cmp === 'function') {
