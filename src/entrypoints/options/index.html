@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>I Love Cookies – Settings</title>
+    <meta name="manifest.open_in_tab" content="true" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="row">
+        <img src="/icon/48.png" alt="" width="40" height="40" />
+        <h1>I Love Cookies – Settings</h1>
+      </header>
+
+      <section class="card" id="setup" hidden>
+        <p>The extension is not active yet.</p>
+        <a href="/onboarding.html">Complete the setup</a>
+      </section>
+
+      <section class="card">
+        <h2>General</h2>
+        <label class="toggle"><input type="checkbox" id="enabled" /> <span>Accept cookies automatically</span></label>
+        <label class="toggle">
+          <input type="checkbox" id="debug" />
+          <span>Debug logging in the page console</span>
+        </label>
+      </section>
+
+      <section class="card">
+        <h2>Paused sites</h2>
+        <ul class="site-list" id="paused"></ul>
+        <p class="muted small" id="paused-empty">No paused sites. Pause a site from the toolbar popup.</p>
+      </section>
+
+      <section class="card">
+        <h2>About</h2>
+        <p class="muted small" id="about"></p>
+        <p class="small"><a href="/onboarding.html">What does this extension do?</a></p>
+      </section>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

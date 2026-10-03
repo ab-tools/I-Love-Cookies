@@ -1,0 +1,23 @@
+[
+  {
+    "name": "ilc-sourcepoint-pay-or-ok",
+    "comment": "Sourcepoint 'consent or pay' walls (e.g. spiegel.de, zeit.de, bild.de, theguardian.com). autoconsent's Sourcepoint-frame deliberately ignores them (opt-out is impossible there). We click the free 'accept all' choice (type 11). The paid / subscription choice (type 9) is never clicked. Some sites render each button twice (desktop + mobile), one of them hidden.",
+    "runContext": { "main": false, "frame": true, "urlPattern": "/index\\.html\\?(.*&)?(message_id|requestUUID|consentUUID)=" },
+    "detectCmp": [{ "waitFor": ".sp_choice_type_11", "timeout": 5000 }, { "exists": ".sp_choice_type_9" }],
+    "detectPopup": [{ "visible": ".sp_choice_type_11", "check": "any" }],
+    "optIn": [
+      {
+        "if": { "visible": ".sp_choice_type_11.desktop", "check": "any" },
+        "then": [{ "waitForThenClick": ".sp_choice_type_11.desktop" }],
+        "else": [
+          {
+            "if": { "visible": ".sp_choice_type_11.mobile", "check": "any" },
+            "then": [{ "waitForThenClick": ".sp_choice_type_11.mobile" }],
+            "else": [{ "waitForThenClick": ".sp_choice_type_11" }]
+          }
+        ]
+      }
+    ],
+    "optOut": []
+  }
+]

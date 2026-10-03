@@ -1,0 +1,31 @@
+body {
+  width: 340px;
+}
+#app {
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+}
+.status {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 4px 0 2px;
+}
+.actions {
+  display: grid;
+  gap: 8px;
+}
+.wrap {
+  flex-wrap: wrap;
+}
+footer {
+  justify-content: space-between;
+  font-size: 12px;
+}
+summary {
+  cursor: pointer;
+  font-size: 12px;
+}
+#search-issues {
+  font-size: 12px;
+}

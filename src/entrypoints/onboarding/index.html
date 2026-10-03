@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to I Love Cookies</title>
+  </head>
+  <body>
+    <main class="page">
+      <header class="row">
+        <img src="/icon/48.png" alt="" width="40" height="40" />
+        <h1>Welcome to I Love Cookies</h1>
+      </header>
+
+      <section class="card">
+        <h2>What this extension does</h2>
+        <p>
+          On every website you visit, I Love Cookies finds the cookie consent banner and answers it
+          <strong>with the maximum consent offered</strong> ("Accept all") – on your behalf, automatically.
+        </p>
+        <p>This means you agree, for every site, to:</p>
+        <ul>
+          <li>all cookies and similar technologies (local storage, device identifiers),</li>
+          <li>analytics, profiling and personalised advertising,</li>
+          <li>data sharing with all listed partners/vendors – often hundreds per site.</li>
+        </ul>
+        <p>
+          In return, websites work completely: videos, maps, embedded content, comments and logins are
+          no longer blocked, and you never see a cookie banner again.
+        </p>
+        <p class="muted">
+          You can pause the extension per site, and withdraw your consent for a site at any time from the toolbar
+          popup ("Withdraw consent" deletes that site's cookies and shows the banner again).
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>"Consent or pay" walls</h2>
+        <p>
+          Some sites let you choose between accepting tracking and a paid subscription. I Love Cookies always
+          chooses the free option ("accept and continue with ads"). It never selects a paid option, never
+          subscribes and never logs in for you.
+        </p>
+      </section>
+
+      <section class="row">
+        <button class="primary" id="accept">I understand – accept all cookies for me</button>
+        <span id="done" class="ok" hidden>✓ Active. You can close this tab.</span>
+      </section>
+      <p class="muted small">
+        I Love Cookies collects no data. Problem reports are only sent if you open and submit a GitHub issue yourself.
+      </p>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

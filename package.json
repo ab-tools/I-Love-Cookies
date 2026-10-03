@@ -1,0 +1,31 @@
+{
+  "name": "i-love-cookies",
+  "description": "Automatically accepts ALL cookies on EU cookie consent banners so websites work 100 %.",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MPL-2.0",
+  "scripts": {
+    "rules": "node scripts/build-rules.mjs",
+    "dev": "npm run rules && wxt",
+    "dev:firefox": "npm run rules && wxt -b firefox",
+    "build": "npm run rules && wxt build",
+    "build:firefox": "npm run rules && wxt build -b firefox",
+    "zip": "npm run rules && wxt zip",
+    "zip:firefox": "npm run rules && wxt zip -b firefox",
+    "compile": "npm run rules && tsc --noEmit",
+    "test": "npm run rules && vitest run",
+    "postinstall": "node scripts/build-rules.mjs && wxt prepare",
+    "lint:firefox": "web-ext lint -s .output/firefox-mv3"
+  },
+  "dependencies": {
+    "@duckduckgo/autoconsent": "16.44.0"
+  },
+  "devDependencies": {
+    "happy-dom": "^20.14.5",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.3",
+    "web-ext": "^10.7.0",
+    "wxt": "^0.21.4"
+  }
+}

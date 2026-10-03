@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>I Love Cookies</title>
+  </head>
+  <body>
+    <main id="app">
+      <header class="row">
+        <img src="/icon/32.png" alt="" width="24" height="24" />
+        <h1>I Love Cookies</h1>
+      </header>
+
+      <section class="card" id="status-card">
+        <div id="site" class="muted"></div>
+        <div id="status" class="status"></div>
+        <div id="details" class="muted"></div>
+      </section>
+
+      <section id="setup" class="card" hidden>
+        <p>The extension is not active yet. Please confirm what it does first.</p>
+        <button class="primary" id="open-onboarding">Set up I Love Cookies</button>
+      </section>
+
+      <section class="actions" id="actions">
+        <label class="toggle"><input type="checkbox" id="site-active" /> <span>Accept cookies automatically on this site</span></label>
+        <div class="row wrap">
+          <button id="withdraw" title="Deletes this site's cookies and storage, pauses the extension here and reloads – the banner appears again.">
+            Withdraw consent
+          </button>
+          <button id="report">Report a problem</button>
+        </div>
+        <a id="search-issues" target="_blank" rel="noopener">Search existing reports for this site</a>
+      </section>
+
+      <details>
+        <summary class="muted">Action log</summary>
+        <pre class="log" id="log"></pre>
+      </details>
+
+      <footer class="row muted">
+        <a href="#" id="open-options">Settings</a>
+        <span id="rules-info"></span>
+      </footer>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

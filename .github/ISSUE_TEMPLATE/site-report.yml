@@ -1,0 +1,48 @@
+name: Site problem
+description: A cookie banner was not accepted (or something went wrong) on a website.
+title: '[Site] '
+labels: ['site-report']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! The extension's "Report a problem" button fills in most fields automatically.
+        Please check first whether the site has already been reported.
+  - type: input
+    id: url
+    attributes:
+      label: Page URL
+      description: Without query string or personal data.
+      placeholder: https://www.example.com/
+    validations:
+      required: true
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser
+      options: [chrome, firefox, edge, other]
+    validations:
+      required: true
+  - type: dropdown
+    id: problem
+    attributes:
+      label: What happened?
+      options:
+        - The cookie banner stayed visible
+        - Only some cookies were accepted (badge "~")
+        - The extension clicked something wrong (subscription, login, link …)
+        - The site is broken / not scrollable after accepting
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Extension diagnostics
+      description: Filled in automatically by the extension (detected consent platform, strategy, verification result, action log).
+      render: text
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else?
+      description: A screenshot of the banner helps a lot.

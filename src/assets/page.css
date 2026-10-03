@@ -1,0 +1,34 @@
+/* Full-page extension pages (onboarding, options). */
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+  display: grid;
+  gap: 16px;
+}
+.page header {
+  gap: 12px;
+}
+.page h1 {
+  font-size: 24px;
+}
+.page ul {
+  padding-left: 20px;
+}
+.small {
+  font-size: 12px;
+}
+.site-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 6px;
+}
+.site-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  overflow-wrap: anywhere;
+}

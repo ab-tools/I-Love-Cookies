@@ -1,0 +1,10 @@
+[
+  {
+    "name": "ilc-iubenda-teamblue",
+    "comment": "New iubenda (team.blue) banner rendered inside a closed shadow root (<tb-banner-wrapper>), so its buttons cannot be selected. Uses iubenda's documented JS API _iub.cs.api.acceptAll() instead. The API initialises lazily, hence the wait before asking it.",
+    "detectCmp": [{ "exists": "tb-banner-wrapper" }],
+    "detectPopup": [{ "wait": 2500 }, { "eval": "ILC_IUBENDA_NEEDS_CONSENT" }],
+    "optIn": [{ "eval": "ILC_API_IUBENDA" }],
+    "optOut": []
+  }
+]
