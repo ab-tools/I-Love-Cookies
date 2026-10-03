@@ -1,4 +1,4 @@
-import { realisticClick, shadowRootOf } from '../dom';
+import { isOnScreen, realisticClick, shadowRootOf } from '../dom';
 import { findConsentBanners } from './banner';
 import { extractButtons, type ButtonCandidate } from './candidates';
 import { decide, isVetoed } from './policy';
@@ -82,6 +82,8 @@ export async function acceptBanner(banner: Element): Promise<HeuristicResult> {
   if (decision.action === 'click') {
     click(decision.button, result);
     result.done = true;
+    // Not awaited: accepting often removes the frame, which must answer first.
+    void confirmFollowUp(banner, decision.button.label);
     return result;
   }
   if (decision.action === 'none') {
@@ -111,6 +113,19 @@ export async function acceptBanner(banner: Element): Promise<HeuristicResult> {
   return selectAllAndSave(layer, result);
 }
 
+/**
+ * Some banners ask once more after accepting ("… will reload to apply your cookie preferences. OK"): if the
+ * banner then only offers a confirming button (no reject), click it.
+ */
+async function confirmFollowUp(banner: Element, clicked: string): Promise<void> {
+  await sleep(800);
+  if (!banner.isConnected) return;
+  const buttons = extractButtons(banner).filter((b) => !isVetoed(b));
+  if (extractButtons(banner).some((b) => b.cls === 'REJECT')) return;
+  const confirm = buttons.find((b) => ['ACKNOWLEDGE', 'ACCEPT', 'ACCEPT_ALL'].includes(b.cls) && b.label !== clicked);
+  if (confirm) realisticClick(confirm.element);
+}
+
 /** Settings layer: "select all" if offered, every category switched on (never off), then save. */
 async function selectAllAndSave(layer: Element, result: HeuristicResult): Promise<HeuristicResult> {
   const selectAll = extractButtons(layer).find((b) => !isVetoed(b) && b.cls === 'SELECT_ALL');
@@ -122,8 +137,16 @@ async function selectAllAndSave(layer: Element, result: HeuristicResult): Promis
   result.toggled = toggled;
   result.partial = total > MAX_TOGGLES;
 
-  const save = extractButtons(layer).find((b) => !isVetoed(b) && (b.cls === 'SAVE' || b.cls === 'ACCEPT'));
+  // "Select all" may relabel or move the save button: look in the layer, then in any consent banner now shown.
+  const saveIn = (el: Element) =>
+    extractButtons(el).find((b) => !isVetoed(b) && (b.cls === 'ACCEPT_ALL' || b.cls === 'SAVE' || b.cls === 'ACCEPT'));
+  const save = (layer.isConnected ? saveIn(layer) : undefined) ?? findConsentBanners().map((b) => saveIn(b.element)).find(Boolean);
   if (!save) {
+    // "Select all" answered the banner by itself (it closed): the verifier decides.
+    if (selectAll && !(layer.isConnected && isOnScreen(layer))) {
+      result.done = true;
+      return result;
+    }
     result.reason = 'no save button';
     return result;
   }
