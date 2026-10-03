@@ -6,7 +6,7 @@ export type Phase =
   | 'acting' // a strategy is clicking / calling the CMP API
   | 'verifying'
   | 'done' // verified, see outcome
-  | 'paused' // disabled for this site / globally / onboarding not accepted
+  | 'paused' // excluded site, left to the user, or switched off
   | 'stuck'; // loop guard hit – needs attention
 
 /**
@@ -14,7 +14,7 @@ export type Phase =
  * · heuristic = generic banner detection without a rule
  */
 /** Why the extension is inactive on a page (translated as reason_<code>). */
-export type PausedReason = 'setup' | 'off' | 'sitePaused' | 'failuresToday' | 'attemptsToday' | 'keepsComingBack' | 'userDecided' | 'payOrOk';
+export type PausedReason = 'off' | 'sitePaused' | 'failuresToday' | 'attemptsToday' | 'keepsComingBack' | 'userDecided' | 'payOrOk';
 
 export type Strategy = 'rule' | 'api' | 'click' | 'heuristic';
 
@@ -56,7 +56,7 @@ export interface TabState {
 export type UiMessage =
   | { type: 'ilc:getTabState'; tabId: number }
   | { type: 'ilc:setSitePaused'; tabId: number; paused: boolean }
-  | { type: 'ilc:withdrawConsent'; tabId: number }
+  | { type: 'ilc:report'; tabId: number; anonymous: boolean }
   | { type: 'ilc:collectReport'; tabId: number }
   | { type: 'ilc:getRuleStatus' }
   | { type: 'ilc:checkRuleUpdate' };

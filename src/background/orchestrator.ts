@@ -2,8 +2,7 @@
  * One state machine per tab document:
  *   popupFound ──► strategy (rule / API / button click) ──► result ──► verify ──► outcome
  *
- * Single actor per tab, per-document and per-site daily attempt limits, inactive until onboarding
- * is accepted and on paused sites.
+ * Single actor per tab, per-document and per-site daily attempt limits, inactive on excluded sites.
  */
 import { browser } from 'wxt/browser';
 import type { BackgroundMessage, Config, ContentScriptMessage } from '@duckduckgo/autoconsent';
@@ -229,8 +228,7 @@ async function onInit(tabId: number, frameId: number, frameUrl: string, tabUrl: 
   const daily = await getDaily(state.site);
 
   let pausedReason: PausedReason | undefined;
-  if (!settings.onboardingAccepted) pausedReason = 'setup';
-  else if (!settings.enabled) pausedReason = 'off';
+  if (!settings.enabled) pausedReason = 'off';
   else if (exclusionFor(settings, tabUrl)) pausedReason = 'sitePaused';
   else if (daily.failures >= LIMITS.failuresPerSitePerDay) pausedReason = 'failuresToday';
   else if (daily.attempts >= LIMITS.attemptsPerSitePerDay) pausedReason = 'attemptsToday';

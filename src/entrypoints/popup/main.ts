@@ -1,12 +1,12 @@
 import { browser } from 'wxt/browser';
 import '../../assets/ui.css';
 import './style.css';
-import type { ReportSnapshot, TabState, UiMessage } from '../../shared/messages';
+import type { TabState, UiMessage } from '../../shared/messages';
 import type { Settings } from '../../shared/settings';
 import { exclusionFor } from '../../shared/settings';
-import { buildReport, searchExistingIssuesUrl, type Report } from '../../shared/report';
 import { describeState } from '../../shared/describe';
 import { localizePage, translate } from '../../shared/i18n';
+import { REPORT_DATA_COLLECTION } from '../../shared/constants';
 
 interface TabInfo {
   state: TabState;
@@ -28,35 +28,38 @@ async function main() {
     return;
   }
   const tabId = tab.id;
-  const info = await send<TabInfo>({ type: 'ilc:getTabState', tabId });
-  render(info);
+  render(await send<TabInfo>({ type: 'ilc:getTabState', tabId }));
 
   $<HTMLInputElement>('site-active').addEventListener('change', async (e) => {
     const active = (e.target as HTMLInputElement).checked;
     await send({ type: 'ilc:setSitePaused', tabId, paused: !active });
     window.close();
   });
-  $('withdraw').addEventListener('click', async () => {
-    await send({ type: 'ilc:withdrawConsent', tabId });
-    window.close();
+  $('report').addEventListener('click', () => {
+    $('report-buttons').hidden = true;
+    $('report-choice').hidden = false;
   });
-  let report: Report | null = null;
-  $('report').addEventListener('click', async () => {
-    $('actions').hidden = true;
-    $('report-preview').hidden = false;
-    $('report-text').textContent = translate('popup_reportCollecting');
-    const snapshot = await send<ReportSnapshot>({ type: 'ilc:collectReport', tabId }).catch(() => undefined);
-    report = buildReport(info.state, { browser: import.meta.env.BROWSER, userAgent: navigator.userAgent }, snapshot);
-    $('report-text').textContent = [report.title, '', report.details, ...(report.diagnostics ? ['', JSON.stringify(JSON.parse(report.diagnostics), null, 1)] : [])].join('\n');
-    $<HTMLButtonElement>('report-open').disabled = false;
-  });
-  $('report-open').addEventListener('click', async () => {
-    if (report) await browser.tabs.create({ url: report.url });
-  });
-  $('report-cancel').addEventListener('click', () => {
-    $('report-preview').hidden = true;
-    $('actions').hidden = false;
-  });
+  const report = async (anonymous: boolean) => {
+    // Firefox asks before an add-on transmits data; the request must start within the click.
+    if (import.meta.env.FIREFOX) {
+      void browser.permissions.request({ data_collection: REPORT_DATA_COLLECTION } as unknown as Parameters<typeof browser.permissions.request>[0]).catch(() => false);
+    }
+    $('report-choice').hidden = true;
+    const status = $('report-status');
+    status.hidden = false;
+    status.className = 'muted small';
+    status.textContent = translate(anonymous ? 'popup_reportSending' : 'popup_reportOpening');
+    const result = await send<{ ok?: true; error?: string }>({ type: 'ilc:report', tabId, anonymous });
+    if (result?.ok) {
+      window.close();
+      return;
+    }
+    status.className = 'bad small';
+    status.textContent = translate(result?.error === 'consent' ? 'popup_reportNoConsent' : 'popup_reportFailed');
+    $('report-choice').hidden = false;
+  };
+  $('report-github').addEventListener('click', () => void report(false));
+  $('report-anonymous').addEventListener('click', () => void report(true));
 }
 
 function render({ state, settings, rules }: TabInfo) {
@@ -74,9 +77,6 @@ function render({ state, settings, rules }: TabInfo) {
     ...(rules.update ? [translate('popup_rulesUpdate', [rules.update])] : []),
   ].join(' · ');
 
-  const setupNeeded = !settings.onboardingAccepted;
-  $('setup').hidden = !setupNeeded;
-  $('actions').hidden = setupNeeded;
   // Entries other than the site's own domain (parent domains, patterns) can only be changed in the settings.
   const excludedBy = exclusionFor(settings, state.url);
   const byOtherEntry = excludedBy !== null && excludedBy !== state.site;
@@ -85,14 +85,8 @@ function render({ state, settings, rules }: TabInfo) {
   toggle.disabled = byOtherEntry;
   $('excluded-by').hidden = !byOtherEntry;
   $('excluded-by').textContent = byOtherEntry ? translate('popup_excludedBy', [excludedBy]) : '';
-  const search = $<HTMLAnchorElement>('search-issues');
-  search.href = searchExistingIssuesUrl(state.site);
 }
 
-$('open-onboarding').addEventListener('click', () => {
-  void browser.tabs.create({ url: browser.runtime.getURL('/onboarding.html') });
-  window.close();
-});
 $('open-options').addEventListener('click', (e) => {
   e.preventDefault();
   void browser.runtime.openOptionsPage();

@@ -1,10 +1,14 @@
-export const EXTENSION_NAME = 'I Love Cookies';
-
 /** Permanent Firefox add-on ID – must never change once published on AMO. */
 export const GECKO_ID = 'extension@i-love-cookies.com';
 
 /** GitHub repository: receives "Report a problem" issues and publishes rule updates. */
 export const REPO_URL = 'https://github.com/ab-tools/I-Love-Cookies';
+
+/** Service that files anonymous problem reports as issues in REPO_URL. */
+export const REPORT_API_URL = 'https://api.i-love-cookies.com/report';
+
+/** Firefox data collection categories a problem report transmits (page address, banner content, versions). */
+export const REPORT_DATA_COLLECTION = ['browsingActivity', 'websiteContent', 'technicalAndInteraction'];
 
 /** Published rule updates (declarative rules only) and their SHA-256 checksum (same URL + ".sha256"). */
 export const RULE_UPDATE_URL = `${REPO_URL}/releases/download/rules/rules.json`;

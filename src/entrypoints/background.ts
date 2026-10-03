@@ -6,16 +6,10 @@ import { getTabState, handleContentMessage, onInPageNavigation, onTabRemoved, on
 import { RULES_INFO, activeRules } from '../background/rules';
 import { RULE_UPDATE_ALARM, checkForRuleUpdate, getRuleSet, getRuleUpdateStatus, invalidateRuleSet, scheduleRuleUpdates } from '../background/rule-updates';
 import { collectReportSnapshot } from '../background/report-snapshot';
-import { pauseSite, withdrawConsent } from '../background/site-actions';
+import { pauseSite } from '../background/site-actions';
+import { sendReport } from '../background/report-send';
 
 export default defineBackground(() => {
-  browser.runtime.onInstalled.addListener(async ({ reason }) => {
-    // Informed consent first: the extension stays inactive until the user confirmed the onboarding page.
-    if (reason === 'install') {
-      await browser.tabs.create({ url: browser.runtime.getURL('/onboarding.html') });
-    }
-  });
-
   void scheduleRuleUpdates();
   browser.alarms.onAlarm.addListener((alarm) => {
     if (alarm.name === RULE_UPDATE_ALARM) void checkForRuleUpdate();
@@ -61,8 +55,8 @@ export default defineBackground(() => {
 
 async function handleE2eMessage(msg: { action: string }, tabId: number) {
   switch (msg.action) {
-    case 'acceptOnboarding':
-      await updateSettings({ onboardingAccepted: true, enabled: true });
+    case 'enable':
+      await updateSettings({ enabled: true });
       return { ok: true };
     case 'getState':
       return getTabState(tabId);
@@ -72,7 +66,7 @@ async function handleE2eMessage(msg: { action: string }, tabId: number) {
       await browser.storage.local.remove(Object.keys(await browser.storage.local.get(null)).filter((k) => k.startsWith('daily:')));
       return { ok: true };
     case 'disable':
-      await updateSettings({ onboardingAccepted: true, enabled: false });
+      await updateSettings({ enabled: false });
       return { ok: true };
     case 'force:rule':
     case 'force:api':
@@ -91,9 +85,8 @@ async function handleUiMessage(msg: UiMessage) {
     case 'ilc:setSitePaused':
       await pauseSite(msg.tabId, msg.paused);
       return { ok: true };
-    case 'ilc:withdrawConsent':
-      await withdrawConsent(msg.tabId);
-      return { ok: true };
+    case 'ilc:report':
+      return sendReport(msg.tabId, msg.anonymous);
     case 'ilc:collectReport':
       return collectReportSnapshot(msg.tabId);
     case 'ilc:getRuleStatus':

@@ -18,29 +18,17 @@
         <div id="details" class="muted"></div>
       </section>
 
-      <section id="setup" class="card" hidden>
-        <p data-i18n="popup_setupNeeded"></p>
-        <button class="primary" id="open-onboarding" data-i18n="popup_setupButton"></button>
-      </section>
-
       <section class="actions" id="actions">
         <label class="toggle"><input type="checkbox" id="site-active" /> <span data-i18n="popup_siteActive"></span></label>
         <p class="muted small" id="excluded-by" hidden></p>
-        <div class="row wrap">
-          <button id="withdraw" data-i18n="popup_withdraw" data-i18n-title="popup_withdrawTitle"></button>
+        <div class="row wrap" id="report-buttons">
           <button id="report" data-i18n="popup_report"></button>
         </div>
-        <a id="search-issues" target="_blank" rel="noopener" data-i18n="popup_searchReports"></a>
-      </section>
-
-      <section class="card report" id="report-preview" hidden>
-        <strong data-i18n="popup_reportTitle"></strong>
-        <p class="muted small" data-i18n="popup_reportHint"></p>
-        <pre class="log" id="report-text"></pre>
-        <div class="row wrap">
-          <button class="primary" id="report-open" data-i18n="popup_reportOpen" disabled></button>
-          <button id="report-cancel" data-i18n="popup_reportCancel"></button>
+        <div class="row wrap" id="report-choice" hidden>
+          <button class="primary" id="report-github" data-i18n="popup_reportGithub"></button>
+          <button id="report-anonymous" data-i18n="popup_reportAnonymous"></button>
         </div>
+        <p class="muted small" id="report-status" hidden></p>
       </section>
 
       <details>

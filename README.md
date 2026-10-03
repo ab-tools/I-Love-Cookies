@@ -7,8 +7,8 @@ Unlike "I don't care about cookies"-style extensions, it never just *hides* bann
 sites with grey overlays and locked scrolling). It gives the consent the site asks for and then **verifies** it:
 via the IAB TCF API (`__tcfapi`), Google Consent Mode and the banner's visibility.
 
-> The extension stays inactive until you confirm the onboarding page, which explains what is accepted on your
-> behalf. You can pause it per site and withdraw consent for a site at any time from the toolbar popup.
+> The extension works right after installation. You can switch it off per site from the toolbar popup and
+> exclude sites or address patterns in the settings.
 
 ## How it works
 
@@ -57,9 +57,11 @@ generic heuristic: unknown banner ────► if no rule handled it (or a ru
   call snippets bundled with the extension ([src/shared/rule-set.ts](src/shared/rule-set.ts) validates every
   step). Invalid or older sets are ignored, and the bundled rules always remain the fallback. Can be switched off
   in the settings.
-- **No data collection.** Problem reports are GitHub issues the user opens and submits. Before the issue opens,
-  the popup shows everything it contains: page address without parameters, the banner's structure, text and
-  buttons (with their classified labels), detected consent platforms and the extension's log.
+- **No data collection.** Data leaves the browser only when the user reports a problem: "Report Using GitHub"
+  opens a prefilled issue form, "Report Anonymously" sends the same content to a report service that files the
+  issue. A report contains the page address without parameters, the banner's structure, text and buttons (with
+  their classified labels), detected consent platforms and the extension's log. Firefox asks for permission
+  before the first report.
 
 ## Development
 

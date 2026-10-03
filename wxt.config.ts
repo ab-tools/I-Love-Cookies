@@ -1,6 +1,6 @@
 import { resolve } from 'node:path';
 import { defineConfig } from 'wxt';
-import { GECKO_ID } from './src/shared/constants';
+import { GECKO_ID, REPORT_DATA_COLLECTION } from './src/shared/constants';
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
@@ -12,11 +12,12 @@ export default defineConfig({
   vite: () => ({ resolve: { alias: { '@autoconsent-src': resolve('node_modules/@duckduckgo/autoconsent/lib') } } }),
   // Source archive for AMO review: everything needed to reproduce the build, nothing else.
   zip: { excludeSources: ['.github/**'] },
-  manifest: ({ browser }) => ({
+  manifest: ({ browser, mode }) => ({
     name: '__MSG_extName__',
     description: '__MSG_extDescription__',
     default_locale: 'en',
-    permissions: ['scripting', 'storage', 'webNavigation', 'browsingData', 'alarms'],
+    // browsingData: test builds only (wiping site data between automated visits).
+    permissions: ['scripting', 'storage', 'webNavigation', 'alarms', ...(mode === 'e2e' ? ['browsingData'] : [])],
     host_permissions: ['<all_urls>'],
     action: { default_title: '__MSG_extName__' },
     ...(browser === 'firefox'
@@ -26,8 +27,8 @@ export default defineConfig({
               id: GECKO_ID,
               // ESR 140; MAIN-world scripting + match_origin_as_fallback need 128, data_collection_permissions 140
               strict_min_version: '140.0',
-              // We collect nothing; problem reports are user-initiated GitHub issues.
-              data_collection_permissions: { required: ['none'] },
+              // Nothing is collected in normal use; a problem report asks for consent first.
+              data_collection_permissions: { required: ['none'], optional: REPORT_DATA_COLLECTION },
             },
             // Firefox for Android supports data_collection_permissions from 142.
             gecko_android: { strict_min_version: '142.0' },

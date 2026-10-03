@@ -6,8 +6,8 @@ import { normalizeExclusion, parseExclusion } from '../../shared/exclusions';
 import { localizePage, translate } from '../../shared/i18n';
 import type { RuleUpdateStatus } from '../../background/rule-updates';
 
-type BooleanSetting = 'enabled' | 'payOrOk' | 'debug' | 'remoteRules';
-const TOGGLES: BooleanSetting[] = ['enabled', 'payOrOk', 'debug', 'remoteRules'];
+type BooleanSetting = 'payOrOk' | 'debug' | 'remoteRules';
+const TOGGLES: BooleanSetting[] = ['payOrOk', 'debug', 'remoteRules'];
 
 interface RuleInfo {
   status: RuleUpdateStatus;
@@ -16,7 +16,6 @@ interface RuleInfo {
 
 async function render() {
   const settings = await getSettings();
-  (document.getElementById('setup') as HTMLElement).hidden = settings.onboardingAccepted;
   const exclusionInput = document.getElementById('exclusion-input') as HTMLInputElement;
 const exclusionError = document.getElementById('exclusion-error') as HTMLElement;
 

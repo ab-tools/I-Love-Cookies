@@ -2,10 +2,8 @@ import { browser } from 'wxt/browser';
 import { matchingExclusion } from './exclusions';
 
 export interface Settings {
-  /** Global on/off switch. */
+  /** Off only in test builds that measure pages without the extension acting. */
   enabled: boolean;
-  /** The extension does nothing until the user confirmed the onboarding page (informed consent). */
-  onboardingAccepted: boolean;
   /** Excluded sites: domains, address prefixes, wildcard patterns or /regular expressions/ (see exclusions.ts). */
   pausedSites: string[];
   /** Verbose autoconsent logging in the page console. */
@@ -18,7 +16,6 @@ export interface Settings {
 
 export const DEFAULT_SETTINGS: Settings = {
   enabled: true,
-  onboardingAccepted: false,
   pausedSites: [],
   debug: false,
   remoteRules: true,
