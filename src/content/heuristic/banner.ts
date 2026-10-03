@@ -10,7 +10,7 @@ const WEAK =
 const NEGATIVE_TEXT =
   /newsletter|subscribe to our|anmelden zum|age verification|altersverifikation|are you (over|18)|bist du (über|18)|year of birth|geburtsjahr|choose (your )?(country|region|language)|wähle (dein )?(land|sprache)|select your (country|region|location)|install (our|the) app|download (our|the) app|push.?notification|benachrichtigungen/i;
 
-const NAVIGATION = 'header,nav,footer,[role=banner],[role=navigation],[role=contentinfo],[role=menu],[role=tooltip]';
+const NAVIGATION = 'header,nav,footer,main,article,[role=banner],[role=navigation],[role=contentinfo],[role=main],[role=menu],[role=tooltip]';
 const CLICKABLE = 'button,[role=button],a,input[type=button],input[type=submit],[onclick],[class*="btn"],[class*="button"]';
 
 export interface Banner {

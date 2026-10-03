@@ -1,0 +1,25 @@
+[
+  {
+    "name": "Cookie Information Banner",
+    "comment": "Replaces autoconsent's rule: its popup check matches the template wrapper, which stays on the page after consent, and submitAllCategories() does not store consent on some sites. The banner counts as shown while one of its accept buttons (standard or custom template) is visible; that button is clicked.",
+    "prehideSelectors": [
+      "#cookie-information-template-wrapper button.coi-banner__accept, #cookie-information-template-wrapper button.coi-accept-all"
+    ],
+    "detectCmp": [{ "exists": "#cookie-information-template-wrapper" }],
+    "detectPopup": [
+      {
+        "visible": "#cookie-information-template-wrapper button.coi-banner__accept, #cookie-information-template-wrapper button.coi-accept-all",
+        "check": "any"
+      }
+    ],
+    "optIn": [
+      {
+        "if": { "visible": "#cookie-information-template-wrapper button.coi-banner__accept", "check": "any" },
+        "then": [{ "click": "#cookie-information-template-wrapper button.coi-banner__accept" }],
+        "else": [{ "waitForThenClick": "#cookie-information-template-wrapper button.coi-accept-all" }]
+      }
+    ],
+    "optOut": [],
+    "test": [{ "cookieContains": "CookieInformationConsent=" }]
+  }
+]

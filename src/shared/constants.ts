@@ -16,7 +16,7 @@ export const LIMITS = {
   /** Failed attempts per site and day before we stop and show "needs attention". */
   failuresPerSitePerDay: 3,
   /** Any attempts per site and day (banner re-shown on every load etc.). */
-  attemptsPerSitePerDay: 20,
+  attemptsPerSitePerDay: 100,
   /** A frame that is clicking holds the tab for at most this long. */
   claimMs: 8000,
   /** Wait for autoconsentDone after a successful optIn before verifying anyway. */

@@ -10,6 +10,7 @@ import type { BackgroundMessage, Config, ContentScriptMessage } from '@duckduckg
 import { LIMITS } from '../shared/constants';
 import type { FrameVerification, IlcContentMessage, PausedReason, Phase, Strategy, TabState } from '../shared/messages';
 import { english } from '../shared/i18n';
+import { baseDomain, returnsToCallback } from '../shared/navigation';
 import { getSettings, isSitePaused, siteOf } from '../shared/settings';
 import { evaluateOutcome, isSuccess, type ConsentSignals, type VerificationResult } from '../shared/verifier';
 import { rulesForFrame } from './rules';
@@ -330,6 +331,7 @@ async function onPopupFound(tabId: number, frameId: number, cmp: string, waiting
     state.strategy = 'click';
     await saveState(state);
     // The button may render a moment after the popup was detected.
+    const docId = documentIds.get(tabId);
     for (let i = 0; i < 6; i++) {
       const clicked = await askFrame<boolean>(tabId, frameId, { type: 'ilc:click', chain: strategy.acceptButton }, 5000);
       if (clicked) {
@@ -339,6 +341,8 @@ async function onPopupFound(tabId: number, frameId: number, cmp: string, waiting
         return;
       }
       await sleep(500);
+      // No answer because the click reloaded the page: the navigation handler takes over, no fallback.
+      if (clicked === null && documentIds.get(tabId) !== docId) return;
     }
     log(state, frameId, 'accept button not found – falling back to rule');
   }
@@ -399,8 +403,16 @@ async function onRuleFailed(tabId: number, frameId: number, cmp: string) {
   const state = await loadState(tabId);
   // Another frame took over (or the document is already done) – nothing to do.
   if (!state || state.frameId !== frameId || state.phase !== 'acting') return;
-  await tryApiFallback(state, frameId, cmp);
-  // Even without an API the rule may have worked late (e.g. slow iframe) – the verifier decides.
+  if (!(await tryApiFallback(state, frameId, cmp))) {
+    // The rule clicked nothing (e.g. an unknown variant of the CMP's UI): its own popup selectors may not
+    // match the banner, so ask the generic scan whether a consent banner is still shown.
+    const scan = await askFrame<HeuristicScan>(tabId, frameId, { type: 'ilc:heuristicScan' }, 2000);
+    if (scan && scan.decision !== 'none') {
+      await finish(state, frameId, { outcome: 'FAILED', reasons: [`rule for ${cmp} did not complete, a consent banner is still shown`] });
+      return;
+    }
+  }
+  // The rule may still have worked late (e.g. slow iframe) – the verifier decides.
   void scheduleVerify(tabId, frameId, LIMITS.settleMs);
 }
 
@@ -468,6 +480,15 @@ async function verify(tabId: number, frameId: number, docId: number | undefined)
     navigatedAway: false,
     signals,
   });
+  if (result.outcome === 'LIKELY_FULL') {
+    // Nothing machine-readable confirms the result: make sure no consent banner with an accept button is left
+    // (e.g. an older UI variant of the CMP that its rule does not know).
+    const scan = await askFrame<HeuristicScan>(tabId, frameId, { type: 'ilc:heuristicScan' }, 2000);
+    if (scan?.decision === 'click') {
+      result.outcome = 'FAILED';
+      result.reasons = ['a consent banner with an accept button is still shown'];
+    }
+  }
   if (top?.scrollLocked) {
     const unlocked = isSuccess(result.outcome) && (await askFrame<boolean>(tabId, 0, { type: 'ilc:unlockScroll' }, 2000));
     result.reasons.push(unlocked ? 'scroll lock left by the banner removed' : 'page scrolling still locked');
@@ -591,10 +612,6 @@ async function onUserDecided(tabId: number, frameId: number) {
 // Navigation / tab lifecycle
 // ---------------------------------------------------------------------------------------------
 
-/** Rough registrable domain (last two labels) – good enough to relate consent.x.com and x.com. */
-function baseDomain(site: string): string {
-  return site.split('.').slice(-2).join('.');
-}
 
 export function onTopLevelCommitted(tabId: number, url: string) {
   documentIds.set(tabId, (documentIds.get(tabId) ?? 0) + 1);
@@ -602,12 +619,10 @@ export function onTopLevelCommitted(tabId: number, url: string) {
     const previous = await loadState(tabId);
     const next = freshState(tabId, url);
     const acting = previous && (previous.phase === 'acting' || previous.phase === 'verifying');
-    const samePage = (a: string, b: string) => {
-      const [x, y] = [new URL(a), new URL(b)];
-      return x.origin === y.origin && x.pathname === y.pathname;
-    };
-    if (previous && acting && previous.strategy === 'heuristic' && !samePage(previous.actionUrl ?? previous.url, url)) {
-      // A generic click must never navigate away.
+    // After consent, sites reload, move within the same site, or a separate consent page returns to its callback URL.
+    const expected = previous && (baseDomain(previous.site) === baseDomain(next.site) || returnsToCallback(previous.actionUrl ?? previous.url, url));
+    if (previous && acting && previous.strategy === 'heuristic' && !expected) {
+      // A generic click must never lead to another site.
       next.cmp = previous.cmp;
       next.strategy = previous.strategy;
       next.outcome = 'UNSAFE';
@@ -616,7 +631,7 @@ export function onTopLevelCommitted(tabId: number, url: string) {
       next.log = previous.log;
       log(next, 0, 'navigation after generic click – UNSAFE');
       await bumpDaily(next.site, 'failures');
-    } else if (previous && acting && baseDomain(previous.site) === baseDomain(next.site)) {
+    } else if (previous && acting && expected) {
       // CMPs often reload or redirect right after "accept all" (e.g. consent.example.com → example.com)
       // – that's a success signal, not an error.
       next.cmp = previous.cmp;

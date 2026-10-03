@@ -35,9 +35,11 @@ export const ACCEPTING: ReadonlySet<ButtonClass> = new Set(['ACCEPT_ALL', 'ACCEP
 const MAX_LABEL_LENGTH = 48;
 const OPTIONAL_COOKIES = /non essential|nicht (notwendig|essenziell)|optional/;
 
+/** Lower case without diacritics (capitals often drop them, e.g. Greek "ΣΥΜΦΩΝΩ" = "συμφωνώ"). */
+const stripMarks = (text: string) => text.normalize('NFKD').replace(/\p{M}/gu, '').normalize('NFC');
+
 export function normalizeLabel(text: string): string {
-  return text
-    .normalize('NFKC')
+  return stripMarks(text.normalize('NFKC'))
     .toLowerCase()
     .replace(/[’'`´]/g, '')
     .replace(/[^\p{L}\p{N}€+]+/gu, ' ')
@@ -46,7 +48,7 @@ export function normalizeLabel(text: string): string {
 }
 
 const compile = (sources: readonly string[]) =>
-  new RegExp(`(?<![\\p{L}\\p{N}])(?:${sources.join('|')})(?![\\p{L}\\p{N}])`, 'iu');
+  new RegExp(`(?<![\\p{L}\\p{N}])(?:${sources.map(stripMarks).join('|')})(?![\\p{L}\\p{N}])`, 'iu');
 
 const RE = {
   pay: compile(PAY),
