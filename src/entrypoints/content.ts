@@ -10,7 +10,7 @@ import { clickDeepUntilGone, isDeepVisible, isOnScreen } from '../content/dom';
 import { ConsentOMaticCMP, type ComRule } from '../content/consent-o-matic';
 import { HeuristicController } from '../content/heuristic/controller';
 import { announceFrame, frameInfo, listenForFrameTokens } from '../content/frames';
-import { collectFrameSnapshot } from '../content/report-snapshot';
+import { bannerElement, collectFrameSnapshot, offersPaidOption } from '../content/report-snapshot';
 
 /**
  * Runs in every frame at document_start (isolated world).
@@ -86,6 +86,13 @@ export default defineContentScript({
             knownBanner: heuristic.lastBanner,
           }),
         );
+        return false;
+      }
+      if (msg?.type === 'ilc:payOrOkCheck') {
+        const { cmp, heuristic: generic } = msg as Extract<IlcContentMessage, { type: 'ilc:payOrOkCheck' }>;
+        const containers = cmp ? (consent.rules.find((r) => r.name === cmp)?.prehideSelectors ?? []) : [];
+        const banner = generic && heuristic.lastBanner?.isConnected ? heuristic.lastBanner : bannerElement(containers, heuristic.lastBanner);
+        sendResponse(offersPaidOption(banner));
         return false;
       }
       if (msg?.type === 'ilc:click') {

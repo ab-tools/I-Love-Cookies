@@ -47,6 +47,10 @@ generic heuristic: unknown banner ────► if no rule handled it (or a ru
     every category on (never off) and saves;
   - measured against 7,005 labelled real banner buttons: ≥ 99.5 % precision for accepting labels.
   - Rules always get a head start; a real user click inside the banner stops all automation on that page.
+- **Settings:** "consent or pay" walls are accepted with the free option by default and can be left to the user
+  instead. Sites can be excluded by domain (`example.com`, includes subdomains), address (`example.com/forum`),
+  wildcard pattern (`*.example.*`) or regular expression (`/^news\.[a-z]+\.de\//`), see
+  [src/shared/exclusions.ts](src/shared/exclusions.ts).
 - **Loop guards:** one actor per tab, ≤ 2 attempts per frame and page load, daily per-site limits.
 - **Rule updates:** once a day the extension downloads a rule set (`rules.json` plus its SHA-256 checksum) from this
   repository's `rules` release. It contains declarative rules and strategy choices only – no code; rules may only

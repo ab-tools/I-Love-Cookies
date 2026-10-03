@@ -11,7 +11,7 @@ import { LIMITS } from '../shared/constants';
 import type { FrameVerification, IlcContentMessage, PausedReason, Phase, Strategy, TabState } from '../shared/messages';
 import { english } from '../shared/i18n';
 import { baseDomain, returnsToCallback } from '../shared/navigation';
-import { getSettings, isSitePaused, siteOf } from '../shared/settings';
+import { exclusionFor, getSettings, siteOf } from '../shared/settings';
 import { evaluateOutcome, isSuccess, type ConsentSignals, type VerificationResult } from '../shared/verifier';
 import { rulesForFrame } from './rules';
 import { allSnippets } from './snippets';
@@ -231,7 +231,7 @@ async function onInit(tabId: number, frameId: number, frameUrl: string, tabUrl: 
   let pausedReason: PausedReason | undefined;
   if (!settings.onboardingAccepted) pausedReason = 'setup';
   else if (!settings.enabled) pausedReason = 'off';
-  else if (isSitePaused(settings, state.site)) pausedReason = 'sitePaused';
+  else if (exclusionFor(settings, tabUrl)) pausedReason = 'sitePaused';
   else if (daily.failures >= LIMITS.failuresPerSitePerDay) pausedReason = 'failuresToday';
   else if (daily.attempts >= LIMITS.attemptsPerSitePerDay) pausedReason = 'attemptsToday';
 
@@ -313,6 +313,7 @@ async function onPopupFound(tabId: number, frameId: number, cmp: string, waiting
     return;
   }
   state.attempts[frameId] = attempts;
+  if (await leaveToUser(state, frameId, { cmp })) return;
   await bumpDaily(state.site, 'attempts');
 
   const strategy = await effectiveStrategy(cmp);
@@ -577,6 +578,7 @@ async function runHeuristic(tabId: number, frameId: number) {
   }
   const now = Date.now();
   if (state.claim && state.claim.until > now) return;
+  if (await leaveToUser(state, frameId, { heuristic: true })) return;
   state.heuristicTried = true;
   state.cmp ??= 'generic banner';
   state.strategy = 'heuristic';
@@ -601,6 +603,19 @@ async function runHeuristic(tabId: number, frameId: number) {
   log(state, frameId, `generic banner: clicked ${result.clicked.map((c) => `"${c}"`).join(' → ')}${toggles}`);
   await saveState(state);
   void scheduleVerify(tabId, frameId, LIMITS.settleMs);
+}
+
+/** With pay-or-OK walls switched off in the settings: pauses the document if the banner offers a paid option. */
+async function leaveToUser(state: TabState, frameId: number, banner: { cmp?: string; heuristic?: boolean }): Promise<boolean> {
+  if ((await getSettings()).payOrOk) return false;
+  const wall = await askFrame<boolean>(state.tabId, frameId, { type: 'ilc:payOrOkCheck', ...banner }, 2000);
+  if (!wall) return false;
+  state.pausedReason = 'payOrOk';
+  state.claim = undefined;
+  setPhase(state, 'paused');
+  log(state, frameId, english('reason_payOrOk'));
+  await saveState(state);
+  return true;
 }
 
 async function onUserDecided(tabId: number, frameId: number) {

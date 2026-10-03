@@ -2,11 +2,12 @@ import { browser } from 'wxt/browser';
 import '../../assets/ui.css';
 import '../../assets/page.css';
 import { getSettings, setSitePaused, updateSettings, type Settings } from '../../shared/settings';
+import { normalizeExclusion, parseExclusion } from '../../shared/exclusions';
 import { localizePage, translate } from '../../shared/i18n';
 import type { RuleUpdateStatus } from '../../background/rule-updates';
 
-type BooleanSetting = 'enabled' | 'debug' | 'remoteRules';
-const TOGGLES: BooleanSetting[] = ['enabled', 'debug', 'remoteRules'];
+type BooleanSetting = 'enabled' | 'payOrOk' | 'debug' | 'remoteRules';
+const TOGGLES: BooleanSetting[] = ['enabled', 'payOrOk', 'debug', 'remoteRules'];
 
 interface RuleInfo {
   status: RuleUpdateStatus;
@@ -16,7 +17,24 @@ interface RuleInfo {
 async function render() {
   const settings = await getSettings();
   (document.getElementById('setup') as HTMLElement).hidden = settings.onboardingAccepted;
-  for (const key of TOGGLES) {
+  const exclusionInput = document.getElementById('exclusion-input') as HTMLInputElement;
+const exclusionError = document.getElementById('exclusion-error') as HTMLElement;
+
+document.getElementById('exclusion-form')!.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const entry = normalizeExclusion(exclusionInput.value);
+  const parsed = parseExclusion(entry);
+  let error = 'error' in parsed ? translate(`options_exclusionError_${parsed.error}`) : '';
+  if (!error && (await getSettings()).pausedSites.includes(entry)) error = translate('options_exclusionDuplicate');
+  exclusionError.textContent = error;
+  exclusionError.hidden = !error;
+  if (error) return;
+  exclusionInput.value = '';
+  renderPaused(await setSitePaused(entry, true));
+});
+exclusionInput.addEventListener('input', () => (exclusionError.hidden = true));
+
+for (const key of TOGGLES) {
     (document.getElementById(key) as HTMLInputElement).checked = settings[key];
   }
   renderPaused(settings);
@@ -58,6 +76,11 @@ function renderPaused(settings: Settings) {
       const li = document.createElement('li');
       const name = document.createElement('span');
       name.textContent = site;
+      const parsed = parseExclusion(site);
+      const kind = document.createElement('span');
+      kind.className = 'muted small';
+      kind.textContent = 'error' in parsed ? translate(`options_exclusionError_${parsed.error}`) : translate(`options_kind_${parsed.kind}`);
+      name.append(' ', kind);
       const resume = document.createElement('button');
       resume.textContent = translate('options_resume');
       resume.addEventListener('click', async () => renderPaused(await setSitePaused(site, false)));

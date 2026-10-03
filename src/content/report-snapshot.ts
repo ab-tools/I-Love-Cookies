@@ -54,7 +54,7 @@ export function snapshotBanner(element: Element): BannerSnapshot {
  * The banner to describe: the generic detection's best match, else the detected CMP's dialog, else – in a
  * consent iframe, whose whole document is the banner – the body.
  */
-function bannerElement(cmpContainers: readonly string[], knownBanner: Element | null): Element | null {
+export function bannerElement(cmpContainers: readonly string[], knownBanner: Element | null): Element | null {
   const [found] = findConsentBanners();
   if (found) return found.element;
   if (knownBanner?.isConnected) return knownBanner;
@@ -68,6 +68,11 @@ function bannerElement(cmpContainers: readonly string[], knownBanner: Element | 
   }
   if (window !== window.top && document.body && consentScore(deepText(document.body)) >= 2) return document.body;
   return null;
+}
+
+/** "Consent or pay" wall: the banner offers a paid option (subscription, ad-free plan) next to consent. */
+export function offersPaidOption(banner: Element | null): boolean {
+  return !!banner && extractButtons(banner).some((b) => b.cls === 'PAY');
 }
 
 function scriptHosts(): string[] {

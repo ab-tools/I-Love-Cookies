@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { collectFrameSnapshot, selectorOf } from '../../src/content/report-snapshot';
+import { collectFrameSnapshot, offersPaidOption, selectorOf } from '../../src/content/report-snapshot';
 import { buildReport } from '../../src/shared/report';
 import type { ReportSnapshot, TabState } from '../../src/shared/messages';
 
@@ -45,6 +45,16 @@ describe('report snapshot', () => {
       { label: 'Reject all', cls: 'REJECT', selector: 'button#reject' },
       { label: 'Settings', cls: 'SETTINGS', selector: 'button#more' },
     ]);
+  });
+
+  it('recognises "consent or pay" walls by their paid option', () => {
+    document.body.innerHTML = `
+      <div id="wall" style="position:fixed" data-rect="0,0,1024,700">${BANNER_TEXT}
+        <button>Einwilligen und weiter</button><button>Jetzt abonnieren</button></div>
+      <div id="plain" data-rect="0,0,400,200">${BANNER_TEXT}<button>Accept all</button><button>Reject all</button></div>`;
+    expect(offersPaidOption(document.getElementById('wall'))).toBe(true);
+    expect(offersPaidOption(document.getElementById('plain'))).toBe(false);
+    expect(offersPaidOption(null)).toBe(false);
   });
 
   it('falls back to the detected CMP container', () => {

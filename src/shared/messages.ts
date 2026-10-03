@@ -14,7 +14,7 @@ export type Phase =
  * · heuristic = generic banner detection without a rule
  */
 /** Why the extension is inactive on a page (translated as reason_<code>). */
-export type PausedReason = 'setup' | 'off' | 'sitePaused' | 'failuresToday' | 'attemptsToday' | 'keepsComingBack' | 'userDecided';
+export type PausedReason = 'setup' | 'off' | 'sitePaused' | 'failuresToday' | 'attemptsToday' | 'keepsComingBack' | 'userDecided' | 'payOrOk';
 
 export type Strategy = 'rule' | 'api' | 'click' | 'heuristic';
 
@@ -79,7 +79,9 @@ export type IlcContentMessage =
   | { type: 'ilc:rescan' }
   | { type: 'ilc:heuristicAct' }
   /** Problem report: describe this frame's consent UI. */
-  | { type: 'ilc:reportSnapshot' };
+  | { type: 'ilc:reportSnapshot' }
+  /** Does the banner (of this CMP, or the generic one) offer a paid option? */
+  | { type: 'ilc:payOrOkCheck'; cmp?: string; heuristic?: boolean };
 
 export interface FrameVerification {
   /** autoconsent's popup check; null if no CMP instance in this frame */

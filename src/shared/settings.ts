@@ -1,16 +1,19 @@
 import { browser } from 'wxt/browser';
+import { matchingExclusion } from './exclusions';
 
 export interface Settings {
   /** Global on/off switch. */
   enabled: boolean;
   /** The extension does nothing until the user confirmed the onboarding page (informed consent). */
   onboardingAccepted: boolean;
-  /** Hostnames (without leading "www.") on which the extension is paused. */
+  /** Excluded sites: domains, address prefixes, wildcard patterns or /regular expressions/ (see exclusions.ts). */
   pausedSites: string[];
   /** Verbose autoconsent logging in the page console. */
   debug: boolean;
   /** Download rule updates daily (declarative rules only). */
   remoteRules: boolean;
+  /** Also accept "consent or pay" walls (always with the free option). */
+  payOrOk: boolean;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -19,6 +22,7 @@ export const DEFAULT_SETTINGS: Settings = {
   pausedSites: [],
   debug: false,
   remoteRules: true,
+  payOrOk: true,
 };
 
 export async function getSettings(): Promise<Settings> {
@@ -42,14 +46,15 @@ export function siteOf(url: string | undefined): string {
   }
 }
 
-/** A site is paused if it or one of its parent domains is in the list. */
-export function isSitePaused(settings: Settings, site: string): boolean {
-  return settings.pausedSites.some((paused) => site === paused || site.endsWith(`.${paused}`));
+/** The exclusion entry that pauses the extension on this URL, or null. */
+export function exclusionFor(settings: Settings, url: string): string | null {
+  return matchingExclusion(settings.pausedSites, url);
 }
 
-export async function setSitePaused(site: string, paused: boolean): Promise<Settings> {
+/** Adds or removes one exclusion entry (a site's domain from the popup, or any entry from the settings). */
+export async function setSitePaused(entry: string, paused: boolean): Promise<Settings> {
   const { pausedSites } = await getSettings();
-  const next = pausedSites.filter((s) => s !== site);
-  if (paused) next.push(site);
+  const next = pausedSites.filter((s) => s !== entry);
+  if (paused) next.push(entry);
   return updateSettings({ pausedSites: next.sort() });
 }

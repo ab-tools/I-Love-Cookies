@@ -3,7 +3,7 @@ import '../../assets/ui.css';
 import './style.css';
 import type { ReportSnapshot, TabState, UiMessage } from '../../shared/messages';
 import type { Settings } from '../../shared/settings';
-import { isSitePaused } from '../../shared/settings';
+import { exclusionFor } from '../../shared/settings';
 import { buildReport, searchExistingIssuesUrl, type Report } from '../../shared/report';
 import { describeState } from '../../shared/describe';
 import { localizePage, translate } from '../../shared/i18n';
@@ -77,7 +77,14 @@ function render({ state, settings, rules }: TabInfo) {
   const setupNeeded = !settings.onboardingAccepted;
   $('setup').hidden = !setupNeeded;
   $('actions').hidden = setupNeeded;
-  $<HTMLInputElement>('site-active').checked = !isSitePaused(settings, state.site);
+  // Entries other than the site's own domain (parent domains, patterns) can only be changed in the settings.
+  const excludedBy = exclusionFor(settings, state.url);
+  const byOtherEntry = excludedBy !== null && excludedBy !== state.site;
+  const toggle = $<HTMLInputElement>('site-active');
+  toggle.checked = excludedBy === null;
+  toggle.disabled = byOtherEntry;
+  $('excluded-by').hidden = !byOtherEntry;
+  $('excluded-by').textContent = byOtherEntry ? translate('popup_excludedBy', [excludedBy]) : '';
   const search = $<HTMLAnchorElement>('search-issues');
   search.href = searchExistingIssuesUrl(state.site);
 }

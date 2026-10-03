@@ -32,3 +32,12 @@
   gap: 8px;
   overflow-wrap: anywhere;
 }
+#exclusion-input {
+  flex: 1;
+  font: inherit;
+  padding: 7px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--fg);
+}

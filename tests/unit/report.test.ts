@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { TabState } from '../../src/shared/messages';
 import { buildIssueUrl, sanitizeUrl } from '../../src/shared/report';
 import { describeState } from '../../src/shared/describe';
-import { isSitePaused, siteOf, DEFAULT_SETTINGS } from '../../src/shared/settings';
+import { exclusionFor, siteOf, DEFAULT_SETTINGS } from '../../src/shared/settings';
 
 const state = (partial: Partial<TabState> = {}): TabState => ({
   tabId: 1,
@@ -58,8 +58,8 @@ describe('settings helpers', () => {
     expect(siteOf('https://www.spiegel.de/x')).toBe('spiegel.de');
     expect(siteOf(undefined)).toBe('');
     const settings = { ...DEFAULT_SETTINGS, pausedSites: ['example.com'] };
-    expect(isSitePaused(settings, 'example.com')).toBe(true);
-    expect(isSitePaused(settings, 'shop.example.com')).toBe(true);
-    expect(isSitePaused(settings, 'notexample.com')).toBe(false);
+    expect(exclusionFor(settings, 'https://www.example.com/')).toBe('example.com');
+    expect(exclusionFor(settings, 'https://shop.example.com/x')).toBe('example.com');
+    expect(exclusionFor(settings, 'https://notexample.com/')).toBeNull();
   });
 });

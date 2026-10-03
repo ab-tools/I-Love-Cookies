@@ -21,11 +21,18 @@
       <section class="card">
         <h2 data-i18n="options_general"></h2>
         <label class="toggle"><input type="checkbox" id="enabled" /> <span data-i18n="options_enabled"></span></label>
+        <label class="toggle"><input type="checkbox" id="payOrOk" /> <span data-i18n="options_payOrOk"></span></label>
         <label class="toggle"><input type="checkbox" id="debug" /> <span data-i18n="options_debug"></span></label>
       </section>
 
       <section class="card">
         <h2 data-i18n="options_paused"></h2>
+        <p class="muted small" data-i18n="options_pausedHelp"></p>
+        <form class="row" id="exclusion-form">
+          <input type="text" id="exclusion-input" spellcheck="false" autocomplete="off" data-i18n-placeholder="options_exclusionPlaceholder" />
+          <button type="submit" data-i18n="options_exclusionAdd"></button>
+        </form>
+        <p class="small bad" id="exclusion-error" hidden></p>
         <ul class="site-list" id="paused"></ul>
         <p class="muted small" id="paused-empty" data-i18n="options_pausedEmpty"></p>
       </section>
