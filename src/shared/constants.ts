@@ -5,7 +5,7 @@ export const GECKO_ID = 'extension@i-love-cookies.com';
 export const REPO_URL = 'https://github.com/ab-tools/I-Love-Cookies';
 
 /** Service that files anonymous problem reports as issues in REPO_URL. */
-export const REPORT_API_URL = 'https://i-love-cookies.com/api/report.php';
+export const REPORT_API_URL = 'https://api.i-love-cookies.com/report.php';
 
 /** Published rule updates (declarative rules only) and their SHA-256 checksum (same URL + ".sha256"). */
 export const RULE_UPDATE_URL = `${REPO_URL}/releases/download/rules/rules.json`;
