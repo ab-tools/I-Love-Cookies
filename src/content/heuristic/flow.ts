@@ -83,7 +83,7 @@ export async function acceptBanner(banner: Element): Promise<HeuristicResult> {
     click(decision.button, result);
     result.done = true;
     // Not awaited: accepting often removes the frame, which must answer first.
-    void confirmFollowUp(banner, decision.button.label);
+    void confirmFollowUp(banner, decision.button);
     return result;
   }
   if (decision.action === 'none') {
@@ -114,15 +114,21 @@ export async function acceptBanner(banner: Element): Promise<HeuristicResult> {
 }
 
 /**
- * Some banners ask once more after accepting ("… will reload to apply your cookie preferences. OK"): if the
- * banner then only offers a confirming button (no reject), click it.
+ * Some banners need a second step after accepting: a confirmation ("… will reload to apply your cookie
+ * preferences. OK") or, where "accept all" only switched every purpose on in a preferences dialog, saving.
  */
-async function confirmFollowUp(banner: Element, clicked: string): Promise<void> {
+async function confirmFollowUp(banner: Element, clicked: ButtonCandidate): Promise<void> {
   await sleep(800);
-  if (!banner.isConnected) return;
-  const buttons = extractButtons(banner).filter((b) => !isVetoed(b));
-  if (extractButtons(banner).some((b) => b.cls === 'REJECT')) return;
-  const confirm = buttons.find((b) => ['ACKNOWLEDGE', 'ACCEPT', 'ACCEPT_ALL'].includes(b.cls) && b.label !== clicked);
+  if (!banner.isConnected || !isOnScreen(banner)) return;
+  const all = extractButtons(banner);
+  const buttons = all.filter((b) => !isVetoed(b));
+  const save = clicked.cls === 'ACCEPT_ALL' ? buttons.find((b) => b.cls === 'SAVE') : undefined;
+  if (save) {
+    realisticClick(save.element);
+    return;
+  }
+  if (all.some((b) => b.cls === 'REJECT')) return;
+  const confirm = buttons.find((b) => ['ACKNOWLEDGE', 'ACCEPT', 'ACCEPT_ALL'].includes(b.cls) && b.label !== clicked.label);
   if (confirm) realisticClick(confirm.element);
 }
 

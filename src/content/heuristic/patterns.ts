@@ -231,6 +231,8 @@ export const SAVE = [
   '(auswahl|einstellungen|präferenzen) (speichern|akzeptieren|bestätigen|übernehmen|erlauben|zulassen)',
   'speichern',
   'bestätigen',
+  // A bare "Confirm" saves the choices of a preferences dialog ("Confirm all" stays accept all).
+  '^(confirm|confirmer|confirmar|conferma|bevestigen|potvrdit|potwierdź)$',
   'meine auswahl',
   '(enregistrer|valider|confirmer|accepter) (mes |les )?(choix|préférences|paramètres|la sélection|sélection)',
   '(guardar|confirmar|aceptar|permitir) (la )?(selección|configuración|preferencias|mis preferencias)',

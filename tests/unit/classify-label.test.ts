@@ -97,6 +97,8 @@ describe('classifyLabel examples', () => {
     ['Eg góðkenni øll farspor', 'ACCEPT_ALL'],
     ['Να επιτραπούν όλα τα cookies', 'ACCEPT_ALL'],
     ['Mit allen Cookies fortfahren', 'ACCEPT_ALL'],
+    ['Confirm', 'SAVE'],
+    ['Confirm all', 'ACCEPT_ALL'],
     ['Alle ablehnen', 'REJECT'],
     ['Nur notwendige Cookies', 'REJECT'],
     ['Accept only necessary', 'REJECT'],
