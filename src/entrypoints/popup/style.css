@@ -18,8 +18,14 @@ body {
 .wrap {
   flex-wrap: wrap;
 }
-footer {
-  justify-content: space-between;
+/* Links on the right of the "Action Log" line; the opened log keeps the full width below. */
+.log-row {
+  position: relative;
+}
+.links {
+  position: absolute;
+  top: 0;
+  right: 0;
   font-size: 12px;
 }
 summary {

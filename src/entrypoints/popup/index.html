@@ -31,15 +31,17 @@
         <p class="muted small" id="report-status" hidden></p>
       </section>
 
-      <details>
-        <summary class="muted" data-i18n="popup_log"></summary>
-        <pre class="log" id="log"></pre>
-      </details>
-
-      <footer class="row muted">
-        <a id="more-info" target="_blank" rel="noopener" data-i18n="popup_moreInfo"></a>
-        <a href="#" id="open-options" data-i18n="popup_settings"></a>
-      </footer>
+      <section class="log-row">
+        <details>
+          <summary class="muted" data-i18n="popup_log"></summary>
+          <pre class="log" id="log"></pre>
+        </details>
+        <nav class="links muted">
+          <a id="more-info" target="_blank" rel="noopener" data-i18n="popup_moreInfo"></a>
+          <span aria-hidden="true">·</span>
+          <a href="#" id="open-options" data-i18n="popup_settings"></a>
+        </nav>
+      </section>
     </main>
     <script type="module" src="./main.ts"></script>
   </body>
