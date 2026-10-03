@@ -196,6 +196,14 @@ function apiShopify() {
   return false;
 }
 
+/** CCM19: its consent buttons ignore synthetic mouse clicks; a plain click event runs the button's own handler. */
+function acceptCcm19() {
+  const button = document.querySelector('#ccm-widget .ccm--save-settings[data-full-consent="true"]');
+  if (!button) return false;
+  button.dispatchEvent(new Event('click', { bubbles: true, cancelable: true }));
+  return true;
+}
+
 export const ilcSnippets = {
   ILC_READ_CONSENT_SIGNALS: readConsentSignals,
   ILC_MARK_CONSENT_SIGNALS: markConsentSignals,
@@ -213,6 +221,7 @@ export const ilcSnippets = {
   ILC_API_CIVIC: apiCivic,
   ILC_API_COOKIEFIRST: apiCookieFirst,
   ILC_API_SHOPIFY: apiShopify,
+  ILC_CCM19_ACCEPT: acceptCcm19,
 };
 
 /** All snippets that may run in a page: autoconsent's built-ins + ours. */

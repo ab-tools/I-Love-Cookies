@@ -1,0 +1,30 @@
+[
+  {
+    "name": "ilc-ccm19",
+    "comment": "CCM19 (ccm19.de). Its consent buttons ignore synthetic mouse clicks (\"manipulated click\"); a plain click event on the full-consent button runs its accept-all handler.",
+    "prehideSelectors": [
+      "#ccm-widget.ccm-show"
+    ],
+    "detectCmp": [
+      {
+        "exists": "#ccm-widget"
+      }
+    ],
+    "detectPopup": [
+      {
+        "visible": "#ccm-widget .ccm--save-settings[data-full-consent=\"true\"]",
+        "check": "any"
+      }
+    ],
+    "optIn": [
+      {
+        "waitFor": "#ccm-widget .ccm--save-settings[data-full-consent=\"true\"]",
+        "timeout": 3000
+      },
+      {
+        "eval": "ILC_CCM19_ACCEPT"
+      }
+    ],
+    "optOut": []
+  }
+]

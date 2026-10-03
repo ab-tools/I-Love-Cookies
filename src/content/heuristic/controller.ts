@@ -3,6 +3,7 @@ import { findConsentBanners } from './banner';
 import { extractButtons } from './candidates';
 import { acceptBanner, type HeuristicResult } from './flow';
 import { decide } from './policy';
+import type { ButtonClass } from './text';
 
 export interface HeuristicScan {
   score: number;
@@ -19,6 +20,9 @@ const SCAN_DELAYS_MS = [2500, 5000, 9000, 15000, 25000];
 /** Scans after the first scroll and after in-page (SPA) navigation. */
 const RESCAN_DELAYS_MS = [1000, 3000, 8000];
 const MIN_FRAME = { width: 300, height: 150 };
+
+/** Buttons that answer the banner (a remaining settings icon does not). */
+const CHOICES: ReadonlySet<ButtonClass> = new Set(['ACCEPT_ALL', 'ACCEPT', 'ACKNOWLEDGE', 'REJECT']);
 
 function fingerprint(el: Element): string {
   return el.tagName.toLowerCase() + (el.id ? `#${el.id}` : '') + (el.classList.length ? `.${[...el.classList].slice(0, 2).join('.')}` : '');
@@ -99,10 +103,10 @@ export class HeuristicController {
     return this.banner;
   }
 
-  /** null if this frame never had a heuristic banner. Containers often stay in the page empty, so the banner
-   * counts as shown only while it still has visible, clickable buttons. */
+  /** null if this frame never had a heuristic banner. Containers often stay in the page (empty, or with a
+   * "cookie settings" icon), so the banner counts as shown only while it still offers a consent choice. */
   bannerOnScreen(): boolean | null {
     if (!this.banner) return null;
-    return this.banner.isConnected && isOnScreen(this.banner) && extractButtons(this.banner).length > 0;
+    return this.banner.isConnected && isOnScreen(this.banner) && extractButtons(this.banner).some((b) => CHOICES.has(b.cls));
   }
 }

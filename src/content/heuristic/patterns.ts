@@ -274,7 +274,9 @@ export const ACCEPT = [
   'i consent',
   'enable all',
   'yes',
-  'sounds good',
+  'sounds (good|great)',
+  'enable cookies',
+  'klingt gut',
   'continue (and|&) accept',
   'continue (with|using) (all |recommended |the )?cookies',
   'continue with (all|recommended)',
@@ -355,6 +357,7 @@ export const ACCEPT = [
   'strinjam se',
   'dovoli',
   `prihvat${W}`,
+  `prihvac${W}`,
   'slažem se',
   'dopusti',
   'dozvoli',
@@ -413,6 +416,7 @@ export const ACCEPT = [
   'согласна',
   'прийняти',
   'погоджуюсь',
+  'погодитися',
 ];
 
 /** "All / everything" – turns ACCEPT into ACCEPT_ALL. Also the free option on consent-or-pay walls. */

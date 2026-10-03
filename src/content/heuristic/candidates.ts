@@ -44,13 +44,38 @@ function navigatesAway(el: HTMLElement): boolean {
   }
 }
 
-/** The element at the button's centre is the button itself (not covered by something else). */
-function isHitTestable(el: HTMLElement): boolean {
+/**
+ * The element at the button's centre is the button itself. Covered by another part of the banner: a decoy or
+ * hidden control, never clicked. Covered by something outside the banner (another popup on top of it): still
+ * the banner's button.
+ */
+function isHitTestable(el: HTMLElement, banner: Element): boolean {
   const rect = el.getBoundingClientRect();
   const root = el.getRootNode() as Document | ShadowRoot;
   const hit = (root.elementFromPoint ?? document.elementFromPoint).call(root, rect.left + rect.width / 2, rect.top + rect.height / 2);
   if (!hit) return true; // no layout information (e.g. tests) – do not block
-  return hit === el || el.contains(hit) || hit.contains(el);
+  if (hit === el || el.contains(hit) || hit.contains(el)) return true;
+  return !banner.contains(hit) && !(shadowRootOf(banner)?.contains(hit) ?? false) && !hit.contains(banner);
+}
+
+/**
+ * Script-driven controls without button markup: short, labelled leaf elements with a pointer cursor. Never
+ * labels or anything tied to a form control – clicking those would switch a setting instead of answering.
+ */
+function pointerControls(root: Element | ShadowRoot, known: Set<HTMLElement>): HTMLElement[] {
+  const found: HTMLElement[] = [];
+  for (const el of Array.from(root.querySelectorAll<HTMLElement>('div,span,li,p'))) {
+    if (known.has(el) || el.closest(`${CLICKABLE},label`) || el.querySelector(`${CLICKABLE},${BUTTON_LIKE},input,select,textarea,label`)) continue;
+    if (el.parentElement?.querySelector(':scope > input, :scope > label')) continue;
+    const text = el.innerText?.trim() ?? '';
+    if (!text || text.length > 40 || el.children.length > 2) continue;
+    if (getComputedStyle(el).cursor !== 'pointer') continue;
+    // The outermost element with the pointer cursor carries the click handler.
+    const parent = el.parentElement;
+    if (parent && parent !== root && getComputedStyle(parent).cursor === 'pointer' && (parent.innerText?.trim() ?? '') === text) continue;
+    found.push(el);
+  }
+  return found;
 }
 
 function clickablesIn(root: Element | ShadowRoot, found: HTMLElement[] = []): HTMLElement[] {
@@ -71,13 +96,14 @@ export function extractButtons(banner: Element): ButtonCandidate[] {
   const own = shadowRootOf(banner);
   if (own) roots.push(own);
   const elements = new Set(roots.flatMap((r) => clickablesIn(r)));
+  for (const el of roots.flatMap((r) => pointerControls(r, elements))) elements.add(el);
   // Keep the outermost clickable of nested ones (<button><span role=button>…</span></button>).
   const outermost = [...elements].filter((el) => {
     for (let p = el.parentElement; p; p = p.parentElement) if (elements.has(p as HTMLElement)) return false;
     return true;
   });
   return outermost
-    .filter((el) => isOnScreen(el) && isHitTestable(el) && !(el as HTMLButtonElement).disabled)
+    .filter((el) => isOnScreen(el) && isHitTestable(el, banner) && !(el as HTMLButtonElement).disabled)
     .map((el) => {
       const label = labelOf(el);
       return { element: el, label, cls: classifyLabel(label), navigates: navigatesAway(el) };

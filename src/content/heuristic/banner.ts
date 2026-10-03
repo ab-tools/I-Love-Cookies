@@ -8,7 +8,7 @@ const WEAK =
 
 /** Dialogs that are not about consent. */
 const NEGATIVE_TEXT =
-  /newsletter|subscribe to our|anmelden zum|age verification|altersverifikation|are you (over|18)|bist du (über|18)|year of birth|geburtsjahr|choose (your )?(country|region|language)|wähle (dein )?(land|sprache)|select your (country|region|location)|install (our|the) app|download (our|the) app|push.?notification|benachrichtigungen/i;
+  /newsletter|subscribe to our|anmelden zum|age verification|altersverifikation|are you (over|18)|bist du (über|18)|year of birth|geburtsjahr|ihr alter|dein alter|your age|volljährig|of legal age|\b(1[68]|21) (jahre|years|ans|años|anni|jaar|lat)\b|\b(1[68]|21)\+|mayor de edad|maggiorenne|majeur|meerderjarig|pełnoletn|choose (your )?(country|region|language)|wähle (dein )?(land|sprache)|select your (country|region|location)|install (our|the) app|download (our|the) app|push.?notification|benachrichtigungen/i;
 
 const NAVIGATION = 'header,nav,footer,main,article,[role=banner],[role=navigation],[role=contentinfo],[role=main],[role=menu],[role=tooltip]';
 const CLICKABLE = 'button,[role=button],a,input[type=button],input[type=submit],[onclick],[class*="btn"],[class*="button"]';
@@ -65,11 +65,11 @@ function hasHardNegative(el: Element, text: string): boolean {
   return false;
 }
 
-const NAMED_LIKE_CONSENT = /cookie|consent|gdpr|privacy|banner|cmp/i;
+const NAMED_LIKE_CONSENT = /cookie|consent|gdpr|privacy|banner|cmp|\b(fixed|sticky)\b/i;
 
 /**
- * Cheap pre-filter before computing styles: fixed elements have no offsetParent; dialogs and elements named
- * like consent UI (which may also be sticky) are always checked.
+ * Cheap pre-filter before computing styles: fixed elements have no offsetParent; dialogs, elements named like
+ * consent UI and utility classes like "sticky" (sticky elements keep an offsetParent) are always checked.
  */
 function mayBeOverlay(el: Element): boolean {
   if (!(el instanceof HTMLElement)) return true;

@@ -63,6 +63,29 @@ describe('banner detection', () => {
   });
 });
 
+describe('banner detection – special cases', () => {
+  it('never treats age gates as consent banners', () => {
+    document.body.innerHTML = `
+      <div id="age" style="position:fixed" data-rect="0,0,1024,700">Willkommen! Bitte bestätigen Sie Ihr Alter und die
+        Zustimmung zur Cookie-Nutzung. Sie bestätigen, dass Sie 18 Jahre oder älter sind. <button>Bestätigen</button></div>`;
+    expect(findConsentBanners()).toEqual([]);
+  });
+
+  it('finds sticky bars by their utility classes', () => {
+    document.body.innerHTML = `<div class="sticky bottom-0" style="position:sticky" data-rect="0,600,1024,70">This website uses cookies to ensure you get the best experience. <button>Got It!</button></div>`;
+    expect(findConsentBanners()).toHaveLength(1);
+  });
+
+  it('uses script-driven pointer controls, but never labels of form controls', () => {
+    document.body.innerHTML = `
+      <div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT}
+        <div><input type="checkbox" id="analytics"><label for="analytics" style="cursor:pointer">Accept analytics</label></div>
+        <div style="cursor:pointer">Accept All</div><div style="cursor:pointer">Reject Optional</div></div>`;
+    const labels = extractButtons(document.getElementById('cmp')!).map((b) => `${b.cls}:${b.label}`);
+    expect(labels).toEqual(['ACCEPT_ALL:Accept All', 'REJECT:Reject Optional']);
+  });
+});
+
 describe('decision', () => {
   it('prefers accept all and never clicks reject, paid, login or navigating buttons', () => {
     document.body.innerHTML = `
