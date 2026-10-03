@@ -15,18 +15,38 @@ via the IAB TCF API (`__tcfapi`), Google Consent Mode and the banner's visibilit
 ```
 content script (every frame)            background orchestrator (per tab)
 autoconsent: detect CMP + popup ──────► choose strategy per CMP (src/background/strategy.ts)
-                                          ├─ rule   : autoconsent declarative opt-in (clicks "Accept all")
+                                          ├─ rule   : declarative opt-in rule (clicks "Accept all")
                                           ├─ api    : the CMP's documented JS API (OneTrust.AllowAll(), …)
-                                          └─ shadow : click inside (closed) shadow DOM
+                                          └─ click  : known accept button, also inside closed shadow DOM
+generic heuristic: unknown banner ────► if no rule handled it (or a rule failed):
+                                          heuristic: accept all / accept / OK, else settings → all on → save
                                         verify (src/shared/verifier.ts):
                                           popup gone? TCF purposes/vendors? Consent Mode granted?
                                           → FULL / LIKELY_FULL / PARTIAL / FAILED / UNSAFE
 ```
 
-- **Rules:** [DuckDuckGo autoconsent](https://github.com/duckduckgo/autoconsent) (MPL-2.0) – its full rule set
-  with opt-in steps (generated opt-out-only and hide-only rules are dropped) – plus our own rules in
-  [src/rules/ilc/](src/rules/ilc/), e.g. "consent or pay" walls, where we pick the free *accept* option and never
-  the subscription.
+- **Rules:**
+  - [DuckDuckGo autoconsent](https://github.com/duckduckgo/autoconsent) (MPL-2.0): its full rule set with opt-in
+    steps (generated opt-out-only and hide-only rules are dropped).
+  - Our own rules in [src/rules/ilc/](src/rules/ilc/), e.g. "consent or pay" walls, where we pick the free *accept*
+    option and never the subscription.
+  - Site rules converted from Mozilla's [cookie-banner-rules-list](https://github.com/mozilla/cookie-banner-rules-list)
+    (MPL-2.0).
+  - [Consent-O-Matic](https://github.com/cavi-au/Consent-O-Matic) rules (MIT) for CMPs and
+    sites not covered otherwise, run by our own interpreter with every consent category enabled. They act only
+    when no other rule handles the popup.
+- **Strategies:** the declarative rule by default; the CMP's JavaScript API (polled until the CMP is ready) as
+  fallback, or as primary where it worked clearly better on real sites
+  ([strategy-data.json](src/background/strategy-data.json)); a direct click on the accept button where rules fail.
+- **Generic heuristic** ([src/content/heuristic/](src/content/heuristic/)) for banners no rule knows:
+  - finds on-screen overlays/dialogs (also in shadow DOM) with consent wording, excluding newsletter, login,
+    age-gate, region and app dialogs;
+  - classifies button labels in 30 languages; reject, "necessary only", paid / subscription, login and links
+    leaving the page are vetoed before anything is chosen;
+  - clicks "accept all" > "accept" > "OK"; otherwise opens the settings and uses "accept all" there, or switches
+    every category on (never off) and saves;
+  - measured against 7,005 labelled real banner buttons: ≥ 99.5 % precision for accepting labels.
+  - Rules always get a head start; a real user click inside the banner stops all automation on that page.
 - **Loop guards:** one actor per tab, ≤ 2 attempts per frame and page load, daily per-site limits.
 - **No data collection.** Problem reports are GitHub issues the user opens and submits.
 
