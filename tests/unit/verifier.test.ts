@@ -86,6 +86,14 @@ describe('evaluateOutcome', () => {
     expect(partial.outcome).toBe('PARTIAL');
   });
 
+  it('judges Consent Mode by all updated keys (CMP vendor keys included)', () => {
+    const values: Record<string, string> = { ad_storage: 'granted', analytics_storage: 'denied', ad_user_data: 'granted', ad_personalization: 'granted' };
+    for (let i = 0; i < 20; i++) values[`cmp_vendor_${i}`] = 'granted';
+    const result = evaluateOutcome({ popupVisible: false, navigatedAway: false, signals: { tcf: null, gcm: { updated: true, values } } });
+    expect(result.outcome).toBe('FULL');
+    expect(result.reasons.join()).toContain('23/24 granted');
+  });
+
   it('does not trust Consent Mode defaults without an update', () => {
     const result = evaluateOutcome({
       popupVisible: false,

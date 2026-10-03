@@ -5,25 +5,35 @@
  */
 import { snippets as autoconsentSnippets } from '@autoconsent-src/eval-snippets';
 
-/** Reads IAB TCF v2 + Google Consent Mode state. Never modifies anything. Returns ConsentSignals. */
-function readConsentSignals() {
+/** Current dataLayer length – Consent Mode updates after this mark are reactions to our action. */
+function markConsentSignals() {
+  return Array.isArray(window.dataLayer) ? window.dataLayer.length : 0;
+}
+
+/**
+ * Reads IAB TCF v2 + Google Consent Mode state. Never modifies anything. Returns ConsentSignals.
+ * Consent Mode: only `update` commands pushed after `mark` (sites also push their stored state on load).
+ */
+function readConsentSignals(mark = 0) {
   const readGcm = () => {
     const dl = window.dataLayer;
     if (!Array.isArray(dl)) return null;
-    let updated = false;
+    // gtag() pushes `arguments` objects: ['consent', 'default' | 'update', {...}]
+    const isConsent = (entry, command) =>
+      entry && typeof entry === 'object' && entry[0] === 'consent' && entry[1] === command && entry[2] && typeof entry[2] === 'object';
+    const merge = (target, entry) => {
+      for (const key of Object.keys(entry[2])) if (typeof entry[2][key] === 'string') target[key] = entry[2][key];
+    };
+    // State before our action (defaults and earlier updates) …
+    const before = {};
+    for (const entry of dl.slice(0, mark)) if (isConsent(entry, 'default') || isConsent(entry, 'update')) merge(before, entry);
+    // … and the user's choice: `update` commands after it. Types a site never updates keep its own defaults.
     const values = {};
-    for (const entry of dl) {
-      // gtag() pushes `arguments` objects: ['consent', 'default' | 'update', {...}]
-      if (entry && typeof entry === 'object' && entry[0] === 'consent' && entry[2] && typeof entry[2] === 'object') {
-        if (entry[1] === 'update') updated = true;
-        if (entry[1] === 'update' || entry[1] === 'default') {
-          for (const key of Object.keys(entry[2])) {
-            if (typeof entry[2][key] === 'string') values[key] = entry[2][key];
-          }
-        }
-      }
-    }
-    return Object.keys(values).length ? { updated, values } : null;
+    for (const entry of dl.slice(mark)) if (isConsent(entry, 'update')) merge(values, entry);
+    const keys = Object.keys(values);
+    // Sites that only restate their unchanged state (and apply consent on the next page load) say nothing.
+    if (!keys.length || keys.every((key) => before[key] === values[key])) return null;
+    return { updated: true, values };
   };
   const readTcf = () =>
     new Promise((resolve) => {
@@ -188,6 +198,7 @@ function apiShopify() {
 
 export const ilcSnippets = {
   ILC_READ_CONSENT_SIGNALS: readConsentSignals,
+  ILC_MARK_CONSENT_SIGNALS: markConsentSignals,
   ILC_API_ONETRUST: apiOneTrust,
   ILC_API_COOKIEBOT: apiCookiebot,
   ILC_API_USERCENTRICS: apiUsercentrics,

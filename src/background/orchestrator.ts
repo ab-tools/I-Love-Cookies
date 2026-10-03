@@ -17,6 +17,7 @@ import { effectiveStrategy } from './strategy';
 import { updateBadge } from './badge';
 import type { HeuristicScan } from '../content/heuristic/controller';
 import type { HeuristicResult } from '../content/heuristic/flow';
+import type { FrameInfo } from '../content/frames';
 
 type Snippets = Record<string, (...args: unknown[]) => unknown>;
 const SNIPPETS = allSnippets as unknown as Snippets;
@@ -124,15 +125,21 @@ async function askFrame<T>(tabId: number, frameId: number, message: IlcContentMe
   ]);
 }
 
-export async function runSnippet(tabId: number, frameId: number, snippetId: string): Promise<unknown> {
+export async function runSnippet(tabId: number, frameId: number, snippetId: string, args: unknown[] = []): Promise<unknown> {
   const func = SNIPPETS[snippetId];
   if (!func) throw new Error(`unknown snippet ${snippetId}`);
   const [injection] = await browser.scripting.executeScript({
     target: { tabId, frameIds: [frameId] },
     world: 'MAIN',
-    func: func as () => unknown,
+    func: func as (...a: unknown[]) => unknown,
+    args,
   });
   return injection?.result;
+}
+
+/** Remembers the dataLayer position right before we act (see readConsentSignals). */
+async function markSignals(state: TabState) {
+  state.signalMark = Number(await runSnippet(state.tabId, 0, 'ILC_MARK_CONSENT_SIGNALS').catch(() => 0)) || 0;
 }
 
 /** Calls a CMP API snippet until the CMP reports ready (snippet returns true) or the timeout expires. */
@@ -315,6 +322,7 @@ async function onPopupFound(tabId: number, frameId: number, cmp: string, waiting
   state.actionUrl = state.url;
   state.claim = { frameId, until: now + LIMITS.claimMs };
   setPhase(state, 'acting');
+  await markSignals(state);
 
   if (strategy.primary === 'click' && strategy.acceptButton) {
     log(state, frameId, `popup ${cmp}: clicking "accept all" button`);
@@ -322,7 +330,7 @@ async function onPopupFound(tabId: number, frameId: number, cmp: string, waiting
     await saveState(state);
     // The button may render a moment after the popup was detected.
     for (let i = 0; i < 6; i++) {
-      const clicked = await askFrame<boolean>(tabId, frameId, { type: 'ilc:click', chain: strategy.acceptButton }, 2000);
+      const clicked = await askFrame<boolean>(tabId, frameId, { type: 'ilc:click', chain: strategy.acceptButton }, 5000);
       if (clicked) {
         state.claim = undefined;
         await saveState(state);
@@ -449,7 +457,7 @@ async function verify(tabId: number, frameId: number, docId: number | undefined)
     frame = await askFrame<FrameVerification>(tabId, frameId, verifyMsg, LIMITS.verifyTimeoutMs);
   }
   const top = frameId === 0 ? frame : await askFrame<FrameVerification>(tabId, 0, { type: 'ilc:verify' }, 2000);
-  const signals = (await runSnippet(tabId, 0, 'ILC_READ_CONSENT_SIGNALS').catch(() => null)) as ConsentSignals | null;
+  const signals = (await runSnippet(tabId, 0, 'ILC_READ_CONSENT_SIGNALS', [state.signalMark ?? 0]).catch(() => null)) as ConsentSignals | null;
   if (documentIds.get(tabId) !== docId) return;
 
   const result = evaluateOutcome({
@@ -459,7 +467,10 @@ async function verify(tabId: number, frameId: number, docId: number | undefined)
     navigatedAway: false,
     signals,
   });
-  if (top?.scrollLocked) result.reasons.push('page scrolling still locked');
+  if (top?.scrollLocked) {
+    const unlocked = isSuccess(result.outcome) && (await askFrame<boolean>(tabId, 0, { type: 'ilc:unlockScroll' }, 2000));
+    result.reasons.push(unlocked ? 'scroll lock left by the banner removed' : 'page scrolling still locked');
+  }
   await finish(state, frameId, result);
 }
 
@@ -521,9 +532,23 @@ async function heuristicFallback(tabId: number) {
   await runHeuristic(tabId, best.frameId);
 }
 
+/** A child frame's banner only counts if its <iframe> is a visible overlay in the top frame. */
+async function isVisibleOverlayFrame(tabId: number, frameId: number): Promise<boolean> {
+  const token = crypto.randomUUID();
+  await sendToFrame(tabId, frameId, { type: 'ilc:announceFrame', token }).catch(() => undefined);
+  await sleep(300);
+  const info = await askFrame<FrameInfo>(tabId, 0, { type: 'ilc:frameInfo', token }, 2000);
+  return Boolean(info?.visible && info.area >= LIMITS.minFrameOverlayArea);
+}
+
 async function runHeuristic(tabId: number, frameId: number) {
   const state = await loadState(tabId);
   if (!state || state.heuristicTried) return;
+  if (frameId !== 0 && !(await isVisibleOverlayFrame(tabId, frameId))) {
+    log(state, frameId, 'generic banner in a frame that is not a visible overlay – ignored');
+    await saveState(state);
+    return;
+  }
   const now = Date.now();
   if (state.claim && state.claim.until > now) return;
   state.heuristicTried = true;
@@ -535,6 +560,7 @@ async function runHeuristic(tabId: number, frameId: number) {
   state.actionUrl = state.url;
   state.claim = { frameId, until: now + LIMITS.heuristicActMs };
   setPhase(state, 'acting');
+  await markSignals(state);
   log(state, frameId, 'generic banner: accepting');
   await saveState(state);
   await bumpDaily(state.site, 'attempts');
@@ -602,6 +628,12 @@ export function onTopLevelCommitted(tabId: number, url: string) {
     }
     await saveState(next);
   });
+}
+
+/** Single-page apps: a banner may appear after an in-page navigation, as long as none was handled yet. */
+export async function onInPageNavigation(tabId: number) {
+  const state = await loadState(tabId);
+  if (state?.phase === 'idle') await sendToFrame(tabId, 0, { type: 'ilc:rescan' }).catch(() => undefined);
 }
 
 export async function onTabRemoved(tabId: number) {

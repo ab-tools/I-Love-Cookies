@@ -2,7 +2,7 @@ import { browser } from 'wxt/browser';
 import type { ContentScriptMessage } from '@duckduckgo/autoconsent';
 import type { UiMessage } from '../shared/messages';
 import { getSettings, updateSettings } from '../shared/settings';
-import { getTabState, handleContentMessage, onTabRemoved, onTopLevelCommitted } from '../background/orchestrator';
+import { getTabState, handleContentMessage, onInPageNavigation, onTabRemoved, onTopLevelCommitted } from '../background/orchestrator';
 import { RULES_INFO } from '../background/rules';
 import { pauseSite, withdrawConsent } from '../background/site-actions';
 
@@ -40,6 +40,10 @@ export default defineBackground(() => {
 
   browser.webNavigation.onCommitted.addListener(({ tabId, frameId, url }) => {
     if (frameId === 0 && /^https?:/.test(url)) void onTopLevelCommitted(tabId, url);
+  });
+
+  browser.webNavigation.onHistoryStateUpdated.addListener(({ tabId, frameId }) => {
+    if (frameId === 0) void onInPageNavigation(tabId);
   });
 
   browser.tabs.onRemoved.addListener((tabId) => void onTabRemoved(tabId));

@@ -16,6 +16,8 @@ export interface HeuristicScan {
 
 /** Scan schedule after load; banners usually appear within a few seconds, lazy ones on first interaction. */
 const SCAN_DELAYS_MS = [2500, 5000, 9000, 15000, 25000];
+/** Scans after the first scroll and after in-page (SPA) navigation. */
+const RESCAN_DELAYS_MS = [1000, 3000, 8000];
 const MIN_FRAME = { width: 300, height: 150 };
 
 function fingerprint(el: Element): string {
@@ -34,11 +36,10 @@ export class HeuristicController {
   ) {}
 
   start() {
-    const begin = () => {
-      for (const delay of SCAN_DELAYS_MS) setTimeout(() => this.autoReport(), delay);
-    };
+    const begin = () => this.schedule(SCAN_DELAYS_MS);
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', begin, { once: true });
     else begin();
+    window.addEventListener('scroll', () => this.rescan(), { once: true, passive: true });
     // A real user click inside the banner: the user decides, we stay out.
     document.addEventListener(
       'click',
@@ -51,6 +52,15 @@ export class HeuristicController {
       },
       true,
     );
+  }
+
+  /** Scan again soon, e.g. after a scroll or an in-page navigation. */
+  rescan() {
+    this.schedule(RESCAN_DELAYS_MS);
+  }
+
+  private schedule(delays: readonly number[]) {
+    for (const delay of delays) setTimeout(() => this.autoReport(), delay);
   }
 
   scan(): HeuristicScan | null {

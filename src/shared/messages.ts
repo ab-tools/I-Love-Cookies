@@ -30,6 +30,8 @@ export interface TabState {
   cmp?: string;
   frameId?: number;
   strategy?: Strategy;
+  /** dataLayer length right before we acted. */
+  signalMark?: number;
   /** Generic heuristic already used in this document. */
   heuristicTried?: boolean;
   /** API fallback already tried for the current popup. */
@@ -60,6 +62,14 @@ export type IlcContentMessage =
   | { type: 'ilc:optIn'; cmp: string }
   | { type: 'ilc:click'; chain: readonly string[] }
   | { type: 'ilc:heuristicScan' }
+  /** Child frame: post the token to the parent so the top frame can find its <iframe>. */
+  | { type: 'ilc:announceFrame'; token: string }
+  /** Top frame: visibility and size of the <iframe> that announced the token. */
+  | { type: 'ilc:frameInfo'; token: string }
+  /** After verified consent: remove a scroll lock the banner left behind. */
+  | { type: 'ilc:unlockScroll' }
+  /** In-page navigation: look for new banners. */
+  | { type: 'ilc:rescan' }
   | { type: 'ilc:heuristicAct' };
 
 export interface FrameVerification {

@@ -5,10 +5,11 @@ import type { BackgroundMessage, Config, ContentScriptMessage, RuleBundle } from
 import { ilcSnippets } from '../background/snippets';
 import { browser } from 'wxt/browser';
 import type { FrameVerification, IlcContentMessage } from '../shared/messages';
-import { isScrollLocked } from '../content/scroll';
-import { clickDeep, isDeepVisible, isOnScreen } from '../content/dom';
+import { isScrollLocked, unlockScroll } from '../content/scroll';
+import { clickDeepUntilGone, isDeepVisible, isOnScreen } from '../content/dom';
 import { ConsentOMaticCMP, type ComRule } from '../content/consent-o-matic';
 import { HeuristicController } from '../content/heuristic/controller';
+import { announceFrame, frameInfo, listenForFrameTokens } from '../content/frames';
 
 /**
  * Runs in every frame at document_start (isolated world).
@@ -37,6 +38,8 @@ export default defineContentScript({
     );
     const consent: IlcAutoConsent = new IlcAutoConsent(send, heuristic);
 
+    listenForFrameTokens();
+
     browser.runtime.onMessage.addListener((message: unknown, _sender, sendResponse) => {
       const msg = message as IlcContentMessage | { type?: string };
       if (msg?.type === 'ilc:verify') {
@@ -49,6 +52,22 @@ export default defineContentScript({
         void consent.optInWith((msg as Extract<IlcContentMessage, { type: 'ilc:optIn' }>).cmp);
         return false;
       }
+      if (msg?.type === 'ilc:announceFrame') {
+        announceFrame((msg as Extract<IlcContentMessage, { type: 'ilc:announceFrame' }>).token);
+        return false;
+      }
+      if (msg?.type === 'ilc:frameInfo') {
+        sendResponse(frameInfo((msg as Extract<IlcContentMessage, { type: 'ilc:frameInfo' }>).token));
+        return false;
+      }
+      if (msg?.type === 'ilc:unlockScroll') {
+        sendResponse(unlockScroll());
+        return false;
+      }
+      if (msg?.type === 'ilc:rescan') {
+        heuristic.rescan();
+        return false;
+      }
       if (msg?.type === 'ilc:heuristicScan') {
         sendResponse(heuristic.scan());
         return false;
@@ -58,8 +77,8 @@ export default defineContentScript({
         return true;
       }
       if (msg?.type === 'ilc:click') {
-        sendResponse(clickDeep((msg as Extract<IlcContentMessage, { type: 'ilc:click' }>).chain));
-        return false;
+        clickDeepUntilGone((msg as Extract<IlcContentMessage, { type: 'ilc:click' }>).chain).then(sendResponse, () => sendResponse(false));
+        return true;
       }
       if (typeof msg?.type === 'string' && !msg.type.startsWith('ilc:')) {
         void consent.receiveMessageCallback(message as BackgroundMessage);

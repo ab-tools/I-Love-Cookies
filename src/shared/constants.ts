@@ -32,6 +32,8 @@ export const LIMITS = {
   lowPriorityDelayMs: 2000,
   /** Head start of rules before the generic heuristic acts on a banner it found. */
   heuristicGraceMs: 2500,
+  /** A consent iframe must cover at least this share of the viewport for the heuristic to act in it. */
+  minFrameOverlayArea: 0.05,
   /** Max duration of one generic accept (incl. settings flow). */
   heuristicActMs: 20000,
   /** Entries kept in the per-tab action log. */

@@ -57,15 +57,13 @@ export function readSignals(signals: ConsentSignals | null): { verdict: 'full' |
     return { verdict: full ? 'full' : 'partial', reason };
   }
   const gcm = signals?.gcm;
-  if (gcm?.updated) {
-    const known = GCM_TYPES.filter((t) => t in gcm.values);
-    const granted = known.filter((t) => gcm.values[t] === 'granted');
-    if (known.length > 0) {
-      return {
-        verdict: granted.length === known.length ? 'full' : 'partial',
-        reason: `Consent Mode: ${granted.length}/${known.length} granted`,
-      };
-    }
+  if (gcm?.updated && GCM_TYPES.some((t) => t in gcm.values)) {
+    // CMPs also update their own per-vendor/purpose keys; some sites map one standard type to "denied"
+    // although every choice was granted. Judge by all updated keys.
+    const keys = Object.keys(gcm.values);
+    const granted = keys.filter((k) => gcm.values[k] === 'granted');
+    const full = gcm.values.ad_storage !== 'denied' && granted.length >= keys.length * 0.9;
+    return { verdict: full ? 'full' : 'partial', reason: `Consent Mode: ${granted.length}/${keys.length} granted` };
   }
   return { verdict: 'none' };
 }

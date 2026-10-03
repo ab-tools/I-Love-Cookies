@@ -35,7 +35,12 @@ export const CMP_STRATEGIES: Record<string, CmpStrategy> = {
   'usercentrics-button': { primary: 'click', api: 'ILC_API_USERCENTRICS', acceptButton: USERCENTRICS_ACCEPT },
   didomi: withApi('ILC_API_DIDOMI'),
   'consentmanager.net': withApi('ILC_API_CONSENTMANAGER'),
-  'consentmanager-ncmp': withApi('ILC_API_CONSENTMANAGER'),
+  // Its rule only saves the default selection; the banner's own "Accept" button accepts everything.
+  'consentmanager-ncmp': {
+    primary: 'click',
+    api: 'ILC_API_CONSENTMANAGER',
+    acceptButton: ['#ncmp__tool .ncmp__banner-btns button.ncmp__btn:not(.ncmp__btn-border)'],
+  },
   'Complianz banner': withApi('ILC_API_COMPLIANZ'),
   'Complianz categories': withApi('ILC_API_COMPLIANZ'),
   'Complianz optin': withApi('ILC_API_COMPLIANZ'),

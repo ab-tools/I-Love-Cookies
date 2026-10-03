@@ -55,7 +55,7 @@ describe('MAIN-world snippets', () => {
 
   it('API snippets return false when the CMP is not present', async () => {
     for (const [id, fn] of Object.entries(ilcSnippets)) {
-      if (id === 'ILC_READ_CONSENT_SIGNALS') continue;
+      if (!id.startsWith('ILC_API_')) continue;
       expect(await (fn as () => unknown)(), id).toBe(false);
     }
   });
@@ -109,6 +109,27 @@ describe('MAIN-world snippets', () => {
     expect(signals.tcf).toMatchObject({ purposesTotal: 3, purposesConsented: 2, storageConsented: true, vendorsConsented: 2 });
     expect(signals.gcm).toEqual({ updated: true, values: { ad_storage: 'granted', analytics_storage: 'granted' } });
     delete w.__tcfapi;
+    delete w.dataLayer;
+  });
+
+  it('only counts Consent Mode updates pushed after the mark', async () => {
+    const w = window as unknown as Record<string, unknown>;
+    function gtag(..._args: unknown[]) {
+      // eslint-disable-next-line prefer-rest-params
+      (w.dataLayer as unknown[]).push(arguments);
+    }
+    w.dataLayer = [];
+    // Stored state pushed on page load, before we act:
+    gtag('consent', 'update', { ad_storage: 'denied' });
+    const mark = ilcSnippets.ILC_MARK_CONSENT_SIGNALS();
+    expect(mark).toBe(1);
+    expect(((await ilcSnippets.ILC_READ_CONSENT_SIGNALS(mark)) as { gcm: unknown }).gcm).toBeNull();
+    // A site restating its unchanged state after our click says nothing about the result …
+    gtag('consent', 'update', { ad_storage: 'denied' });
+    expect(((await ilcSnippets.ILC_READ_CONSENT_SIGNALS(mark)) as { gcm: unknown }).gcm).toBeNull();
+    // … a real change does.
+    gtag('consent', 'update', { ad_storage: 'granted' });
+    expect(((await ilcSnippets.ILC_READ_CONSENT_SIGNALS(mark)) as { gcm: unknown }).gcm).toEqual({ updated: true, values: { ad_storage: 'granted' } });
     delete w.dataLayer;
   });
 });

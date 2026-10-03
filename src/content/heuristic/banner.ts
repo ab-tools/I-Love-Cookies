@@ -65,12 +65,25 @@ function hasHardNegative(el: Element, text: string): boolean {
   return false;
 }
 
+const NAMED_LIKE_CONSENT = /cookie|consent|gdpr|privacy|banner|cmp/i;
+
+/**
+ * Cheap pre-filter before computing styles: fixed elements have no offsetParent; dialogs and elements named
+ * like consent UI (which may also be sticky) are always checked.
+ */
+function mayBeOverlay(el: Element): boolean {
+  if (!(el instanceof HTMLElement)) return true;
+  if (el.offsetParent === null || el.style.position === 'fixed' || el.style.position === 'sticky') return true;
+  if (el.matches('dialog,[role=dialog],[role=alertdialog],[aria-modal]')) return true;
+  return NAMED_LIKE_CONSENT.test(`${el.id} ${el.getAttribute('class') ?? ''}`);
+}
+
 /** All overlay-like elements, including those inside open and closed shadow roots. */
 function overlayElements(root: Document | ShadowRoot | Element, found: Element[] = []): Element[] {
   for (const el of Array.from(root.querySelectorAll('*'))) {
     // Pages lock scrolling with position: fixed on <html>/<body> – never banners themselves.
     if (el === document.documentElement || el === document.body) continue;
-    if (isOverlayLike(el)) found.push(el);
+    if (mayBeOverlay(el) && isOverlayLike(el)) found.push(el);
     const shadow = shadowRootOf(el);
     if (shadow) overlayElements(shadow, found);
   }

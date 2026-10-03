@@ -34,6 +34,9 @@ export function deepQueryAll(chain: readonly string[], root: ParentNode = docume
 export function isVisible(el: Element): boolean {
   const rect = el.getBoundingClientRect();
   if (rect.width === 0 || rect.height === 0) return false;
+  // checkVisibility also covers hidden or transparent ancestors.
+  const check = (el as Element & { checkVisibility?: (options: object) => boolean }).checkVisibility;
+  if (check && !check.call(el, { opacityProperty: true, visibilityProperty: true })) return false;
   const style = getComputedStyle(el);
   return style.visibility !== 'hidden' && style.display !== 'none' && style.opacity !== '0';
 }
@@ -72,6 +75,20 @@ export function clickDeep(chain: readonly string[]): boolean {
   return true;
 }
 
+/**
+ * Clicks until the button disappears: banners often render their buttons before the page attached the
+ * click handlers. Resolves false if the button was never found.
+ */
+export async function clickDeepUntilGone(chain: readonly string[], attempts = 4, intervalMs = 800): Promise<boolean> {
+  if (!clickDeep(chain)) return false;
+  for (let i = 1; i < attempts; i++) {
+    await new Promise((resolve) => setTimeout(resolve, intervalMs));
+    if (!isDeepVisible(chain)) break;
+    clickDeep(chain);
+  }
+  return true;
+}
+
 export function isDeepVisible(chain: readonly string[]): boolean {
-  return deepQueryAll(chain).some(isVisible);
+  return deepQueryAll(chain).some(isOnScreen);
 }
