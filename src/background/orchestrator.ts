@@ -376,13 +376,17 @@ async function onOptInResult(tabId: number, frameId: number, cmp: string, result
   if (!result) {
     // Top-frame companions of iframe CMPs (e.g. sourcepoint-top) "fail" because the real dialog lives in
     // a child frame. Give that frame time to take over before declaring failure.
-    log(state, frameId, `rule for ${cmp} did not complete – waiting for other frames`);
+    const companion = /-top$/i.test(cmp);
+    log(state, frameId, `rule for ${cmp} did not complete${companion ? ' – waiting for other frames' : ''}`);
     await saveState(state);
     const docId = documentIds.get(tabId);
-    setTimeout(() => {
-      if (documentIds.get(tabId) !== docId) return;
-      void withTab(tabId, () => onRuleFailed(tabId, frameId, cmp));
-    }, LIMITS.doneTimeoutMs);
+    setTimeout(
+      () => {
+        if (documentIds.get(tabId) !== docId) return;
+        void withTab(tabId, () => onRuleFailed(tabId, frameId, cmp));
+      },
+      companion ? LIMITS.doneTimeoutMs : LIMITS.ruleFailedGraceMs,
+    );
     return;
   }
 
@@ -484,7 +488,7 @@ async function verify(tabId: number, frameId: number, docId: number | undefined)
     // Nothing machine-readable confirms the result: make sure no consent banner with an accept button is left
     // (e.g. an older UI variant of the CMP that its rule does not know).
     const scan = await askFrame<HeuristicScan>(tabId, frameId, { type: 'ilc:heuristicScan' }, 2000);
-    if (scan?.decision === 'click') {
+    if (scan?.decision === 'click' && scan.score >= LIMITS.leftoverBannerMinScore) {
       result.outcome = 'FAILED';
       result.reasons = ['a consent banner with an accept button is still shown'];
     }

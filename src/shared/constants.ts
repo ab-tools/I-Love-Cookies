@@ -21,6 +21,10 @@ export const LIMITS = {
   claimMs: 8000,
   /** Wait for autoconsentDone after a successful optIn before verifying anyway. */
   doneTimeoutMs: 6000,
+  /** Wait after a failed rule before falling back (rules coordinating with an iframe wait doneTimeoutMs). */
+  ruleFailedGraceMs: 1000,
+  /** A leftover banner overturns an unconfirmed success only with strong consent wording (two strong words). */
+  leftoverBannerMinScore: 4,
   /** Let the page settle before verifying. */
   settleMs: 1500,
   /** Max time for one frame to answer a verification request. */
