@@ -102,6 +102,11 @@ export function extractButtons(banner: Element): ButtonCandidate[] {
   // Keep the outermost clickable of nested ones (<button><span role=button>…</span></button>).
   // Tabs of a dialog ("Consent | Details | About") are navigation, not answers.
   for (const el of elements) if (el.closest('[role=tab],[role=tablist]')) elements.delete(el);
+  // A "clickable" around several controls or a lot of text is a container (e.g. a dialog with onclick), not a button.
+  for (const el of [...elements]) {
+    const inner = [...elements].filter((other) => other !== el && el.contains(other));
+    if (inner.length >= 2 || (inner.length >= 1 && (el.innerText ?? '').trim().length > 60)) elements.delete(el);
+  }
   const outermost = [...elements].filter((el) => {
     for (let p = el.parentElement; p; p = p.parentElement) if (elements.has(p as HTMLElement)) return false;
     return true;
