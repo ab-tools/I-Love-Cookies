@@ -38,6 +38,13 @@ export function isVisible(el: Element): boolean {
   return style.visibility !== 'hidden' && style.display !== 'none' && Number(style.opacity) > 0;
 }
 
+/** Visible and at least partly inside the viewport. */
+export function isOnScreen(el: Element): boolean {
+  if (!isVisible(el)) return false;
+  const rect = el.getBoundingClientRect();
+  return rect.bottom > 0 && rect.right > 0 && rect.top < window.innerHeight && rect.left < window.innerWidth;
+}
+
 /** Clicks like a user would: pointer/mouse events at the element's centre, then click(). */
 export function realisticClick(el: Element): void {
   (el as HTMLElement).scrollIntoView?.({ block: 'center' });

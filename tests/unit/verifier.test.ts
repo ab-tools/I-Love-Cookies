@@ -17,7 +17,7 @@ describe('evaluateOutcome', () => {
   });
 
   it('is FAILED while the popup is still visible', () => {
-    const signals = { tcf: tcf({ purposesConsented: 0 }), gcm: null };
+    const signals = { tcf: tcf({ purposesConsented: 0, storageConsented: false }), gcm: null };
     expect(evaluateOutcome({ popupVisible: true, navigatedAway: false, signals }).outcome).toBe('FAILED');
     expect(evaluateOutcome({ popupVisible: true, navigatedAway: false, signals: null }).outcome).toBe('FAILED');
   });
@@ -26,6 +26,16 @@ describe('evaluateOutcome', () => {
     const result = evaluateOutcome({ popupVisible: true, navigatedAway: false, signals: { tcf: tcf({}), gcm: null } });
     expect(result.outcome).toBe('FULL');
     expect(result.reasons.join()).toContain('inconclusive');
+  });
+
+  it('is FAILED while the dialog is on screen, even if the site reports full consent', () => {
+    const result = evaluateOutcome({
+      popupVisible: false,
+      popupOnScreen: true,
+      navigatedAway: false,
+      signals: { tcf: tcf({}), gcm: null },
+    });
+    expect(result.outcome).toBe('FAILED');
   });
 
   it('ignores TCF data while the CMP UI is still shown', () => {
@@ -39,8 +49,13 @@ describe('evaluateOutcome', () => {
     expect(result.reasons.join()).toContain('10/10 purposes');
   });
 
-  it('is PARTIAL when TCF purposes are missing', () => {
-    const signals = { tcf: tcf({ purposesConsented: 1 }), gcm: null };
+  it('is FULL when the site does not request every purpose', () => {
+    const signals = { tcf: tcf({ purposesConsented: 7, storageConsented: true }), gcm: null };
+    expect(evaluateOutcome({ popupVisible: false, navigatedAway: false, signals }).outcome).toBe('FULL');
+  });
+
+  it('is PARTIAL without consent to device storage (purpose 1)', () => {
+    const signals = { tcf: tcf({ purposesConsented: 3, storageConsented: false }), gcm: null };
     expect(evaluateOutcome({ popupVisible: false, navigatedAway: false, signals }).outcome).toBe('PARTIAL');
   });
 

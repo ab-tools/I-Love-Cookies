@@ -8,7 +8,7 @@ export interface StateDescription {
 
 /** Human-readable status line for the popup. Pure – unit tested. */
 export function describeState(state: TabState): StateDescription {
-  const via = !state.cmp ? '' : state.strategy === 'api' ? `${state.cmp} API` : `${state.cmp} ${state.strategy === 'shadow' ? 'button' : 'rule'}`;
+  const via = !state.cmp ? '' : state.strategy === 'api' ? `${state.cmp} API` : `${state.cmp} ${state.strategy === 'click' ? 'button' : 'rule'}`;
   switch (state.phase) {
     case 'paused':
       return { text: 'Paused', tone: 'muted', details: state.pausedReason ?? '' };

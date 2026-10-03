@@ -1,6 +1,6 @@
 /**
  * One state machine per tab document:
- *   popupFound ──► strategy (rule / API / shadow click) ──► result ──► verify ──► outcome
+ *   popupFound ──► strategy (rule / API / button click) ──► result ──► verify ──► outcome
  *
  * Single actor per tab, per-document and per-site daily attempt limits, inactive until onboarding
  * is accepted and on paused sites.
@@ -279,13 +279,13 @@ async function onPopupFound(tabId: number, frameId: number, cmp: string, waiting
   state.claim = { frameId, until: now + LIMITS.claimMs };
   setPhase(state, 'acting');
 
-  if (strategy.primary === 'shadow' && strategy.shadowAccept) {
-    log(state, frameId, `popup ${cmp}: clicking "accept all" inside shadow DOM`);
-    state.strategy = 'shadow';
+  if (strategy.primary === 'click' && strategy.acceptButton) {
+    log(state, frameId, `popup ${cmp}: clicking "accept all" button`);
+    state.strategy = 'click';
     await saveState(state);
     // The button may render a moment after the popup was detected.
     for (let i = 0; i < 6; i++) {
-      const clicked = await askFrame<boolean>(tabId, frameId, { type: 'ilc:shadowClick', chain: strategy.shadowAccept }, 2000);
+      const clicked = await askFrame<boolean>(tabId, frameId, { type: 'ilc:click', chain: strategy.acceptButton }, 2000);
       if (clicked) {
         state.claim = undefined;
         await saveState(state);
@@ -294,7 +294,7 @@ async function onPopupFound(tabId: number, frameId: number, cmp: string, waiting
       }
       await sleep(500);
     }
-    log(state, frameId, 'shadow DOM button not found – falling back to rule');
+    log(state, frameId, 'accept button not found – falling back to rule');
   }
 
   if (strategy.primary === 'api' && strategy.api) {
@@ -400,9 +400,9 @@ async function verify(tabId: number, frameId: number, docId: number | undefined)
   setPhase(state, 'verifying');
   await saveState(state);
 
-  const verifyMsg = { type: 'ilc:verify', shadowChain: state.cmp ? strategyFor(state.cmp).shadowAccept : undefined } as const;
+  const verifyMsg = { type: 'ilc:verify', acceptButton: state.cmp ? strategyFor(state.cmp).acceptButton : undefined } as const;
   let frame = await askFrame<FrameVerification>(tabId, frameId, verifyMsg, LIMITS.verifyTimeoutMs);
-  if (frame?.popupVisible && state.cmp && (await tryApiFallback(state, frameId, state.cmp))) {
+  if ((frame?.popupVisible || frame?.popupOnScreen) && state.cmp && (await tryApiFallback(state, frameId, state.cmp))) {
     await sleep(LIMITS.settleMs);
     frame = await askFrame<FrameVerification>(tabId, frameId, verifyMsg, LIMITS.verifyTimeoutMs);
   }
@@ -412,6 +412,7 @@ async function verify(tabId: number, frameId: number, docId: number | undefined)
 
   const result = evaluateOutcome({
     popupVisible: frame ? frame.popupVisible : null,
+    popupOnScreen: frame?.popupOnScreen ?? false,
     navigatedAway: false,
     signals,
   });

@@ -10,15 +10,16 @@ export type ApiSnippetId = Extract<keyof typeof ilcSnippets, `ILC_API_${string}`
 export interface CmpStrategy {
   primary: Strategy;
   api?: ApiSnippetId;
-  /** Shadow-DOM selector chain of the "accept all" button (strategy 'shadow'); also used to verify the UI closed. */
-  shadowAccept?: readonly string[];
+  /** "Accept all" button as selector chain through shadow roots (strategy 'click'); also used to verify the UI closed. */
+  acceptButton?: readonly string[];
 }
 
 const withApi = (id: ApiSnippetId): CmpStrategy => ({ primary: 'rule', api: id });
 
 export const CMP_STRATEGIES: Record<string, CmpStrategy> = {
   Onetrust: withApi('ILC_API_ONETRUST'),
-  Cybotcookiebot: withApi('ILC_API_COOKIEBOT'),
+  // Current Cookiebot dialog ("Alle zulassen"); older variants fall back to the rule.
+  Cybotcookiebot: { primary: 'click', api: 'ILC_API_COOKIEBOT', acceptButton: ['#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll'] },
   'cookiebot.be': withApi('ILC_API_COOKIEBOT'),
   'usercentrics-api': withApi('ILC_API_USERCENTRICS'),
   'usercentrics-button': withApi('ILC_API_USERCENTRICS'),
@@ -34,9 +35,9 @@ export const CMP_STRATEGIES: Record<string, CmpStrategy> = {
   'iubenda-rti': withApi('ILC_API_IUBENDA'),
   // Buttons live in nested *closed* shadow roots; the API alone stores consent but leaves the banner open.
   'ilc-iubenda-teamblue': {
-    primary: 'shadow',
+    primary: 'click',
     api: 'ILC_API_IUBENDA',
-    shadowAccept: ['tb-banner-wrapper', 'tb-banner-footer', 'tb-action-button', 'button.accept-button'],
+    acceptButton: ['tb-banner-wrapper', 'tb-banner-footer', 'tb-action-button', 'button.accept-button'],
   },
   Klaro: withApi('ILC_API_KLARO'),
   cookiehub: withApi('ILC_API_COOKIEHUB'),

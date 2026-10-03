@@ -95,7 +95,7 @@ describe('MAIN-world snippets', () => {
       tcf: Record<string, unknown>;
       gcm: { updated: boolean; values: Record<string, string> };
     };
-    expect(signals.tcf).toMatchObject({ purposesTotal: 3, purposesConsented: 2, legitimateInterestObjected: 1, vendorsConsented: 2 });
+    expect(signals.tcf).toMatchObject({ purposesTotal: 3, purposesConsented: 2, storageConsented: true, legitimateInterestObjected: 1, vendorsConsented: 2 });
     expect(signals.gcm).toEqual({ updated: true, values: { ad_storage: 'granted', analytics_storage: 'granted' } });
     delete w.__tcfapi;
     delete w.dataLayer;

@@ -9,6 +9,8 @@ export interface TcfSignal {
   /** Purpose IDs disclosed by the CMP and how many of them are consented. */
   purposesTotal: number;
   purposesConsented: number;
+  /** Purpose 1 (store/access information on a device) – the basis of every consent. */
+  storageConsented?: boolean;
   /** Purposes for which the user objected to legitimate interest. */
   legitimateInterestObjected: number;
   vendorsConsented: number;
@@ -30,6 +32,8 @@ export interface ConsentSignals {
 export interface VerificationInput {
   /** Is the CMP popup still visible? null = unknown (e.g. the frame was removed together with the banner). */
   popupVisible: boolean | null;
+  /** The CMP's dialog element is on screen (reliable, unlike CMP-specific popup checks). */
+  popupOnScreen?: boolean;
   /** The page navigated to a different URL as a result of our action. */
   navigatedAway: boolean;
   signals: ConsentSignals | null;
@@ -46,7 +50,8 @@ export const GCM_TYPES = ['ad_storage', 'analytics_storage', 'ad_user_data', 'ad
 export function readSignals(signals: ConsentSignals | null): { verdict: 'full' | 'partial' | 'none'; reason?: string } {
   const tcf = signals?.tcf;
   if (tcf && tcf.gdprApplies !== false && tcf.purposesTotal > 0 && tcf.eventStatus !== 'cmpuishown') {
-    const full = tcf.purposesConsented === tcf.purposesTotal && tcf.legitimateInterestObjected === 0;
+    // TCF does not say which purposes a site requests; purposes it never asks for stay false.
+    const full = tcf.storageConsented !== false && tcf.purposesConsented > 0 && tcf.legitimateInterestObjected === 0;
     const reason =
       `TCF: ${tcf.purposesConsented}/${tcf.purposesTotal} purposes, ${tcf.vendorsConsented} vendors consented` +
       (tcf.legitimateInterestObjected ? `, ${tcf.legitimateInterestObjected} LI objections` : '');
@@ -72,6 +77,9 @@ export function evaluateOutcome(input: VerificationInput): VerificationResult {
   }
   const signals = readSignals(input.signals);
 
+  if (input.popupOnScreen) {
+    return { outcome: 'FAILED', reasons: ['consent dialog still on screen', ...(signals.reason ? [signals.reason] : [])] };
+  }
   if (input.popupVisible === true) {
     // Some CMP rules keep reporting their (now hidden) container as visible. If the site itself
     // confirms full consent, trust the site.

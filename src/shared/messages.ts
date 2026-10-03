@@ -8,8 +8,8 @@ export type Phase =
   | 'paused' // disabled for this site / globally / onboarding not accepted
   | 'stuck'; // loop guard hit – needs attention
 
-/** rule = autoconsent declarative opt-in · api = CMP JavaScript API · shadow = click inside (closed) shadow DOM */
-export type Strategy = 'rule' | 'api' | 'shadow';
+/** rule = autoconsent opt-in rule · api = CMP JavaScript API · click = known accept button (also in shadow DOM) */
+export type Strategy = 'rule' | 'api' | 'click';
 
 export interface LogEntry {
   t: number;
@@ -49,13 +49,15 @@ export type UiMessage =
 
 /** Messages from the background to our part of the content script. */
 export type IlcContentMessage =
-  /** shadowChain: if given, the popup counts as visible while this (shadow DOM) element is visible. */
-  | { type: 'ilc:verify'; shadowChain?: readonly string[] }
-  | { type: 'ilc:shadowClick'; chain: readonly string[] };
+  /** acceptButton: the popup counts as on screen while this element is visible. */
+  | { type: 'ilc:verify'; acceptButton?: readonly string[] }
+  | { type: 'ilc:click'; chain: readonly string[] };
 
 export interface FrameVerification {
-  /** null if no CMP instance in this frame */
+  /** autoconsent's popup check; null if no CMP instance in this frame */
   popupVisible: boolean | null;
+  /** The CMP's dialog element is actually on screen. */
+  popupOnScreen: boolean;
   scrollLocked: boolean;
   url: string;
 }

@@ -6,7 +6,7 @@ import { ilcSnippets } from '../background/snippets';
 import { browser } from 'wxt/browser';
 import type { FrameVerification, IlcContentMessage } from '../shared/messages';
 import { isScrollLocked } from '../content/scroll';
-import { clickDeep, isDeepVisible } from '../content/dom';
+import { clickDeep, isDeepVisible, isOnScreen } from '../content/dom';
 
 /**
  * Runs in every frame at document_start (isolated world).
@@ -33,13 +33,13 @@ export default defineContentScript({
     browser.runtime.onMessage.addListener((message: unknown, _sender, sendResponse) => {
       const msg = message as IlcContentMessage | { type?: string };
       if (msg?.type === 'ilc:verify') {
-        verifyFrame(consent, (msg as Extract<IlcContentMessage, { type: 'ilc:verify' }>).shadowChain).then(sendResponse, () =>
+        verifyFrame(consent, (msg as Extract<IlcContentMessage, { type: 'ilc:verify' }>).acceptButton).then(sendResponse, () =>
           sendResponse(null),
         );
         return true;
       }
-      if (msg?.type === 'ilc:shadowClick') {
-        sendResponse(clickDeep((msg as Extract<IlcContentMessage, { type: 'ilc:shadowClick' }>).chain));
+      if (msg?.type === 'ilc:click') {
+        sendResponse(clickDeep((msg as Extract<IlcContentMessage, { type: 'ilc:click' }>).chain));
         return false;
       }
       if (typeof msg?.type === 'string' && !msg.type.startsWith('ilc:')) {
@@ -59,15 +59,22 @@ export default defineContentScript({
   },
 });
 
-async function verifyFrame(consent: AutoConsent, shadowChain?: readonly string[]): Promise<FrameVerification> {
+async function verifyFrame(consent: AutoConsent, acceptButton?: readonly string[]): Promise<FrameVerification> {
   const cmp = consent.foundCmp;
   let popupVisible: boolean | null = null;
-  // A CMP UI in (closed) shadow DOM: visible as long as its accept button is.
-  if (shadowChain && isDeepVisible(shadowChain)) {
-    popupVisible = true;
-  } else if (cmp) {
+  if (cmp) {
     const timeout = new Promise<boolean>((resolve) => setTimeout(() => resolve(false), 4000));
     popupVisible = await Promise.race([cmp.detectPopup().catch(() => false), timeout]);
   }
-  return { popupVisible, scrollLocked: isScrollLocked(), url: location.href };
+  // The CMP's own dialog container (its prehide selectors) or known accept button still on screen.
+  const popupOnScreen =
+    (acceptButton !== undefined && isDeepVisible(acceptButton)) ||
+    (cmp?.prehideSelectors ?? []).some((selector) => {
+      try {
+        return Array.from(document.querySelectorAll(selector)).some(isOnScreen);
+      } catch {
+        return false;
+      }
+    });
+  return { popupVisible, popupOnScreen, scrollLocked: isScrollLocked(), url: location.href };
 }

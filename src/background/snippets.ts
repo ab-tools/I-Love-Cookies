@@ -56,6 +56,7 @@ function readConsentSignals() {
             gdprApplies: tcData.gdprApplies,
             purposesTotal: ids.length,
             purposesConsented: ids.filter((id) => consents[id]).length,
+            storageConsented: Boolean(consents['1']),
             // A purpose disclosed for legitimate interest but set to false means the user objected.
             legitimateInterestObjected: Object.keys(li).filter((id) => li[id] === false && !consents[id]).length,
             vendorsConsented: Object.values((tcData.vendor && tcData.vendor.consents) || {}).filter(Boolean).length,
@@ -80,6 +81,7 @@ function apiCookiebot() {
   const cb = window.Cookiebot || window.CookieConsent;
   if (cb && typeof cb.submitCustomConsent === 'function') {
     cb.submitCustomConsent(true, true, true);
+    if (typeof cb.hide === 'function') cb.hide();
     return true;
   }
   return false;
