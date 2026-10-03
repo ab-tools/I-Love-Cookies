@@ -34,7 +34,8 @@ export const ACCEPTING: ReadonlySet<ButtonClass> = new Set(['ACCEPT_ALL', 'ACCEP
 
 /** Longer texts are sentences, not button labels. */
 const MAX_LABEL_LENGTH = 48;
-const OPTIONAL_COOKIES = /non essential|nicht (notwendig|essenziell)|optional/;
+/** Labels naming more than the necessary category ("Essential + analytics") are not "necessary only". */
+const OPTIONAL_COOKIES = /non essential|nicht (notwendig|essenziell)|optional|\+|analy|statisti|marketing|komfort|tracking/;
 
 /** Lower case without diacritics (capitals often drop them, e.g. Greek "ΣΥΜΦΩΝΩ" = "συμφωνώ"). */
 const stripMarks = (text: string) => text.normalize('NFKD').replace(/\p{M}/gu, '').normalize('NFC');

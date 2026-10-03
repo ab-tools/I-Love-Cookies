@@ -337,6 +337,7 @@ export const ACCEPT = [
   'prima',
   // PL
   `akceptuj${W}`,
+  `akceptova${W}`,
   'zaakceptuj',
   'zgadzam się',
   'zgoda',
@@ -399,6 +400,7 @@ export const ACCEPT = [
   'piekrītu',
   'pieņemt',
   'apstiprināt (visas|visus|visu)',
+  'setuju',
   'atļaut',
   'sutinku',
   'priimti',
@@ -517,6 +519,7 @@ export const ACKNOWLEDGE = [
   'continua (sul|al) sito',
   'ga verder naar de (site|website)',
   'ok',
+  'хорошо',
   'okay',
   'okey',
   'okej',

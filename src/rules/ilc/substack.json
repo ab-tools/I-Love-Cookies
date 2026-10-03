@@ -1,0 +1,27 @@
+[
+  {
+    "name": "substack",
+    "comment": "Replaces autoconsent's rule, whose XPath is malformed and never matches.",
+    "detectCmp": [
+      {
+        "exists": "div[class*=cookieBanner].pencraft"
+      }
+    ],
+    "detectPopup": [
+      {
+        "visible": "div[class*=cookieBanner].pencraft"
+      }
+    ],
+    "optIn": [
+      {
+        "waitForThenClick": "xpath///div[contains(@class, 'cookieBanner')]//button[normalize-space(.) = 'Accept' or normalize-space(.) = 'Accept all' or normalize-space(.) = 'Accept All']"
+      }
+    ],
+    "optOut": [],
+    "test": [
+      {
+        "cookieContains": "hideCookieBanner="
+      }
+    ]
+  }
+]

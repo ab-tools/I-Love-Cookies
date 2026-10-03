@@ -6,9 +6,13 @@ const STRONG =
 const WEAK =
   /partner|vendor|anbieter|fournisseur|proveedor|fornitor|tracking|personali[sz]|werbung|advertis|publicit|pubblicit|reklam|analy|datenschutz|privacy|confidentialit|privacidad|privatnost|adatvédel|prywatnoś|soukromí|integritet|privatliv|yksityisyy|ιδιωτικ|защит|gizlilik/gi;
 
-/** Dialogs that are not about consent. */
+/** Dialogs that are not about consent: age gates, region / language choices. */
 const NEGATIVE_TEXT =
-  /newsletter|subscribe to our|anmelden zum|age verification|altersverifikation|are you (over|18)|bist du (über|18)|year of birth|geburtsjahr|ihr alter|dein alter|your age|volljährig|of legal age|\b(1[68]|21) (jahre|years|ans|años|anni|jaar|lat)\b|\b(1[68]|21)\+|mayor de edad|maggiorenne|majeur|meerderjarig|pełnoletn|choose (your )?(country|region|language)|wähle (dein )?(land|sprache)|select your (country|region|location)|install (our|the) app|download (our|the) app|push.?notification|benachrichtigungen/i;
+  /age verification|altersverifikation|are you (over|18)|bist du (über|18)|year of birth|geburtsjahr|ihr alter|dein alter|your age|volljährig|of legal age|\b(1[68]|21) (jahre|years|ans|años|anni|jaar|lat)\b|\b(1[68]|21)\+|mayor de edad|maggiorenne|majeur|meerderjarig|pełnoletn|choose (your )?(country|region|language)|wähle (dein )?(land|sprache)|select your (country|region|location)/i;
+
+/** Newsletter / app / notification prompts – unless the consent wording is strong (banners mention them too). */
+const SOFT_NEGATIVE_TEXT = /newsletter|subscribe to our|anmelden zum|install (our|the) app|download (our|the) app|push.?notification|benachrichtigungen/i;
+const STRONG_CONSENT_SCORE = 6;
 
 const NAVIGATION = 'header,nav,footer,main,article,[role=banner],[role=navigation],[role=contentinfo],[role=main],[role=menu],[role=tooltip]';
 const CLICKABLE = 'button,[role=button],a,input[type=button],input[type=submit],[onclick],[class*="btn"],[class*="button"]';
@@ -56,8 +60,9 @@ function isOverlayLike(el: Element): boolean {
   return position === 'fixed' || position === 'sticky';
 }
 
-function hasHardNegative(el: Element, text: string): boolean {
+function hasHardNegative(el: Element, text: string, score: number): boolean {
   if (NEGATIVE_TEXT.test(text)) return true;
+  if (score < STRONG_CONSENT_SCORE && SOFT_NEGATIVE_TEXT.test(text)) return true;
   const root = shadowRootOf(el) ?? el;
   if (root.querySelector('input[type=email],input[type=password],input[type=tel],input[type=date],input[type=search]')) return true;
   if (Array.from(root.querySelectorAll('select')).some((s) => s.options.length >= 10)) return true;
@@ -91,12 +96,33 @@ function overlayElements(root: Document | ShadowRoot | Element, found: Element[]
 }
 
 /**
+ * Sticky bars with generated class names pass none of the cheap pre-filters: check the few ancestors of text
+ * mentioning cookies instead.
+ */
+function overlaysAroundConsentText(doc: Document, found: Set<Element>): void {
+  const walker = doc.createTreeWalker(doc.body ?? doc.documentElement, NodeFilter.SHOW_TEXT, {
+    acceptNode: (node) => (/cookie|consent|einwillig|zustimm/i.test(node.nodeValue ?? '') ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP),
+  });
+  for (let node = walker.nextNode(), n = 0; node && n < 50; node = walker.nextNode(), n++) {
+    let el = node.parentElement;
+    for (let depth = 0; el && depth < 8 && el !== doc.body && el !== doc.documentElement; depth++, el = el.parentElement) {
+      if (found.has(el)) break;
+      if (isOverlayLike(el)) {
+        found.add(el);
+        break;
+      }
+    }
+  }
+}
+
+/**
  * Consent banners in this document, best first. A banner must be an on-screen overlay/dialog with consent
  * wording and at least one clickable element, and must not look like a newsletter, login, age or region dialog.
  */
 export function findConsentBanners(doc: Document = document): Banner[] {
-  const overlays = overlayElements(doc);
-  const set = new Set(overlays);
+  const set = new Set(overlayElements(doc));
+  overlaysAroundConsentText(doc, set);
+  const overlays = [...set];
   const viewport = Math.max(1, window.innerWidth * window.innerHeight);
   const banners: Banner[] = [];
   for (const el of overlays) {
@@ -119,7 +145,7 @@ export function findConsentBanners(doc: Document = document): Banner[] {
     if (score < 2 || text.length < 40) continue;
     const root = shadowRootOf(el) ?? el;
     if (!root.querySelector(CLICKABLE) && !el.querySelector(CLICKABLE)) continue;
-    if (hasHardNegative(el, text)) continue;
+    if (hasHardNegative(el, text, score)) continue;
     banners.push({ element: el, text: text.slice(0, 2000), score, area });
   }
   return banners.sort((a, b) => b.score - a.score || b.area - a.area);

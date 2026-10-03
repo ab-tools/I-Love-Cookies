@@ -98,6 +98,8 @@ export function extractButtons(banner: Element): ButtonCandidate[] {
   const elements = new Set(roots.flatMap((r) => clickablesIn(r)));
   for (const el of roots.flatMap((r) => pointerControls(r, elements))) elements.add(el);
   // Keep the outermost clickable of nested ones (<button><span role=button>…</span></button>).
+  // Tabs of a dialog ("Consent | Details | About") are navigation, not answers.
+  for (const el of elements) if (el.closest('[role=tab],[role=tablist]')) elements.delete(el);
   const outermost = [...elements].filter((el) => {
     for (let p = el.parentElement; p; p = p.parentElement) if (elements.has(p as HTMLElement)) return false;
     return true;
