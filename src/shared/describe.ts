@@ -1,4 +1,5 @@
 import type { TabState } from './messages';
+import { english, type MessageKey, type Translate } from './i18n';
 
 export interface StateDescription {
   text: string;
@@ -7,39 +8,38 @@ export interface StateDescription {
 }
 
 /** Human-readable status line for the popup. Pure – unit tested. */
-export function describeState(state: TabState): StateDescription {
+export function describeState(state: TabState, t: Translate = english): StateDescription {
   const via = !state.cmp
     ? ''
     : state.strategy === 'heuristic'
-      ? 'generic banner detection'
-      : state.strategy === 'api'
-        ? `${state.cmp} API`
-        : `${state.cmp} ${state.strategy === 'click' ? 'button' : 'rule'}`;
+      ? t('via_heuristic')
+      : t(state.strategy === 'api' ? 'via_api' : state.strategy === 'click' ? 'via_button' : 'via_rule', [state.cmp]);
+  const reason = state.pausedReason ? t(`reason_${state.pausedReason}` as MessageKey) : '';
   switch (state.phase) {
     case 'paused':
-      return { text: 'Paused', tone: 'muted', details: state.pausedReason ?? '' };
+      return { text: t('status_paused'), tone: 'muted', details: reason };
     case 'stuck':
-      return { text: 'Needs attention', tone: 'bad', details: state.pausedReason ?? 'Please report this site.' };
+      return { text: t('status_stuck'), tone: 'bad', details: reason || t('details_report') };
     case 'acting':
-      return { text: 'Accepting cookies…', tone: 'muted', details: via };
+      return { text: t('status_acting'), tone: 'muted', details: via };
     case 'verifying':
-      return { text: 'Checking result…', tone: 'muted', details: via };
+      return { text: t('status_verifying'), tone: 'muted', details: via };
     case 'done':
       switch (state.outcome) {
         case 'FULL':
-          return { text: 'All cookies accepted', tone: 'ok', details: `via ${via} · confirmed by the site` };
+          return { text: t('status_accepted'), tone: 'ok', details: t('details_viaConfirmed', [via]) };
         case 'LIKELY_FULL':
-          return { text: 'All cookies accepted', tone: 'ok', details: `via ${via}` };
+          return { text: t('status_accepted'), tone: 'ok', details: t('details_via', [via]) };
         case 'PARTIAL':
-          return { text: 'Partly accepted', tone: 'warn', details: (state.reasons ?? []).join(' · ') };
+          return { text: t('status_partial'), tone: 'warn', details: (state.reasons ?? []).join(' · ') };
         case 'UNSAFE':
-          return { text: 'Unexpected navigation', tone: 'bad', details: 'Please report this site.' };
+          return { text: t('status_unsafe'), tone: 'bad', details: t('details_report') };
         default:
-          return { text: 'Could not accept', tone: 'bad', details: (state.reasons ?? []).join(' · ') };
+          return { text: t('status_failed'), tone: 'bad', details: (state.reasons ?? []).join(' · ') };
       }
     default:
       return state.cmp
-        ? { text: 'Consent manager found', tone: 'muted', details: `${state.cmp} – no banner shown` }
-        : { text: 'No cookie banner detected', tone: 'muted', details: '' };
+        ? { text: t('status_cmpOnly'), tone: 'muted', details: t('details_noPopup', [state.cmp]) }
+        : { text: t('status_noBanner'), tone: 'muted', details: '' };
   }
 }

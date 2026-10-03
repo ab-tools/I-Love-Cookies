@@ -25,6 +25,9 @@
     --bad: #ef5350;
   }
 }
+[hidden] {
+  display: none !important;
+}
 * {
   box-sizing: border-box;
 }

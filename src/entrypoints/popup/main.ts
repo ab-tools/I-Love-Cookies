@@ -6,6 +6,7 @@ import type { Settings } from '../../shared/settings';
 import { isSitePaused } from '../../shared/settings';
 import { buildIssueUrl, searchExistingIssuesUrl } from '../../shared/report';
 import { describeState } from '../../shared/describe';
+import { localizePage, translate } from '../../shared/i18n';
 
 interface TabInfo {
   state: TabState;
@@ -22,7 +23,7 @@ function send<T>(message: UiMessage): Promise<T> {
 async function main() {
   const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
   if (tab?.id === undefined || !/^https?:/.test(tab.url ?? '')) {
-    $('status').textContent = 'Not available on this page';
+    $('status').textContent = translate('status_unavailable');
     $('actions').hidden = true;
     return;
   }
@@ -46,7 +47,7 @@ async function main() {
 }
 
 function render({ state, settings, rules }: TabInfo) {
-  const { text, tone, details } = describeState(state);
+  const { text, tone, details } = describeState(state, translate);
   $('site').textContent = state.site;
   const status = $('status');
   status.textContent = text;
@@ -54,8 +55,8 @@ function render({ state, settings, rules }: TabInfo) {
   $('details').textContent = details;
   $('log').textContent = state.log
     .map((e) => `${new Date(e.t).toLocaleTimeString()} [${e.frameId}] ${e.msg}`)
-    .join('\n') || '(empty)';
-  $('rules-info').textContent = `${rules.count} rules · autoconsent ${rules.upstreamVersion}`;
+    .join('\n') || translate('popup_logEmpty');
+  $('rules-info').textContent = translate('popup_rulesInfo', [String(rules.count), rules.upstreamVersion]);
 
   const setupNeeded = !settings.onboardingAccepted;
   $('setup').hidden = !setupNeeded;
@@ -75,4 +76,5 @@ $('open-options').addEventListener('click', (e) => {
   window.close();
 });
 
+localizePage();
 void main();

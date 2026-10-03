@@ -8,7 +8,8 @@
 import { browser } from 'wxt/browser';
 import type { BackgroundMessage, Config, ContentScriptMessage } from '@duckduckgo/autoconsent';
 import { LIMITS } from '../shared/constants';
-import type { FrameVerification, IlcContentMessage, Phase, Strategy, TabState } from '../shared/messages';
+import type { FrameVerification, IlcContentMessage, PausedReason, Phase, Strategy, TabState } from '../shared/messages';
+import { english } from '../shared/i18n';
 import { getSettings, isSitePaused, siteOf } from '../shared/settings';
 import { evaluateOutcome, isSuccess, type ConsentSignals, type VerificationResult } from '../shared/verifier';
 import { rulesForFrame } from './rules';
@@ -226,18 +227,18 @@ async function onInit(tabId: number, frameId: number, frameUrl: string, tabUrl: 
   const settings = await getSettings();
   const daily = await getDaily(state.site);
 
-  let pausedReason: string | undefined;
-  if (!settings.onboardingAccepted) pausedReason = 'setup not completed';
-  else if (!settings.enabled) pausedReason = 'switched off';
-  else if (isSitePaused(settings, state.site)) pausedReason = 'paused on this site';
-  else if (daily.failures >= LIMITS.failuresPerSitePerDay) pausedReason = 'too many failures today';
-  else if (daily.attempts >= LIMITS.attemptsPerSitePerDay) pausedReason = 'too many attempts today';
+  let pausedReason: PausedReason | undefined;
+  if (!settings.onboardingAccepted) pausedReason = 'setup';
+  else if (!settings.enabled) pausedReason = 'off';
+  else if (isSitePaused(settings, state.site)) pausedReason = 'sitePaused';
+  else if (daily.failures >= LIMITS.failuresPerSitePerDay) pausedReason = 'failuresToday';
+  else if (daily.attempts >= LIMITS.attemptsPerSitePerDay) pausedReason = 'attemptsToday';
 
   if (frameId === 0) {
     if (pausedReason) {
       state.pausedReason = pausedReason;
-      setPhase(state, pausedReason.startsWith('too many') ? 'stuck' : 'paused');
-      log(state, frameId, `inactive: ${pausedReason}`);
+      setPhase(state, pausedReason === 'failuresToday' || pausedReason === 'attemptsToday' ? 'stuck' : 'paused');
+      log(state, frameId, `inactive: ${english(`reason_${pausedReason}`)}`);
     } else if (state.phase === 'paused' || state.phase === 'stuck') {
       state.pausedReason = undefined;
       setPhase(state, 'idle');
@@ -306,7 +307,7 @@ async function onPopupFound(tabId: number, frameId: number, cmp: string, waiting
   if (attempts > LIMITS.attemptsPerDocument) {
     log(state, frameId, `popup ${cmp} shown again – attempt limit reached`);
     setPhase(state, 'stuck');
-    state.pausedReason = 'banner keeps coming back';
+    state.pausedReason = 'keepsComingBack';
     await saveState(state);
     return;
   }
@@ -580,7 +581,7 @@ async function runHeuristic(tabId: number, frameId: number) {
 async function onUserDecided(tabId: number, frameId: number) {
   const state = await loadState(tabId);
   if (!state || state.phase === 'done') return;
-  state.pausedReason = 'you made a choice in the banner';
+  state.pausedReason = 'userDecided';
   setPhase(state, 'paused');
   log(state, frameId, 'user clicked in the banner – staying out');
   await saveState(state);

@@ -12,6 +12,9 @@ export type Phase =
  * rule = autoconsent opt-in rule · api = CMP JavaScript API · click = known accept button (also in shadow DOM)
  * · heuristic = generic banner detection without a rule
  */
+/** Why the extension is inactive on a page (translated as reason_<code>). */
+export type PausedReason = 'setup' | 'off' | 'sitePaused' | 'failuresToday' | 'attemptsToday' | 'keepsComingBack' | 'userDecided';
+
 export type Strategy = 'rule' | 'api' | 'click' | 'heuristic';
 
 export interface LogEntry {
@@ -26,7 +29,7 @@ export interface TabState {
   url: string;
   site: string;
   phase: Phase;
-  pausedReason?: string;
+  pausedReason?: PausedReason;
   cmp?: string;
   frameId?: number;
   strategy?: Strategy;

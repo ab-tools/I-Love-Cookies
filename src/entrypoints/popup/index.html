@@ -9,7 +9,7 @@
     <main id="app">
       <header class="row">
         <img src="/icon/32.png" alt="" width="24" height="24" />
-        <h1>I Love Cookies</h1>
+        <h1 data-i18n="extName">I Love Cookies</h1>
       </header>
 
       <section class="card" id="status-card">
@@ -19,28 +19,26 @@
       </section>
 
       <section id="setup" class="card" hidden>
-        <p>The extension is not active yet. Please confirm what it does first.</p>
-        <button class="primary" id="open-onboarding">Set up I Love Cookies</button>
+        <p data-i18n="popup_setupNeeded"></p>
+        <button class="primary" id="open-onboarding" data-i18n="popup_setupButton"></button>
       </section>
 
       <section class="actions" id="actions">
-        <label class="toggle"><input type="checkbox" id="site-active" /> <span>Accept cookies automatically on this site</span></label>
+        <label class="toggle"><input type="checkbox" id="site-active" /> <span data-i18n="popup_siteActive"></span></label>
         <div class="row wrap">
-          <button id="withdraw" title="Deletes this site's cookies and storage, pauses the extension here and reloads – the banner appears again.">
-            Withdraw consent
-          </button>
-          <button id="report">Report a problem</button>
+          <button id="withdraw" data-i18n="popup_withdraw" data-i18n-title="popup_withdrawTitle"></button>
+          <button id="report" data-i18n="popup_report"></button>
         </div>
-        <a id="search-issues" target="_blank" rel="noopener">Search existing reports for this site</a>
+        <a id="search-issues" target="_blank" rel="noopener" data-i18n="popup_searchReports"></a>
       </section>
 
       <details>
-        <summary class="muted">Action log</summary>
+        <summary class="muted" data-i18n="popup_log"></summary>
         <pre class="log" id="log"></pre>
       </details>
 
       <footer class="row muted">
-        <a href="#" id="open-options">Settings</a>
+        <a href="#" id="open-options" data-i18n="popup_settings"></a>
         <span id="rules-info"></span>
       </footer>
     </main>

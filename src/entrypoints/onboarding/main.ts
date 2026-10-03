@@ -1,6 +1,7 @@
 import '../../assets/ui.css';
 import '../../assets/page.css';
 import { getSettings, updateSettings } from '../../shared/settings';
+import { localizePage } from '../../shared/i18n';
 
 const accept = document.getElementById('accept') as HTMLButtonElement;
 const done = document.getElementById('done') as HTMLElement;
@@ -20,4 +21,5 @@ function showDone() {
   done.hidden = false;
 }
 
+localizePage();
 void main();

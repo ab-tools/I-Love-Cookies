@@ -2,6 +2,7 @@ import { browser } from 'wxt/browser';
 import '../../assets/ui.css';
 import '../../assets/page.css';
 import { getSettings, setSitePaused, updateSettings, type Settings } from '../../shared/settings';
+import { localizePage, translate } from '../../shared/i18n';
 
 type BooleanSetting = 'enabled' | 'debug';
 const TOGGLES: BooleanSetting[] = ['enabled', 'debug'];
@@ -14,8 +15,7 @@ async function render() {
   }
   renderPaused(settings);
   const { version } = browser.runtime.getManifest();
-  (document.getElementById('about') as HTMLElement).textContent =
-    `Version ${version}. Rules: DuckDuckGo autoconsent (MPL-2.0) + I Love Cookies rules.`;
+  (document.getElementById('about') as HTMLElement).textContent = translate('options_aboutText', [version]);
 }
 
 function renderPaused(settings: Settings) {
@@ -26,7 +26,7 @@ function renderPaused(settings: Settings) {
       const name = document.createElement('span');
       name.textContent = site;
       const resume = document.createElement('button');
-      resume.textContent = 'Resume';
+      resume.textContent = translate('options_resume');
       resume.addEventListener('click', async () => renderPaused(await setSitePaused(site, false)));
       li.append(name, resume);
       return li;
@@ -41,4 +41,5 @@ for (const key of TOGGLES) {
   });
 }
 
+localizePage();
 void render();

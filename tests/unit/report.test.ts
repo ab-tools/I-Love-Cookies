@@ -46,7 +46,7 @@ describe('describeState', () => {
     expect(describeState(state({ outcome: 'FULL' })).text).toBe('All cookies accepted');
     expect(describeState(state({ outcome: 'FULL', strategy: 'api' })).details).toContain('didomi API');
     expect(describeState(state()).tone).toBe('bad');
-    expect(describeState(state({ phase: 'paused', pausedReason: 'paused on this site' })).details).toBe(
+    expect(describeState(state({ phase: 'paused', pausedReason: 'sitePaused' })).details).toBe(
       'paused on this site',
     );
     expect(describeState(state({ phase: 'idle', cmp: undefined })).text).toBe('No cookie banner detected');

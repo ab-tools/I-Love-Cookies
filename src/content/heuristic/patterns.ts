@@ -480,6 +480,8 @@ export const ACKNOWLEDGE = [
   'okay',
   'okey',
   'okej',
+  'oké',
+  'ок',
   'got it',
   'i understand',
   'understood',

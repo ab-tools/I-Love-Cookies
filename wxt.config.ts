@@ -1,6 +1,6 @@
 import { resolve } from 'node:path';
 import { defineConfig } from 'wxt';
-import { EXTENSION_NAME, GECKO_ID } from './src/shared/constants';
+import { GECKO_ID } from './src/shared/constants';
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
@@ -13,11 +13,12 @@ export default defineConfig({
   // Source archive for AMO review: everything needed to reproduce the build, nothing else.
   zip: { excludeSources: ['.github/**'] },
   manifest: ({ browser }) => ({
-    name: EXTENSION_NAME,
-    description: 'Automatically accepts ALL cookies on cookie consent banners, so every website works 100 %.',
+    name: '__MSG_extName__',
+    description: '__MSG_extDescription__',
+    default_locale: 'en',
     permissions: ['scripting', 'storage', 'webNavigation', 'browsingData'],
     host_permissions: ['<all_urls>'],
-    action: { default_title: EXTENSION_NAME },
+    action: { default_title: '__MSG_extName__' },
     ...(browser === 'firefox'
       ? {
           browser_specific_settings: {
