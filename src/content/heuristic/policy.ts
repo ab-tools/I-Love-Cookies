@@ -20,7 +20,9 @@ export function isVetoed(button: ButtonCandidate): boolean {
  */
 export function decide(buttons: readonly ButtonCandidate[], hasToggles = false): Decision {
   const allowed = buttons.filter((b) => !isVetoed(b));
-  const first = (cls: ButtonCandidate['cls']) => allowed.find((b) => b.cls === cls);
+  // The most prominent button of a class: call-to-action buttons are large, inline info links small.
+  const first = (cls: ButtonCandidate['cls']) =>
+    allowed.filter((b) => b.cls === cls).reduce<ButtonCandidate | undefined>((best, b) => (!best || b.area > best.area ? b : best), undefined);
 
   const acceptAll = first('ACCEPT_ALL');
   if (acceptAll) return { action: 'click', button: acceptAll, kind: 'accept_all' };

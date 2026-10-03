@@ -37,6 +37,13 @@ describe('evaluateOutcome', () => {
     expect(result.outcome).toBe('FAILED');
   });
 
+  it('is FULL with a leftover dialog element when Consent Mode confirms full consent after the action', () => {
+    const gcm = { updated: true, values: { ad_storage: 'granted', analytics_storage: 'granted', ad_user_data: 'granted', ad_personalization: 'granted' } };
+    const result = evaluateOutcome({ popupVisible: false, popupOnScreen: true, navigatedAway: false, signals: { tcf: tcf({}), gcm } });
+    expect(result.outcome).toBe('FULL');
+    expect(result.reasons.join()).toContain('Consent Mode: 4/4');
+  });
+
   it('treats a stale CMP popup check as closed when its dialog element is not on screen', () => {
     const input = { popupVisible: true, popupOnScreen: false, navigatedAway: false, signals: null };
     expect(evaluateOutcome({ ...input, popupCheckable: true }).outcome).toBe('LIKELY_FULL');

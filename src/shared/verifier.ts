@@ -75,6 +75,12 @@ export function evaluateOutcome(input: VerificationInput): VerificationResult {
   const signals = readSignals(input.signals);
 
   if (input.popupOnScreen) {
+    // Consent Mode updates only count after our action: a site granting everything then confirms the click, and
+    // what remains is a container (e.g. a settings button). TCF data may predate the action and does not.
+    const gcm = readSignals(input.signals?.gcm ? { tcf: null, gcm: input.signals.gcm } : null);
+    if (gcm.verdict === 'full') {
+      return { outcome: 'FULL', reasons: [gcm.reason!, 'dialog element still on screen, site confirms consent'] };
+    }
     return { outcome: 'FAILED', reasons: ['consent dialog still on screen', ...(signals.reason ? [signals.reason] : [])] };
   }
   // The CMP still reports its popup, but its dialog element is not on screen: the CMP check is stale.
