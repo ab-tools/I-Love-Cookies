@@ -42,8 +42,7 @@
   "popup_log": { "message": "Aktionsprotokoll" },
   "popup_logEmpty": { "message": "(leer)" },
   "popup_settings": { "message": "Einstellungen" },
-  "popup_rulesInfo": { "message": "$1 Regeln · autoconsent $2" },
-  "popup_rulesUpdate": { "message": "Update $1" },
+  "popup_moreInfo": { "message": "Mehr Infos" },
 
   "options_title": { "message": "I Love Cookies – Einstellungen" },
   "options_general": { "message": "Allgemein" },

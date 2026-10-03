@@ -81,7 +81,7 @@ async function handleE2eMessage(msg: { action: string }, tabId: number) {
 async function handleUiMessage(msg: UiMessage) {
   switch (msg.type) {
     case 'ilc:getTabState':
-      return { state: await getTabState(msg.tabId), settings: await getSettings(), rules: await rulesInfo() };
+      return { state: await getTabState(msg.tabId), settings: await getSettings() };
     case 'ilc:setSitePaused':
       await pauseSite(msg.tabId, msg.paused);
       return { ok: true };

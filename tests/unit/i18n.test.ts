@@ -19,6 +19,6 @@ describe('translations', () => {
   }
 
   it('fills placeholders', () => {
-    expect(english('popup_rulesInfo', ['631', '16.44.0'])).toBe('631 rules · autoconsent 16.44.0');
+    expect(english('options_rulesUpdated', ['631', '2026.10.4'])).toBe('631 rules active, including rule update 2026.10.4.');
   });
 });

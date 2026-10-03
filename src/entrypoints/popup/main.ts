@@ -6,11 +6,11 @@ import type { Settings } from '../../shared/settings';
 import { exclusionFor } from '../../shared/settings';
 import { describeState } from '../../shared/describe';
 import { localizePage, translate } from '../../shared/i18n';
+import { WEBSITE_URL } from '../../shared/constants';
 
 interface TabInfo {
   state: TabState;
   settings: Settings;
-  rules: { upstreamVersion: string; count: number; update?: string };
 }
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -57,7 +57,7 @@ async function main() {
   $('report-anonymous').addEventListener('click', () => void report(true));
 }
 
-function render({ state, settings, rules }: TabInfo) {
+function render({ state, settings }: TabInfo) {
   const { text, tone, details } = describeState(state, translate);
   $('site').textContent = state.site;
   const status = $('status');
@@ -67,10 +67,6 @@ function render({ state, settings, rules }: TabInfo) {
   $('log').textContent = state.log
     .map((e) => `${new Date(e.t).toLocaleTimeString()} [${e.frameId}] ${e.msg}`)
     .join('\n') || translate('popup_logEmpty');
-  $('rules-info').textContent = [
-    translate('popup_rulesInfo', [String(rules.count), rules.upstreamVersion]),
-    ...(rules.update ? [translate('popup_rulesUpdate', [rules.update])] : []),
-  ].join(' · ');
 
   // Entries other than the site's own domain (parent domains, patterns) can only be changed in the settings.
   const excludedBy = exclusionFor(settings, state.url);
@@ -82,6 +78,7 @@ function render({ state, settings, rules }: TabInfo) {
   $('excluded-by').textContent = byOtherEntry ? translate('popup_excludedBy', [excludedBy]) : '';
 }
 
+$<HTMLAnchorElement>('more-info').href = WEBSITE_URL;
 $('open-options').addEventListener('click', (e) => {
   e.preventDefault();
   void browser.runtime.openOptionsPage();
