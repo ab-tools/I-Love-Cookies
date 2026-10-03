@@ -34,6 +34,13 @@ export const ACCEPTING: ReadonlySet<ButtonClass> = new Set(['ACCEPT_ALL', 'ACCEP
 
 /** Longer texts are sentences, not button labels. */
 const MAX_LABEL_LENGTH = 48;
+/** Bare nouns: tabs or headings of a dialog ("Consent | Details | About cookies"), never answers. */
+const NOUN_ONLY = new Set(
+  ['consent', 'toestemming', 'consentement', 'consenso', 'consentimiento', 'samtykke', 'samtycke', 'suostumus'].map((w) =>
+    w.normalize('NFKD').replace(/\p{M}/gu, ''),
+  ),
+);
+
 /** Labels naming more than the necessary category ("Essential + analytics") are not "necessary only". */
 const OPTIONAL_COOKIES = /non essential|nicht (notwendig|essenziell)|optional|\+|analy|statisti|marketing|komfort|tracking/;
 
@@ -78,6 +85,8 @@ const RE = {
 export function classifyLabel(text: string): ButtonClass {
   const label = normalizeLabel(text);
   if (!label || label.length > MAX_LABEL_LENGTH) return 'OTHER';
+  // A bare noun ("Consent", "Zustimmung") is a tab or heading of the dialog, not an answer.
+  if (NOUN_ONLY.has(label)) return 'OTHER';
   if (RE.pay.test(label)) return 'PAY';
   if (RE.login.test(label)) return 'LOGIN';
   if (RE.age.test(label)) return 'OTHER';
