@@ -48,7 +48,14 @@ generic heuristic: unknown banner ────► if no rule handled it (or a ru
   - measured against 7,005 labelled real banner buttons: ≥ 99.5 % precision for accepting labels.
   - Rules always get a head start; a real user click inside the banner stops all automation on that page.
 - **Loop guards:** one actor per tab, ≤ 2 attempts per frame and page load, daily per-site limits.
-- **No data collection.** Problem reports are GitHub issues the user opens and submits.
+- **Rule updates:** once a day the extension downloads a rule set (`rules.json` plus its SHA-256 checksum) from this
+  repository's `rules` release. It contains declarative rules and strategy choices only – no code; rules may only
+  call snippets bundled with the extension ([src/shared/rule-set.ts](src/shared/rule-set.ts) validates every
+  step). Invalid or older sets are ignored, and the bundled rules always remain the fallback. Can be switched off
+  in the settings.
+- **No data collection.** Problem reports are GitHub issues the user opens and submits. Before the issue opens,
+  the popup shows everything it contains: page address without parameters, the banner's structure, text and
+  buttons (with their classified labels), detected consent platforms and the extension's log.
 
 ## Development
 

@@ -16,7 +16,7 @@ export default defineConfig({
     name: '__MSG_extName__',
     description: '__MSG_extDescription__',
     default_locale: 'en',
-    permissions: ['scripting', 'storage', 'webNavigation', 'browsingData'],
+    permissions: ['scripting', 'storage', 'webNavigation', 'browsingData', 'alarms'],
     host_permissions: ['<all_urls>'],
     action: { default_title: '__MSG_extName__' },
     ...(browser === 'firefox'

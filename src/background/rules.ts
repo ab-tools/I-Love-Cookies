@@ -2,6 +2,8 @@ import type { AutoConsentCMPRule, RuleBundle } from '@duckduckgo/autoconsent';
 import bundle from '../rules/generated/rules.json';
 import consentOMatic from '../rules/consent-o-matic.json';
 import type { ComRule } from '../content/consent-o-matic';
+import { mergeRules, type RuleSet } from '../shared/rule-set';
+import { getRuleSet } from './rule-updates';
 
 interface GeneratedBundle {
   upstreamVersion: string;
@@ -52,6 +54,22 @@ export function selectRules(
 
 export type IlcRuleBundle = RuleBundle & { consentOMatic: ComRule[] };
 
-export function rulesForFrame(url: string, mainFrame: boolean): IlcRuleBundle {
-  return { autoconsent: selectRules(BUNDLE.autoconsent, { url, mainFrame }), consentOMatic: consentOMatic as unknown as ComRule[] };
+const BUNDLED_COM = consentOMatic as unknown as ComRule[];
+let merged: { set: RuleSet | null; autoconsent: AutoConsentCMPRule[]; consentOMatic: ComRule[] } | null = null;
+
+/** Bundled rules with the active downloaded rule set applied. */
+export function activeRules(set: RuleSet | null): { autoconsent: AutoConsentCMPRule[]; consentOMatic: ComRule[] } {
+  if (merged?.set !== set) {
+    merged = {
+      set,
+      autoconsent: set ? mergeRules(BUNDLE.autoconsent, set.autoconsent, set.disabled) : BUNDLE.autoconsent,
+      consentOMatic: set ? mergeRules(BUNDLED_COM, set.consentOMatic, set.disabled) : BUNDLED_COM,
+    };
+  }
+  return merged;
+}
+
+export async function rulesForFrame(url: string, mainFrame: boolean): Promise<IlcRuleBundle> {
+  const rules = activeRules(await getRuleSet());
+  return { autoconsent: selectRules(rules.autoconsent, { url, mainFrame }), consentOMatic: rules.consentOMatic };
 }

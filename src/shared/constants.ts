@@ -6,6 +6,9 @@ export const GECKO_ID = 'i-love-cookies@ilovecookies.dev';
 /** GitHub repository that receives "Report a problem" issues. TODO: set to the real repository before release. */
 export const REPO_URL = 'https://github.com/i-love-cookies/i-love-cookies';
 
+/** Published rule updates (declarative rules only) and their SHA-256 checksum (same URL + ".sha256"). */
+export const RULE_UPDATE_URL = `${REPO_URL}/releases/download/rules/rules.json`;
+
 /** Name of the issue form in .github/ISSUE_TEMPLATE. */
 export const ISSUE_TEMPLATE = 'site-report.yml';
 
@@ -42,4 +45,9 @@ export const LIMITS = {
   heuristicActMs: 20000,
   /** Entries kept in the per-tab action log. */
   logEntries: 60,
+  /** Rule update check interval and maximum download size. */
+  ruleUpdateHours: 24,
+  ruleSetMaxBytes: 2_000_000,
+  /** Max time for one frame to answer a report snapshot request. */
+  snapshotTimeoutMs: 3000,
 } as const;

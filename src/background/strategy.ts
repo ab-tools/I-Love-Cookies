@@ -2,6 +2,7 @@ import { browser } from 'wxt/browser';
 import type { Strategy } from '../shared/messages';
 import type { ilcSnippets } from './snippets';
 import measured from './strategy-data.json';
+import { getRuleSet } from './rule-updates';
 
 export type ApiSnippetId = Extract<keyof typeof ilcSnippets, `ILC_API_${string}`>;
 
@@ -66,9 +67,13 @@ interface MeasuredStrategy {
 }
 const MEASURED = (measured as { strategies: Record<string, MeasuredStrategy> }).strategies;
 
-export function strategyFor(cmp: string): CmpStrategy {
+/** overrides: strategy choices from a downloaded rule set (they take precedence over the bundled ones). */
+export function strategyFor(cmp: string, overrides?: Record<string, MeasuredStrategy>): CmpStrategy {
   const base = CMP_STRATEGIES[cmp] ?? { primary: 'rule' };
-  return MEASURED[cmp]?.primary === 'api' && base.api ? { ...base, primary: 'api' } : base;
+  const override = overrides?.[cmp]?.primary;
+  if (override === 'rule') return { ...base, primary: 'rule' };
+  const primary = override ?? MEASURED[cmp]?.primary;
+  return primary === 'api' && base.api ? { ...base, primary: 'api' } : base;
 }
 
 /**
@@ -76,7 +81,7 @@ export function strategyFor(cmp: string): CmpStrategy {
  * ('rule' = rule only without API fallback, 'api' = API first).
  */
 export async function effectiveStrategy(cmp: string): Promise<CmpStrategy> {
-  const strategy = strategyFor(cmp);
+  const strategy = strategyFor(cmp, (await getRuleSet())?.strategies);
   if (import.meta.env.MODE !== 'e2e') return strategy;
   const { e2eForceStrategy } = await browser.storage.local.get('e2eForceStrategy');
   if (e2eForceStrategy === 'rule') return { primary: 'rule' };

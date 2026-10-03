@@ -9,6 +9,8 @@ export interface Settings {
   pausedSites: string[];
   /** Verbose autoconsent logging in the page console. */
   debug: boolean;
+  /** Download rule updates daily (declarative rules only). */
+  remoteRules: boolean;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -16,6 +18,7 @@ export const DEFAULT_SETTINGS: Settings = {
   onboardingAccepted: false,
   pausedSites: [],
   debug: false,
+  remoteRules: true,
 };
 
 export async function getSettings(): Promise<Settings> {

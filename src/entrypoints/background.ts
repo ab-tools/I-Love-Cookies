@@ -3,7 +3,9 @@ import type { ContentScriptMessage } from '@duckduckgo/autoconsent';
 import type { UiMessage } from '../shared/messages';
 import { getSettings, updateSettings } from '../shared/settings';
 import { getTabState, handleContentMessage, onInPageNavigation, onTabRemoved, onTopLevelCommitted } from '../background/orchestrator';
-import { RULES_INFO } from '../background/rules';
+import { RULES_INFO, activeRules } from '../background/rules';
+import { RULE_UPDATE_ALARM, checkForRuleUpdate, getRuleSet, getRuleUpdateStatus, invalidateRuleSet, scheduleRuleUpdates } from '../background/rule-updates';
+import { collectReportSnapshot } from '../background/report-snapshot';
 import { pauseSite, withdrawConsent } from '../background/site-actions';
 
 export default defineBackground(() => {
@@ -14,12 +16,20 @@ export default defineBackground(() => {
     }
   });
 
+  void scheduleRuleUpdates();
+  browser.alarms.onAlarm.addListener((alarm) => {
+    if (alarm.name === RULE_UPDATE_ALARM) void checkForRuleUpdate();
+  });
+  browser.storage.onChanged.addListener((changes, area) => {
+    if ((area === 'sync' && changes.settings) || (area === 'local' && changes.ruleSet)) invalidateRuleSet();
+  });
+
   browser.runtime.onMessage.addListener((message: unknown, sender, sendResponse) => {
     const msg = message as { type?: string };
     if (typeof msg?.type !== 'string') return false;
 
-    // Messages from extension pages (popup / options).
-    if (msg.type.startsWith('ilc:') && !sender.tab) {
+    // Messages from extension pages (popup / options – the options page may run in a tab).
+    if (msg.type.startsWith('ilc:') && (!sender.tab || sender.url?.startsWith(browser.runtime.getURL('/')))) {
       handleUiMessage(msg as UiMessage).then(sendResponse, (error) => sendResponse({ error: String(error) }));
       return true;
     }
@@ -77,12 +87,25 @@ async function handleE2eMessage(msg: { action: string }, tabId: number) {
 async function handleUiMessage(msg: UiMessage) {
   switch (msg.type) {
     case 'ilc:getTabState':
-      return { state: await getTabState(msg.tabId), settings: await getSettings(), rules: RULES_INFO };
+      return { state: await getTabState(msg.tabId), settings: await getSettings(), rules: await rulesInfo() };
     case 'ilc:setSitePaused':
       await pauseSite(msg.tabId, msg.paused);
       return { ok: true };
     case 'ilc:withdrawConsent':
       await withdrawConsent(msg.tabId);
       return { ok: true };
+    case 'ilc:collectReport':
+      return collectReportSnapshot(msg.tabId);
+    case 'ilc:getRuleStatus':
+      return { status: await getRuleUpdateStatus(), rules: await rulesInfo() };
+    case 'ilc:checkRuleUpdate':
+      return { status: await checkForRuleUpdate(), rules: await rulesInfo() };
   }
+}
+
+/** Rule counts and versions for the popup and options page. */
+async function rulesInfo() {
+  const set = await getRuleSet();
+  const rules = activeRules(set);
+  return { ...RULES_INFO, count: rules.autoconsent.length + rules.consentOMatic.length, update: set?.version };
 }

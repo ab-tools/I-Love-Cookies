@@ -32,6 +32,16 @@
         <a id="search-issues" target="_blank" rel="noopener" data-i18n="popup_searchReports"></a>
       </section>
 
+      <section class="card report" id="report-preview" hidden>
+        <strong data-i18n="popup_reportTitle"></strong>
+        <p class="muted small" data-i18n="popup_reportHint"></p>
+        <pre class="log" id="report-text"></pre>
+        <div class="row wrap">
+          <button class="primary" id="report-open" data-i18n="popup_reportOpen" disabled></button>
+          <button id="report-cancel" data-i18n="popup_reportCancel"></button>
+        </div>
+      </section>
+
       <details>
         <summary class="muted" data-i18n="popup_log"></summary>
         <pre class="log" id="log"></pre>

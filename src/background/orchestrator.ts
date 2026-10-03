@@ -249,7 +249,7 @@ async function onInit(tabId: number, frameId: number, frameUrl: string, tabUrl: 
 
   await sendToFrame(tabId, frameId, {
     type: 'initResp',
-    rules: rulesForFrame(frameUrl, frameId === 0),
+    rules: await rulesForFrame(frameUrl, frameId === 0),
     config: autoconsentConfig(!pausedReason, settings.debug) as Config,
   }).catch(() => undefined);
 }

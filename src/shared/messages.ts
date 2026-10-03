@@ -1,4 +1,5 @@
 import type { Outcome } from './verifier';
+import type { ButtonClass } from '../content/heuristic/text';
 
 export type Phase =
   | 'idle' // nothing detected (yet)
@@ -55,7 +56,10 @@ export interface TabState {
 export type UiMessage =
   | { type: 'ilc:getTabState'; tabId: number }
   | { type: 'ilc:setSitePaused'; tabId: number; paused: boolean }
-  | { type: 'ilc:withdrawConsent'; tabId: number };
+  | { type: 'ilc:withdrawConsent'; tabId: number }
+  | { type: 'ilc:collectReport'; tabId: number }
+  | { type: 'ilc:getRuleStatus' }
+  | { type: 'ilc:checkRuleUpdate' };
 
 /** Messages from the background to our part of the content script. */
 export type IlcContentMessage =
@@ -73,7 +77,9 @@ export type IlcContentMessage =
   | { type: 'ilc:unlockScroll' }
   /** In-page navigation: look for new banners. */
   | { type: 'ilc:rescan' }
-  | { type: 'ilc:heuristicAct' };
+  | { type: 'ilc:heuristicAct' }
+  /** Problem report: describe this frame's consent UI. */
+  | { type: 'ilc:reportSnapshot' };
 
 export interface FrameVerification {
   /** autoconsent's popup check; null if no CMP instance in this frame */
@@ -84,4 +90,40 @@ export interface FrameVerification {
   popupCheckable: boolean;
   scrollLocked: boolean;
   url: string;
+}
+
+/** A consent banner as described in problem reports. */
+export interface BannerSnapshot {
+  /** Selectors of up to three ancestors and the banner element, outermost first. */
+  path: string[];
+  /** The banner renders into a shadow root. */
+  shadow: boolean;
+  score: number;
+  /** Share of the viewport covered (0..1). */
+  area: number;
+  /** Start of the banner text. */
+  text: string;
+  buttons: { label: string; cls: ButtonClass; selector: string }[];
+}
+
+export interface FrameSnapshot {
+  /** Without query string and fragment. */
+  url: string;
+  top: boolean;
+  /** CMPs detected by rules in this frame, and those whose popup was found. */
+  cmps: string[];
+  popups: string[];
+  banner?: BannerSnapshot;
+  /** Hosts of third-party scripts (top frame only). */
+  scriptHosts?: string[];
+  scrollLocked: boolean;
+}
+
+/** Structured part of a problem report, collected when the user opens the report preview. */
+export interface ReportSnapshot {
+  frames: FrameSnapshot[];
+  /** TCF / Google Consent Mode state as read from the page. */
+  signals: unknown;
+  /** Version of the active downloaded rule set. */
+  ruleSet?: string;
 }

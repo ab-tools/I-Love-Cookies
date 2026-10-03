@@ -3,9 +3,15 @@ import '../../assets/ui.css';
 import '../../assets/page.css';
 import { getSettings, setSitePaused, updateSettings, type Settings } from '../../shared/settings';
 import { localizePage, translate } from '../../shared/i18n';
+import type { RuleUpdateStatus } from '../../background/rule-updates';
 
-type BooleanSetting = 'enabled' | 'debug';
-const TOGGLES: BooleanSetting[] = ['enabled', 'debug'];
+type BooleanSetting = 'enabled' | 'debug' | 'remoteRules';
+const TOGGLES: BooleanSetting[] = ['enabled', 'debug', 'remoteRules'];
+
+interface RuleInfo {
+  status: RuleUpdateStatus;
+  rules: { count: number; update?: string };
+}
 
 async function render() {
   const settings = await getSettings();
@@ -14,9 +20,36 @@ async function render() {
     (document.getElementById(key) as HTMLInputElement).checked = settings[key];
   }
   renderPaused(settings);
+  checkButton.disabled = !settings.remoteRules;
   const { version } = browser.runtime.getManifest();
   (document.getElementById('about') as HTMLElement).textContent = translate('options_aboutText', [version]);
+  renderRules((await browser.runtime.sendMessage({ type: 'ilc:getRuleStatus' })) as RuleInfo);
 }
+
+function renderRules({ status, rules }: RuleInfo) {
+  (document.getElementById('rules-status') as HTMLElement).textContent = rules.update
+    ? translate('options_rulesUpdated', [String(rules.count), rules.update])
+    : translate('options_rulesBundled', [String(rules.count)]);
+  (document.getElementById('rules-checked') as HTMLElement).textContent = status.error
+    ? translate('options_rulesError', [status.error])
+    : status.checkedAt
+      ? translate('options_rulesChecked', [new Date(status.checkedAt).toLocaleString()])
+      : translate('options_rulesNever');
+}
+
+const checkButton = document.getElementById('rules-check') as HTMLButtonElement;
+const remoteRules = document.getElementById('remoteRules') as HTMLInputElement;
+
+async function refreshRules(check: boolean) {
+  checkButton.disabled = true;
+  try {
+    renderRules((await browser.runtime.sendMessage({ type: check ? 'ilc:checkRuleUpdate' : 'ilc:getRuleStatus' })) as RuleInfo);
+  } finally {
+    checkButton.disabled = !remoteRules.checked;
+  }
+}
+
+checkButton.addEventListener('click', () => void refreshRules(true));
 
 function renderPaused(settings: Settings) {
   const list = document.getElementById('paused') as HTMLUListElement;
@@ -36,8 +69,10 @@ function renderPaused(settings: Settings) {
 }
 
 for (const key of TOGGLES) {
-  document.getElementById(key)!.addEventListener('change', (e) => {
-    void updateSettings({ [key]: (e.target as HTMLInputElement).checked });
+  document.getElementById(key)!.addEventListener('change', async (e) => {
+    const checked = (e.target as HTMLInputElement).checked;
+    await updateSettings({ [key]: checked });
+    if (key === 'remoteRules') await refreshRules(checked);
   });
 }
 

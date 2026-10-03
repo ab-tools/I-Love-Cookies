@@ -94,6 +94,11 @@ export class HeuristicController {
     return acceptBanner(this.banner);
   }
 
+  /** Banner found by the last scan. */
+  get lastBanner(): Element | null {
+    return this.banner;
+  }
+
   /** null if this frame never had a heuristic banner. Containers often stay in the page empty, so the banner
    * counts as shown only while it still has visible, clickable buttons. */
   bannerOnScreen(): boolean | null {

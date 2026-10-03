@@ -79,9 +79,9 @@ describe('selectRules', () => {
     expect(names).not.toContain('broken-pattern');
   });
 
-  it('sends far fewer rules to iframes than to the main frame', () => {
-    const top = rulesForFrame('https://news.example/', true).autoconsent.length;
-    const frame = rulesForFrame('https://cdn.example/frame', false).autoconsent.length;
+  it('sends far fewer rules to iframes than to the main frame', async () => {
+    const top = (await rulesForFrame('https://news.example/', true)).autoconsent.length;
+    const frame = (await rulesForFrame('https://cdn.example/frame', false)).autoconsent.length;
     expect(frame).toBeLessThan(top / 3);
   });
 });

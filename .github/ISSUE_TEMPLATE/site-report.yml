@@ -42,6 +42,12 @@ body:
       description: Filled in automatically by the extension (detected consent platform, strategy, verification result, action log).
       render: text
   - type: textarea
+    id: diagnostics
+    attributes:
+      label: Banner data
+      description: Filled in automatically by the extension (banner structure, button labels, detected consent platforms) – used to write a rule for the site.
+      render: json
+  - type: textarea
     id: notes
     attributes:
       label: Anything else?

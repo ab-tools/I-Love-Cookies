@@ -26,6 +26,18 @@ summary {
   cursor: pointer;
   font-size: 12px;
 }
+.report {
+  display: grid;
+  gap: 6px;
+}
+.report p {
+  margin: 0;
+}
+#report-text {
+  max-height: 220px;
+  overflow: auto;
+  font-size: 11px;
+}
 #search-issues {
   font-size: 12px;
 }

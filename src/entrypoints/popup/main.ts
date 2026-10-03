@@ -1,17 +1,17 @@
 import { browser } from 'wxt/browser';
 import '../../assets/ui.css';
 import './style.css';
-import type { TabState, UiMessage } from '../../shared/messages';
+import type { ReportSnapshot, TabState, UiMessage } from '../../shared/messages';
 import type { Settings } from '../../shared/settings';
 import { isSitePaused } from '../../shared/settings';
-import { buildIssueUrl, searchExistingIssuesUrl } from '../../shared/report';
+import { buildReport, searchExistingIssuesUrl, type Report } from '../../shared/report';
 import { describeState } from '../../shared/describe';
 import { localizePage, translate } from '../../shared/i18n';
 
 interface TabInfo {
   state: TabState;
   settings: Settings;
-  rules: { upstreamVersion: string; count: number };
+  rules: { upstreamVersion: string; count: number; update?: string };
 }
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -40,9 +40,22 @@ async function main() {
     await send({ type: 'ilc:withdrawConsent', tabId });
     window.close();
   });
+  let report: Report | null = null;
   $('report').addEventListener('click', async () => {
-    const url = buildIssueUrl(info.state, { browser: import.meta.env.BROWSER, userAgent: navigator.userAgent });
-    await browser.tabs.create({ url });
+    $('actions').hidden = true;
+    $('report-preview').hidden = false;
+    $('report-text').textContent = translate('popup_reportCollecting');
+    const snapshot = await send<ReportSnapshot>({ type: 'ilc:collectReport', tabId }).catch(() => undefined);
+    report = buildReport(info.state, { browser: import.meta.env.BROWSER, userAgent: navigator.userAgent }, snapshot);
+    $('report-text').textContent = [report.title, '', report.details, ...(report.diagnostics ? ['', JSON.stringify(JSON.parse(report.diagnostics), null, 1)] : [])].join('\n');
+    $<HTMLButtonElement>('report-open').disabled = false;
+  });
+  $('report-open').addEventListener('click', async () => {
+    if (report) await browser.tabs.create({ url: report.url });
+  });
+  $('report-cancel').addEventListener('click', () => {
+    $('report-preview').hidden = true;
+    $('actions').hidden = false;
   });
 }
 
@@ -56,7 +69,10 @@ function render({ state, settings, rules }: TabInfo) {
   $('log').textContent = state.log
     .map((e) => `${new Date(e.t).toLocaleTimeString()} [${e.frameId}] ${e.msg}`)
     .join('\n') || translate('popup_logEmpty');
-  $('rules-info').textContent = translate('popup_rulesInfo', [String(rules.count), rules.upstreamVersion]);
+  $('rules-info').textContent = [
+    translate('popup_rulesInfo', [String(rules.count), rules.upstreamVersion]),
+    ...(rules.update ? [translate('popup_rulesUpdate', [rules.update])] : []),
+  ].join(' · ');
 
   const setupNeeded = !settings.onboardingAccepted;
   $('setup').hidden = !setupNeeded;

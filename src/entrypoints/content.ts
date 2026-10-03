@@ -10,6 +10,7 @@ import { clickDeepUntilGone, isDeepVisible, isOnScreen } from '../content/dom';
 import { ConsentOMaticCMP, type ComRule } from '../content/consent-o-matic';
 import { HeuristicController } from '../content/heuristic/controller';
 import { announceFrame, frameInfo, listenForFrameTokens } from '../content/frames';
+import { collectFrameSnapshot } from '../content/report-snapshot';
 
 /**
  * Runs in every frame at document_start (isolated world).
@@ -75,6 +76,17 @@ export default defineContentScript({
       if (msg?.type === 'ilc:heuristicAct') {
         heuristic.act().then(sendResponse, (error: unknown) => sendResponse({ done: false, clicked: [], toggled: 0, partial: false, reason: String(error) }));
         return true;
+      }
+      if (msg?.type === 'ilc:reportSnapshot') {
+        sendResponse(
+          collectFrameSnapshot({
+            cmps: consent.state.detectedCmps,
+            popups: consent.state.detectedPopups,
+            cmpContainers: consent.rules.filter((r) => consent.state.detectedCmps.includes(r.name)).flatMap((r) => r.prehideSelectors ?? []),
+            knownBanner: heuristic.lastBanner,
+          }),
+        );
+        return false;
       }
       if (msg?.type === 'ilc:click') {
         clickDeepUntilGone((msg as Extract<IlcContentMessage, { type: 'ilc:click' }>).chain).then(sendResponse, () => sendResponse(false));
