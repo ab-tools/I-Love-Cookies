@@ -140,10 +140,17 @@ async function selectAllAndSave(layer: Element, result: HeuristicResult): Promis
   // "Select all" may relabel or move the save button: look in the layer, then in any consent banner now shown.
   const saveIn = (el: Element) =>
     extractButtons(el).find((b) => !isVetoed(b) && (b.cls === 'ACCEPT_ALL' || b.cls === 'SAVE' || b.cls === 'ACCEPT'));
-  const save = (layer.isConnected ? saveIn(layer) : undefined) ?? findConsentBanners().map((b) => saveIn(b.element)).find(Boolean);
+  let save = (layer.isConnected ? saveIn(layer) : undefined) ?? findConsentBanners().map((b) => saveIn(b.element)).find(Boolean);
+  if (!save && layer.isConnected) {
+    // Switching categories on can expand texts and push the save button out of view.
+    const controls = layer.querySelectorAll<HTMLElement>('button,input[type=submit],input[type=button],[role=button]');
+    controls[controls.length - 1]?.scrollIntoView?.({ block: 'center' });
+    await sleep(200);
+    save = saveIn(layer);
+  }
   if (!save) {
-    // "Select all" answered the banner by itself (it closed): the verifier decides.
-    if (selectAll && !(layer.isConnected && isOnScreen(layer))) {
+    // "Select all" or a switched category answered the banner by itself (it closed): the verifier decides.
+    if ((selectAll || toggled > 0) && !(layer.isConnected && isOnScreen(layer))) {
       result.done = true;
       return result;
     }
