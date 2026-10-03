@@ -7,8 +7,8 @@ export interface ButtonCandidate {
   cls: ButtonClass;
   /** Following this element would leave the page (link to another URL or new tab). */
   navigates: boolean;
-  /** On-screen size in px² (0 without layout information). */
-  area: number;
+  /** Visual weight: height first (call-to-action buttons are tall, text links and strips flat), then width. */
+  prominence: number;
 }
 
 /** Real controls. */
@@ -119,6 +119,6 @@ export function extractButtons(banner: Element): ButtonCandidate[] {
       if (!box || !isHitTestable(el, banner, box) || (el as HTMLButtonElement).disabled) return [];
       const label = labelOf(el);
       const rect = box.getBoundingClientRect();
-      return label ? [{ element: box, label, cls: classifyLabel(label), navigates: navigatesAway(el), area: Math.round(rect.width * rect.height) }] : [];
+      return label ? [{ element: box, label, cls: classifyLabel(label), navigates: navigatesAway(el), prominence: Math.round(Math.min(rect.height, 64) * 1000 + Math.min(rect.width, 400)) }] : [];
     });
 }

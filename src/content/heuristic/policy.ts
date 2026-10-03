@@ -21,9 +21,9 @@ export function isVetoed(button: ButtonCandidate): boolean {
 export function decide(buttons: readonly ButtonCandidate[], hasToggles = false): Decision {
   const allowed = buttons.filter((b) => !isVetoed(b));
   // The most prominent button of a class: real buttons before links and other clickable elements, then the
-  // largest (call-to-action buttons are large, inline info links small).
+  // visually heaviest (call-to-action buttons over inline info links and expander strips).
   const rank = (b: ButtonCandidate) => (b.element.closest('button,input,[role=button]') ? 2 : b.element.closest('a') ? 1 : 0);
-  const better = (a: ButtonCandidate, b: ButtonCandidate) => rank(a) > rank(b) || (rank(a) === rank(b) && a.area > b.area);
+  const better = (a: ButtonCandidate, b: ButtonCandidate) => rank(a) > rank(b) || (rank(a) === rank(b) && a.prominence > b.prominence);
   const first = (cls: ButtonCandidate['cls']) =>
     allowed.filter((b) => b.cls === cls).reduce<ButtonCandidate | undefined>((best, b) => (!best || better(b, best) ? b : best), undefined);
 
