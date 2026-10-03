@@ -57,6 +57,8 @@ export const LOGIN = [
 
 /** Explicit rejection. */
 export const REJECT = [
+  '同意しません',
+  '不同意',
   `reject${W}`,
   `decline${W}`,
   'deny',
@@ -225,7 +227,7 @@ export const AGE = [
 
 /** Accept / save the current selection (not "all") – part of the settings flow, never the main accept. */
 export const SAVE = [
-  '(accept|allow|confirm|save|submit|use) (my |the |current )?(selection|selected|choices?|preferences|settings)',
+  '(accept|allow|approve|confirm|save|submit|use) (my |the |current )?(selection|selected|choices?|preferences|settings)',
   'save (and|&) (close|exit|continue)',
   '(save|store) (cookie |my )?(settings|preferences|choices)',
   '(auswahl|einstellungen|präferenzen) (speichern|akzeptieren|bestätigen|übernehmen|erlauben|zulassen)',
@@ -406,6 +408,11 @@ export const ACCEPT = [
   'setuju',
   'de acord',
   'jazeker',
+  'approve',
+  'đồng ý',
+  '同意します',
+  '同意する',
+  '我同意',
   `góðt(ak|aka)`,
   'góðkenni',
   `samþykk${W}`,
@@ -553,6 +560,7 @@ export const ACKNOWLEDGE = [
   'alles klar',
   '(zur )?kenntnis genommen',
   'rendben',
+  '(hinweis )?gelesen',
   'continue',
   'geht klar',
   'compris',

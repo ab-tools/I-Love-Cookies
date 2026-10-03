@@ -1,5 +1,5 @@
 import { isOnScreen, shadowRootOf } from '../dom';
-import { classifyLabel, type ButtonClass } from './text';
+import { ACCEPTING, classifyLabel, type ButtonClass } from './text';
 
 export interface ButtonCandidate {
   element: HTMLElement;
@@ -30,7 +30,11 @@ function labelOf(el: HTMLElement): string {
   return [before, after].filter((c) => c && c !== 'none' && c !== 'normal').join(' ').replace(/^"|"$/g, '');
 }
 
-function navigatesAway(el: HTMLElement): boolean {
+/**
+ * Following the element would leave the page. Accepting links to the same site (consent endpoints like
+ * "/cookies/accept" or "?cookie_all=1" that return to the page) do not count; other links, other sites and new tabs do.
+ */
+function navigatesAway(el: HTMLElement, accepting: boolean): boolean {
   const anchor = el.closest('a[href]') as HTMLAnchorElement | null;
   if (!anchor) return false;
   const href = anchor.getAttribute('href') ?? '';
@@ -40,7 +44,8 @@ function navigatesAway(el: HTMLElement): boolean {
   try {
     // Same page with only a different query (e.g. "?do=AcceptConsent") is a consent action, not leaving.
     const url = new URL(anchor.href, location.href);
-    return url.origin !== location.origin || url.pathname !== location.pathname;
+    if (url.origin !== location.origin) return true;
+    return url.pathname !== location.pathname && !accepting;
   } catch {
     return true;
   }
@@ -119,6 +124,7 @@ export function extractButtons(banner: Element): ButtonCandidate[] {
       if (!box || !isHitTestable(el, banner, box) || (el as HTMLButtonElement).disabled) return [];
       const label = labelOf(el);
       const rect = box.getBoundingClientRect();
-      return label ? [{ element: box, label, cls: classifyLabel(label), navigates: navigatesAway(el), prominence: Math.round(Math.min(rect.height, 64) * 1000 + Math.min(rect.width, 400)) }] : [];
+      const cls = classifyLabel(label);
+      return label ? [{ element: box, label, cls, navigates: navigatesAway(el, ACCEPTING.has(cls)), prominence: Math.round(Math.min(rect.height, 64) * 1000 + Math.min(rect.width, 400)) }] : [];
     });
 }

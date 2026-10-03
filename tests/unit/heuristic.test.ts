@@ -86,6 +86,21 @@ describe('banner detection – special cases', () => {
   });
 });
 
+describe('links', () => {
+  it('allows accepting links to the same site, but never links to other sites or new tabs', () => {
+    document.body.innerHTML = `
+      <div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT}
+        <a id="same" href="/cookies/accept">Accept all cookies</a>
+        <a id="info" href="/privacy">Privacy policy</a>
+        <a id="away" href="https://other.example/accept">Accept</a>
+        <a id="tab" href="/accept" target="_blank">Accept</a></div>`;
+    const buttons = extractButtons(document.getElementById('cmp')!);
+    const nav = Object.fromEntries(buttons.map((b) => [b.element.id, b.navigates]));
+    expect(nav).toEqual({ same: false, info: true, away: true, tab: true });
+    expect(decide(buttons)).toMatchObject({ action: 'click', button: { label: 'Accept all cookies' } });
+  });
+});
+
 describe('decision', () => {
   it('prefers accept all and never clicks reject, paid, login or navigating buttons', () => {
     document.body.innerHTML = `
