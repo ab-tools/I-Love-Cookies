@@ -39,7 +39,6 @@
   "popup_reportOpening": { "message": "GitHub wird geöffnet…" },
   "popup_reportSending": { "message": "Meldung wird gesendet…" },
   "popup_reportFailed": { "message": "Die Meldung konnte nicht gesendet werden. Bitte versuche es erneut oder melde über GitHub." },
-  "popup_reportNoConsent": { "message": "Meldungen können nur gesendet werden, wenn du es in der Abfrage von Firefox erlaubst." },
   "popup_log": { "message": "Aktionsprotokoll" },
   "popup_logEmpty": { "message": "(leer)" },
   "popup_settings": { "message": "Einstellungen" },

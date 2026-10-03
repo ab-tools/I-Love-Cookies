@@ -6,7 +6,6 @@ import type { Settings } from '../../shared/settings';
 import { exclusionFor } from '../../shared/settings';
 import { describeState } from '../../shared/describe';
 import { localizePage, translate } from '../../shared/i18n';
-import { REPORT_DATA_COLLECTION } from '../../shared/constants';
 
 interface TabInfo {
   state: TabState;
@@ -40,10 +39,6 @@ async function main() {
     $('report-choice').hidden = false;
   });
   const report = async (anonymous: boolean) => {
-    // Firefox asks before an add-on transmits data; the request must start within the click.
-    if (import.meta.env.FIREFOX) {
-      void browser.permissions.request({ data_collection: REPORT_DATA_COLLECTION } as unknown as Parameters<typeof browser.permissions.request>[0]).catch(() => false);
-    }
     $('report-choice').hidden = true;
     const status = $('report-status');
     status.hidden = false;
@@ -55,7 +50,7 @@ async function main() {
       return;
     }
     status.className = 'bad small';
-    status.textContent = translate(result?.error === 'consent' ? 'popup_reportNoConsent' : 'popup_reportFailed');
+    status.textContent = translate('popup_reportFailed');
     $('report-choice').hidden = false;
   };
   $('report-github').addEventListener('click', () => void report(false));
