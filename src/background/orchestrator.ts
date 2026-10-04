@@ -208,6 +208,8 @@ export function handleContentMessage(msg: ContentScriptMessage, tabId: number, f
       return withTab(tabId, () => onHeuristicFound(tabId, frameId, msg as unknown as HeuristicScan));
     case 'ilc:userDecided' as string:
       return withTab(tabId, () => onUserDecided(tabId, frameId));
+    case 'ilc:pageClick' as string:
+      return runSnippet(tabId, frameId, 'ILC_CLICK_MARKED', [(msg as unknown as { token: string }).token]).catch(() => false);
     case 'autoconsentError':
       return withTab(tabId, async () => {
         const state = await loadState(tabId);

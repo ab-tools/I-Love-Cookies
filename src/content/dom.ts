@@ -48,6 +48,16 @@ export function isOnScreen(el: Element): boolean {
   return rect.bottom > 0 && rect.right > 0 && rect.top < window.innerHeight && rect.left < window.innerWidth;
 }
 
+let pageWorldClick: ((el: HTMLElement) => void) | null = null;
+
+/**
+ * Clicks that must run in the page's world: the content script's CSP blocks "javascript:" link targets.
+ * Without a handler (tests) such links are clicked here.
+ */
+export function setPageWorldClick(handler: (el: HTMLElement) => void): void {
+  pageWorldClick = handler;
+}
+
 /** Clicks like a user would: pointer/mouse events at the element's centre, then click(). */
 export function realisticClick(el: Element): void {
   (el as HTMLElement).scrollIntoView?.({ block: 'center' });
@@ -64,6 +74,11 @@ export function realisticClick(el: Element): void {
   el.dispatchEvent(new MouseEvent('mousedown', init));
   el.dispatchEvent(new PointerEvent('pointerup', { ...init, pointerType: 'mouse', isPrimary: true }));
   el.dispatchEvent(new MouseEvent('mouseup', init));
+  const scriptLink = el.closest('a[href]') as HTMLAnchorElement | null;
+  if (pageWorldClick && scriptLink?.getAttribute('href')?.trim().toLowerCase().startsWith('javascript:') && scriptLink.getRootNode() === document) {
+    pageWorldClick(scriptLink);
+    return;
+  }
   (el as HTMLElement).click();
 }
 

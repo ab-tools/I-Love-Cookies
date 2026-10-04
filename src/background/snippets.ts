@@ -204,6 +204,15 @@ function acceptCcm19() {
   return true;
 }
 
+/** Clicks the element the content script marked (links whose "javascript:" target only runs in the page's world). */
+function clickMarked(token: string) {
+  const el = document.querySelector(`[data-ilc-click="${token}"]`) as HTMLElement | null;
+  if (!el) return false;
+  el.removeAttribute('data-ilc-click');
+  el.click();
+  return true;
+}
+
 export const ilcSnippets = {
   ILC_READ_CONSENT_SIGNALS: readConsentSignals,
   ILC_MARK_CONSENT_SIGNALS: markConsentSignals,
@@ -222,6 +231,7 @@ export const ilcSnippets = {
   ILC_API_COOKIEFIRST: apiCookieFirst,
   ILC_API_SHOPIFY: apiShopify,
   ILC_CCM19_ACCEPT: acceptCcm19,
+  ILC_CLICK_MARKED: clickMarked,
 };
 
 /** All snippets that may run in a page: autoconsent's built-ins + ours. */

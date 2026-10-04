@@ -6,7 +6,7 @@ import { ilcSnippets } from '../background/snippets';
 import { browser } from 'wxt/browser';
 import type { FrameVerification, IlcContentMessage } from '../shared/messages';
 import { isScrollLocked, unlockScroll } from '../content/scroll';
-import { clickDeepUntilGone, isDeepVisible, isOnScreen } from '../content/dom';
+import { clickDeepUntilGone, isDeepVisible, isOnScreen, setPageWorldClick } from '../content/dom';
 import { ConsentOMaticCMP, type ComRule } from '../content/consent-o-matic';
 import { HeuristicController } from '../content/heuristic/controller';
 import { announceFrame, frameInfo, listenForFrameTokens } from '../content/frames';
@@ -40,6 +40,11 @@ export default defineContentScript({
     const consent: IlcAutoConsent = new IlcAutoConsent(send, heuristic);
 
     listenForFrameTokens();
+    setPageWorldClick((el) => {
+      const token = Math.random().toString(36).slice(2);
+      el.setAttribute('data-ilc-click', token);
+      void send({ type: 'ilc:pageClick', token });
+    });
 
     browser.runtime.onMessage.addListener((message: unknown, _sender, sendResponse) => {
       const msg = message as IlcContentMessage | { type?: string };
