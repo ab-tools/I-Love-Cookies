@@ -71,6 +71,12 @@ describe('banner detection – special cases', () => {
     expect(findConsentBanners()).toEqual([]);
   });
 
+  it('treats "if you are at least 16" consent wording as an ordinary consent banner', () => {
+    document.body.innerHTML = `<div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT} Wenn Sie mindestens 16 Jahre alt sind,
+      können Sie durch Klicken auf Alle akzeptieren zustimmen. <button>Alle akzeptieren</button></div>`;
+    expect(findConsentBanners()).toHaveLength(1);
+  });
+
   it('treats the GDPR parental-consent note as an ordinary consent banner', () => {
     document.body.innerHTML = `<div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT} Wenn Sie unter 16 Jahre alt sind und Ihre
       Zustimmung zu freiwilligen Diensten geben möchten, müssen Sie Ihre Erziehungsberechtigten um Erlaubnis bitten. <button>Alle akzeptieren</button></div>`;

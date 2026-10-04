@@ -9,7 +9,7 @@ const WEAK =
 
 /** Dialogs that are not about consent: age gates, region / language choices. */
 const NEGATIVE_TEXT =
-  /age verification|altersverifikation|are you (over|18)|bist du (über|18)|year of birth|geburtsjahr|ihr alter|dein alter|your age|volljährig|of legal age|\b(1[68]|21) (jahre|years|ans|años|anni|jaar|lat)\b|\b(1[68]|21)\+|mayor de edad|maggiorenne|majeur|meerderjarig|pełnoletn|choose (your )?(country|region|language)|wähle (dein )?(land|sprache)|select your (country|region|location)/i;
+  /age verification|altersverifikation|are you (over|18)|bist du (über|18)|year of birth|geburtsjahr|ihr alter|dein alter|your age|volljährig|of legal age|\b(18|21) (jahre|years|ans|años|anni|jaar|lat)\b|\b(18|21)\+|mayor de edad|maggiorenne|majeur|meerderjarig|pełnoletn|choose (your )?(country|region|language)|wähle (dein )?(land|sprache)|select your (country|region|location)/i;
 
 /** GDPR's parental-consent note ("If you are under 16 …") in ordinary consent banners is no age gate. */
 const PARENTAL_CONSENT = /[^.!?]*\b(under|unter|moins de|menos de|meno di|onder|poniżej|alatti)\s+1[3-8]\b[^.!?]*/gi;
