@@ -1,0 +1,13 @@
+[
+  {
+    "name": "ilc-upod",
+    "comment": "Upod data vault layer (Stichting Nederlandse Datakluis) shown before the site's own cookie banner. Its accept buttons store the choice in an Upod account and open a login page, so the layer is closed with \"Nu niet\" and the site's banner behind it is accepted.",
+    "detectCmp": [{ "exists": "upod-cookie-modal" }],
+    "detectPopup": [{ "waitFor": ["upod-cookie-modal", ":not(style, script, link)", "button[part~=tertiary-button]"], "timeout": 5000 }],
+    "optIn": [
+      { "click": ["upod-cookie-modal", ":not(style, script, link)", "button[part~=tertiary-button]"] },
+      { "waitForThenClick": "#onetrust-accept-btn-handler", "timeout": 8000, "optional": true }
+    ],
+    "optOut": []
+  }
+]
