@@ -1,0 +1,29 @@
+[
+  {
+    "name": "modivo-consents",
+    "comment": "Shops of the eobuwie / Modivo group (escarpe, ecipele …). The accept button is labelled with the bare noun \"Consent\".",
+    "detectCmp": [
+      {
+        "exists": ".modal-consents [data-test-id=customer-consents-button]"
+      }
+    ],
+    "detectPopup": [
+      {
+        "visible": ".modal-consents [data-test-id=customer-consents-button]"
+      }
+    ],
+    "optIn": [
+      {
+        "waitForThenClick": ".modal-consents [data-test-id=customer-consents-button]"
+      }
+    ],
+    "optOut": [],
+    "test": [
+      {
+        "waitForVisible": ".modal-consents",
+        "check": "none",
+        "timeout": 3000
+      }
+    ]
+  }
+]
