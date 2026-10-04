@@ -1,8 +1,9 @@
 import { isOnScreen, realisticClick, shadowRootOf } from '../dom';
 import { findConsentBanners } from './banner';
 import { extractButtons, type ButtonCandidate } from './candidates';
+import { heuristicOptions } from './options';
 import { decide, isVetoed } from './policy';
-import { ACCEPTING, classifyLabel } from './text';
+import { ACCEPTING, agreesTo, classifyLabel } from './text';
 
 export interface HeuristicResult {
   done: boolean;
@@ -67,6 +68,32 @@ export function hasToggles(container: Element): boolean {
   return roots.flatMap((r) => toggleElements(r)).some((t) => !isDisabled(t));
 }
 
+/**
+ * Ticks required "I accept the cookie settings" checkboxes (accepting label of their own), without which the
+ * accept button does nothing. Category and other checkboxes are left alone.
+ */
+async function tickConsentCheckboxes(container: Element): Promise<void> {
+  const roots: (Element | ShadowRoot)[] = [container];
+  const own = shadowRootOf(container);
+  if (own) roots.push(own);
+  for (const box of roots.flatMap((r) => toggleElements(r))) {
+    if (isOn(box) || isDisabled(box)) continue;
+    const root = box.getRootNode() as Document | ShadowRoot;
+    const label =
+      (box instanceof HTMLInputElement ? box.labels?.[0] : null) ??
+      (box.id ? root.querySelector<HTMLElement>(`label[for="${CSS.escape(box.id)}"]`) : null) ??
+      box.closest('label');
+    // Without a <label>: the short text next to the box.
+    const nearby = box.parentElement?.innerText ?? '';
+    const text = label?.innerText ?? box.getAttribute('aria-label') ?? (nearby.length <= 120 ? nearby : '');
+    if (!agreesTo(text)) continue;
+    // The box itself: its label often holds links to the policies.
+    if (box.getBoundingClientRect().width > 0) await realisticClick(box);
+    if (!isOn(box)) box.click();
+    await sleep(100);
+  }
+}
+
 async function waitFor<T>(probe: () => T | null | undefined, timeoutMs: number): Promise<T | null> {
   const deadline = Date.now() + timeoutMs;
   for (;;) {
@@ -98,6 +125,7 @@ export async function acceptBanner(banner: Element): Promise<HeuristicResult> {
   }
   if (decision.action === 'save') return selectAllAndSave(banner, result);
   if (decision.action === 'click') {
+    await tickConsentCheckboxes(banner);
     await click(decision.button, result);
     result.done = true;
     // Not awaited: accepting often removes the frame, which must answer first.
@@ -152,8 +180,20 @@ async function confirmFollowUp(banner: Element, clicked: ButtonCandidate, before
     void realisticClick(save.element);
     return;
   }
+  // Toggle buttons per category: the clicked "Accept …" now reads "Reject …". Switch the other categories on the
+  // same way, then close / save the dialog.
+  if (ACCEPTING.has(clicked.cls) && all.some((b) => b.element === clicked.element && b.cls === 'REJECT')) {
+    for (const other of buttons.filter((b) => b.element !== clicked.element && (b.cls === 'ACCEPT' || b.cls === 'ACCEPT_ALL'))) {
+      await realisticClick(other.element);
+      await sleep(300);
+    }
+    const done = extractButtons(banner).find((b) => !isVetoed(b) && ['SAVE', 'ACKNOWLEDGE', 'CLOSE'].includes(b.cls));
+    if (done) await realisticClick(done.element);
+    return;
+  }
   if (all.some((b) => b.cls === 'REJECT')) return;
-  const confirm = buttons.find((b) => ['ACKNOWLEDGE', 'ACCEPT', 'ACCEPT_ALL'].includes(b.cls) && b.label !== clicked.label);
+  const confirming = heuristicOptions.ageGates ? ['ACKNOWLEDGE', 'ACCEPT', 'ACCEPT_ALL', 'AGE_CONFIRM'] : ['ACKNOWLEDGE', 'ACCEPT', 'ACCEPT_ALL'];
+  const confirm = buttons.find((b) => confirming.includes(b.cls) && b.label !== clicked.label);
   if (confirm) void realisticClick(confirm.element);
 }
 

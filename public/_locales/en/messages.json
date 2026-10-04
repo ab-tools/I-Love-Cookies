@@ -48,6 +48,7 @@
   "options_general": { "message": "General" },
   "options_debug": { "message": "Debug logging in the page console" },
   "options_payOrOk": { "message": "Also accept “consent or pay” walls (always the free option with ads)" },
+  "options_ageGates": { "message": "Also confirm age checks automatically (“I am 18 or older”)" },
   "options_paused": { "message": "Excluded Sites" },
   "options_pausedEmpty": { "message": "No excluded sites. Add one above or pause a site from the toolbar popup." },
   "options_pausedHelp": { "message": "The extension does nothing on these sites. Enter a domain (example.com – includes subdomains), an address (example.com/forum), a wildcard pattern with * (*.example.* or example.com/forum/*) or a regular expression between slashes (/^news\\.[a-z]+\\.de\\//). Patterns are matched against the address without https:// and parameters." },

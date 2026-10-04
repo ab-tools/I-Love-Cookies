@@ -66,6 +66,7 @@ export const LOGIN = [
 
 /** Explicit rejection. */
 export const REJECT = [
+  'exclude',
   '同意しません',
   '我不接受',
   '不接受',
@@ -219,10 +220,11 @@ export const REVOKE = ['withdraw', 'revoke', `widerruf${W}`, 'zurücksetzen', 'z
 /** Age gates and similar confirmations that are not about cookies. */
 export const AGE = [
   '\\d+ ?\\+',
-  'i am (at least|over|\\d)',
+  'i am (at least|over|\\d|not|under)',
+  'im (over|under|not) \\d',
   'or older',
-  'ik ben (\\d|ouder|onder|minimaal)',
-  'ich bin (über|\\d|mindestens|volljährig)',
+  'ik ben (\\d|ouder|onder|minimaal|geen|niet)',
+  'ich bin (über|\\d|mindestens|volljährig|unter|nicht|noch nicht)',
   'jai plus',
   'tengo (más|\\d)',
   'ho più',
@@ -235,6 +237,36 @@ export const AGE = [
   'anni',
   'enter',
   'betreten',
+  'eintreten',
+  'entrar',
+  'entrer',
+  'entra',
+  'binnengaan',
+  'wejdź',
+  'vstoupit',
+];
+
+/** Declining an age check: under age, leave the site. */
+export const AGE_DENY = [
+  'under',
+  'unter',
+  'onder',
+  'moins',
+  'menos',
+  'meno',
+  'younger',
+  'jünger',
+  'poniżej',
+  'leave',
+  'exit',
+  'verlassen',
+  'quitter',
+  'salir',
+  'sair',
+  'uscire',
+  'abbandona',
+  'nein',
+  'nee',
 ];
 
 /** Accept / save the current selection (not "all") – part of the settings flow, never the main accept. */
@@ -296,6 +328,7 @@ export const ACCEPT = [
   'allow(s|ed|ing)?',
   'i consent',
   'enable all',
+  'include',
   'yes',
   'sounds (good|great)',
   'enable cookies',
@@ -587,6 +620,7 @@ export const ALL = [
 /** Closing a dialog without answering it ("Close consent manager" is no settings button). */
 export const CLOSE = [
   'close',
+  'dismiss',
   'schließen',
   'schliessen',
   'fermer',

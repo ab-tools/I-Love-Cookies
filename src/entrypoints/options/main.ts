@@ -6,8 +6,8 @@ import { normalizeExclusion, parseExclusion } from '../../shared/exclusions';
 import { localizePage, translate } from '../../shared/i18n';
 import type { RuleUpdateStatus } from '../../background/rule-updates';
 
-type BooleanSetting = 'payOrOk' | 'debug' | 'remoteRules';
-const TOGGLES: BooleanSetting[] = ['payOrOk', 'debug', 'remoteRules'];
+type BooleanSetting = 'payOrOk' | 'ageGates' | 'debug' | 'remoteRules';
+const TOGGLES: BooleanSetting[] = ['payOrOk', 'ageGates', 'debug', 'remoteRules'];
 
 interface RuleInfo {
   status: RuleUpdateStatus;

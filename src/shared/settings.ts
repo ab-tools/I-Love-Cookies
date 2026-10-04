@@ -12,6 +12,8 @@ export interface Settings {
   remoteRules: boolean;
   /** Also accept "consent or pay" walls (always with the free option). */
   payOrOk: boolean;
+  /** Confirm age checks ("I am 18 or older") – also those combined with a cookie banner. */
+  ageGates: boolean;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -20,6 +22,7 @@ export const DEFAULT_SETTINGS: Settings = {
   debug: false,
   remoteRules: true,
   payOrOk: true,
+  ageGates: true,
 };
 
 export async function getSettings(): Promise<Settings> {

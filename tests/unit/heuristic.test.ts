@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { findConsentBanners } from '../../src/content/heuristic/banner';
 import { extractButtons } from '../../src/content/heuristic/candidates';
 import { acceptBanner } from '../../src/content/heuristic/flow';
+import { heuristicOptions } from '../../src/content/heuristic/options';
 import { decide } from '../../src/content/heuristic/policy';
 
 // happy-dom has no layout: every element gets a box (data-rect="x,y,w,h" or a default one).
@@ -79,11 +80,31 @@ describe('banner detection', () => {
 });
 
 describe('banner detection – special cases', () => {
-  it('never treats age gates as consent banners', () => {
+  it('leaves age gates alone when age checks are switched off', () => {
+    heuristicOptions.ageGates = false;
     document.body.innerHTML = `
       <div id="age" style="position:fixed" data-rect="0,0,1024,700">Willkommen! Bitte bestätigen Sie Ihr Alter und die
         Zustimmung zur Cookie-Nutzung. Sie bestätigen, dass Sie 18 Jahre oder älter sind. <button>Bestätigen</button></div>`;
     expect(findConsentBanners()).toEqual([]);
+    heuristicOptions.ageGates = true;
+  });
+
+  it('confirms age checks, with or without cookie wording, when switched on', () => {
+    document.body.innerHTML = `<div id="age" style="position:fixed" data-rect="0,0,1024,700">This website contains adult content.
+      Are you 18 or older? <button id="yes">I am 18 or older – enter</button><button id="no">No, I am under 18</button></div>`;
+    const [gate] = findConsentBanners();
+    expect(gate?.element.id).toBe('age');
+    expect(decide(extractButtons(gate!.element))).toMatchObject({ action: 'click', kind: 'age', button: { label: 'I am 18 or older – enter' } });
+    document.body.innerHTML = `<div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT} Diese Website ist nur für Erwachsene.
+      <button>Annehmen</button></div>`;
+    expect(findConsentBanners()).toHaveLength(1);
+  });
+
+  it('closes notices that offer nothing but "close"', () => {
+    document.body.innerHTML = `<div id="notice" style="position:fixed" data-rect="0,700,1024,60">This website uses cookies to ensure you get
+      the best experience. <a href="/privacy">Privacy Policy</a> <button id="x">×</button></div>`;
+    const [banner] = findConsentBanners();
+    expect(decide(extractButtons(banner!.element))).toMatchObject({ action: 'click', kind: 'close', button: { label: '×' } });
   });
 
   it('treats "if you are at least 16" consent wording as an ordinary consent banner', () => {
@@ -93,6 +114,7 @@ describe('banner detection – special cases', () => {
   });
 
   it('treats "if you agree and are over 18" as a consent condition, but not a declaration or an adult site', () => {
+    heuristicOptions.ageGates = false;
     document.body.innerHTML = `<div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT} Wenn Sie der Verarbeitung zustimmen
       und über 18 Jahre alt sind, klicken Sie auf ALLE ERLAUBEN. <button>Alle erlauben</button></div>`;
     expect(findConsentBanners()).toHaveLength(1);
@@ -102,6 +124,7 @@ describe('banner detection – special cases', () => {
     document.body.innerHTML = `<div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT} Diese Website ist nur für Erwachsene.
       <button>Annehmen</button></div>`;
     expect(findConsentBanners()).toEqual([]);
+    heuristicOptions.ageGates = true;
   });
 
   it('treats the GDPR parental-consent note as an ordinary consent banner', () => {
@@ -174,6 +197,35 @@ describe('acceptBanner', () => {
     const result = await acceptBanner(document.getElementById('cmp')!);
     expect(result).toMatchObject({ done: true, clicked: ['Accept all'] });
     expect(clicks).toEqual(['accept']);
+  });
+
+  it('ticks a required "I accept the cookie settings" checkbox before accepting, but no category box', async () => {
+    document.body.innerHTML = `
+      <div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT}
+        <input type="checkbox" id="terms"><label for="terms">Akzeptieren <a href="#s">Cookie-Einstellungen</a> und <a href="#p">Datenschutzerklärung</a></label>
+        <input type="checkbox" id="marketing"><label for="marketing">Marketing</label>
+        <button id="accept">Zustimmen &amp; weiter</button></div>`;
+    track();
+    const result = await acceptBanner(document.getElementById('cmp')!);
+    expect(result).toMatchObject({ done: true, clicked: ['Zustimmen & weiter'] });
+    expect((document.getElementById('terms') as HTMLInputElement).checked).toBe(true);
+    expect((document.getElementById('marketing') as HTMLInputElement).checked).toBe(false);
+  });
+
+  it('switches every category on with toggle buttons, then closes the dialog', async () => {
+    document.body.innerHTML = `
+      <div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT}
+        <button id="cookies" data-rect="10,520,200,40">Accept Non-Essential Cookies</button>
+        <button id="content" data-rect="10,570,200,30">Include Third Party Content</button>
+        <button id="close" data-rect="10,610,200,30">Close this dialog box, leaving the settings as shown above.</button></div>`;
+    const flip = (id: string, label: string) => document.getElementById(id)!.addEventListener('click', (e) => ((e.currentTarget as HTMLElement).textContent = label));
+    flip('cookies', 'REJECT Non-Essential Cookies');
+    flip('content', 'EXCLUDE Third Party Content');
+    track();
+    const result = await acceptBanner(document.getElementById('cmp')!);
+    expect(result).toMatchObject({ done: true, clicked: ['Accept Non-Essential Cookies'] });
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    expect(clicks).toEqual(['cookies', 'content', 'close']);
   });
 
   it('opens the settings, switches every category on (never off) and saves', async () => {

@@ -48,6 +48,7 @@
   "options_general": { "message": "Allgemein" },
   "options_debug": { "message": "Debug-Ausgaben in der Seitenkonsole" },
   "options_payOrOk": { "message": "„Zustimmen oder bezahlen“-Seiten ebenfalls akzeptieren (immer die kostenlose Option mit Werbung)" },
+  "options_ageGates": { "message": "Altersabfragen ebenfalls automatisch bestätigen („Ich bin 18 oder älter“)" },
   "options_paused": { "message": "Ausgeschlossene Websites" },
   "options_pausedEmpty": { "message": "Keine ausgeschlossenen Websites. Füge oben eine hinzu oder pausiere eine Website über das Symbol in der Symbolleiste." },
   "options_pausedHelp": { "message": "Auf diesen Websites tut die Erweiterung nichts. Gib eine Domain ein (example.com – inklusive Subdomains), eine Adresse (example.com/forum), ein Muster mit * (*.example.* oder example.com/forum/*) oder einen regulären Ausdruck zwischen Schrägstrichen (/^news\\.[a-z]+\\.de\\//). Muster werden mit der Adresse ohne https:// und ohne Parameter verglichen." },

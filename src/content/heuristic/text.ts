@@ -2,6 +2,7 @@ import {
   ACCEPT,
   ACKNOWLEDGE,
   AGE,
+  AGE_DENY,
   CLOSE,
   ALL,
   LOGIN,
@@ -27,10 +28,17 @@ export type ButtonClass =
   | 'REJECT'
   | 'PAY'
   | 'LOGIN'
+  /** "I am 18 or older" / "Enter" in an age check. */
+  | 'AGE_CONFIRM'
+  /** Closes the dialog without answering it ("Close", "×"). */
+  | 'CLOSE'
   | 'OTHER';
 
 /** Classes the policy may click to give consent. */
 export const ACCEPTING: ReadonlySet<ButtonClass> = new Set(['ACCEPT_ALL', 'ACCEPT', 'ACKNOWLEDGE']);
+
+/** Close buttons that are only a symbol. */
+const CLOSE_SYMBOL = /^[×✕✖✗╳⨯xX]$/u;
 
 /** Longer texts are sentences, not button labels. */
 const MAX_LABEL_LENGTH = 64;
@@ -72,6 +80,7 @@ const RE = {
   pay: compile(PAY),
   login: compile(LOGIN),
   age: compile(AGE),
+  ageDeny: compile(AGE_DENY),
   reject: compile(REJECT),
   negation: compile(NEGATION),
   without: compile(WITHOUT),
@@ -92,13 +101,15 @@ const RE = {
  * "Continue without accepting" or "Accept and subscribe" never count as accepting.
  */
 export function classifyLabel(text: string): ButtonClass {
+  if (CLOSE_SYMBOL.test(text.trim())) return 'CLOSE';
   const label = normalizeLabel(text);
   if (!label || label.length > MAX_LABEL_LENGTH) return 'OTHER';
   // A bare noun ("Consent", "Zustimmung") is a tab or heading of the dialog, not an answer.
   if (NOUN_ONLY.has(label)) return 'OTHER';
   if (RE.pay.test(label)) return 'PAY';
   if (RE.login.test(label)) return 'LOGIN';
-  if (RE.age.test(label)) return 'OTHER';
+  // Age checks: "I am under 18 / leave" declines, "I am 18 or older / enter" confirms.
+  if (RE.age.test(label)) return RE.ageDeny.test(label) || RE.reject.test(label) || RE.negation.test(label) ? 'REJECT' : 'AGE_CONFIRM';
   const accepting = RE.accept.test(label);
   if (
     RE.reject.test(label) ||
@@ -112,9 +123,15 @@ export function classifyLabel(text: string): ButtonClass {
   if (RE.save.test(label)) return 'SAVE';
   if (RE.selectAll.test(label)) return 'SELECT_ALL';
   const all = RE.all.test(label);
-  if (RE.close.test(label) && !accepting && !RE.acknowledge.test(label)) return 'OTHER';
+  if (RE.close.test(label) && !accepting && !RE.acknowledge.test(label)) return 'CLOSE';
   if (RE.settings.test(label) && !(accepting && all)) return 'SETTINGS';
   if (accepting) return all ? 'ACCEPT_ALL' : 'ACCEPT';
   if (RE.acknowledge.test(label)) return 'ACKNOWLEDGE';
   return 'OTHER';
+}
+
+/** A checkbox label that agrees ("Akzeptieren Cookie-Einstellungen und Datenschutzerklärung", "I accept the cookies"). */
+export function agreesTo(text: string): boolean {
+  const cls = classifyLabel(text);
+  return ACCEPTING.has(cls) || (cls === 'SETTINGS' && RE.accept.test(normalizeLabel(text)));
 }
