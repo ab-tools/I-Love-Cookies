@@ -382,6 +382,18 @@ async function onPopupFound(tabId: number, frameId: number, cmp: string, waiting
   log(state, frameId, `popup ${cmp}: clicking "accept all" (autoconsent rule)`);
   await saveState(state);
   await sendToFrame(tabId, frameId, { type: 'ilc:optIn', cmp }).catch(() => undefined);
+  // A rule that never reports back (e.g. waiting for an element that never comes) must not block the tab.
+  const docId = documentIds.get(tabId);
+  setTimeout(() => {
+    if (documentIds.get(tabId) !== docId) return;
+    void withTab(tabId, async () => {
+      const current = await loadState(tabId);
+      if (current?.phase !== 'acting' || current.cmp !== cmp || current.frameId !== frameId) return;
+      log(current, frameId, `rule for ${cmp} did not answer`);
+      await saveState(current);
+      await onRuleFailed(tabId, frameId, cmp);
+    });
+  }, LIMITS.ruleAnswerTimeoutMs);
 }
 
 async function onOptInResult(tabId: number, frameId: number, cmp: string, result: boolean) {
@@ -509,10 +521,11 @@ async function verify(tabId: number, frameId: number, docId: number | undefined)
   if (result.outcome === 'LIKELY_FULL') {
     // Nothing machine-readable confirms the result: make sure no consent banner with an accept button is left
     // (e.g. an older UI variant of the CMP that its rule does not know).
-    const scan = await askFrame<HeuristicScan>(tabId, frameId, { type: 'ilc:heuristicScan' }, 2000);
-    if (scan?.decision === 'click' && scan.score >= LIMITS.leftoverBannerMinScore) {
+    // Also in other frames: the rule's popup may be a shell around a consent iframe.
+    const leftover = await leftoverBanner(tabId, frameId);
+    if (leftover !== null) {
       result.outcome = 'FAILED';
-      result.reasons = ['a consent banner with an accept button is still shown'];
+      result.reasons = [leftover === frameId ? 'a consent banner with an accept button is still shown' : `a consent banner with an accept button is still shown in frame ${leftover}`];
     }
   }
   if (top?.scrollLocked) {
@@ -582,6 +595,18 @@ async function heuristicFallback(tabId: number) {
   if (!best) return;
   log(state, best.frameId, `rule failed – generic banner ${best.scan.fingerprint}: ${best.scan.buttons.join(' | ')}`);
   await runHeuristic(tabId, best.frameId);
+}
+
+/** A frame (the acting one first) that still shows a convincing consent banner with an accept button. */
+async function leftoverBanner(tabId: number, actingFrameId: number): Promise<number | null> {
+  const frames = (await browser.webNavigation.getAllFrames({ tabId }).catch(() => null)) ?? [{ frameId: actingFrameId }];
+  const ids = [actingFrameId, ...frames.map((f) => f.frameId).filter((id) => id !== actingFrameId)];
+  for (const id of ids) {
+    const scan = await askFrame<HeuristicScan>(tabId, id, { type: 'ilc:heuristicScan' }, 2000);
+    if (scan?.decision !== 'click' || scan.score < LIMITS.leftoverBannerMinScore) continue;
+    if (id === 0 || id === actingFrameId || (await isVisibleOverlayFrame(tabId, id))) return id;
+  }
+  return null;
 }
 
 /** The frame with the most convincing banner the heuristic can answer. */

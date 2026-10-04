@@ -28,6 +28,8 @@ export const LIMITS = {
   claimMs: 8000,
   /** Wait for autoconsentDone after a successful optIn before verifying anyway. */
   doneTimeoutMs: 6000,
+  /** A rule asked to opt in that has not reported a result by then counts as failed. */
+  ruleAnswerTimeoutMs: 20000,
   /** Wait after a failed rule before falling back (rules coordinating with an iframe wait doneTimeoutMs). */
   ruleFailedGraceMs: 1000,
   /** A leftover banner overturns an unconfirmed success only with strong consent wording (two strong words). */
