@@ -88,13 +88,13 @@ button:disabled {
 }
 label.toggle {
   display: flex;
-  gap: 10px;
+  gap: 6px;
   align-items: flex-start;
   padding: 6px 0;
   cursor: pointer;
 }
 label.toggle input {
-  margin-top: 3px;
+  margin: 3px 0 0;
 }
 .ok {
   color: var(--ok);

@@ -28,11 +28,14 @@ export function countHandled(): Promise<void> {
   return next;
 }
 
-/** Time saved for a number of banners, e.g. "45 sec", "12 min", "3.5 hr" (localized units). */
+/** Time saved for a number of banners, e.g. "45 sec.", "12 min.", "3.5 hr." (localized units). */
 export function formatTimeSaved(banners: number, locale?: string): string {
   const seconds = banners * SECONDS_PER_BANNER;
   const format = (value: number, unit: 'second' | 'minute' | 'hour' | 'day', digits = 0) =>
-    new Intl.NumberFormat(locale, { style: 'unit', unit, unitDisplay: 'short', maximumFractionDigits: digits }).format(value);
+    new Intl.NumberFormat(locale, { style: 'unit', unit, unitDisplay: 'short', maximumFractionDigits: digits })
+      .format(value)
+      // English short units come without the abbreviation's period ("sec" → "sec.").
+      .replace(/\b(sec|min|hr)$/, '$1.');
   if (seconds < 60) return format(seconds, 'second');
   if (seconds < 3600) return format(Math.round(seconds / 60), 'minute');
   if (seconds < 48 * 3600) return format(seconds / 3600, 'hour', 1);
