@@ -6,6 +6,9 @@
   --border: #ead9c6;
   --accent: #b5651d;
   --accent-fg: #ffffff;
+  /* Buttons stand out from cards and from the page background. */
+  --button: #f3e4d2;
+  --button-border: #d7bc9b;
   --ok: #2e7d32;
   --warn: #b26a00;
   --bad: #c62828;
@@ -20,6 +23,8 @@
     --border: #45372b;
     --accent: #e0914a;
     --accent-fg: #1d1712;
+    --button: #46372a;
+    --button-border: #6e5843;
     --ok: #66bb6a;
     --warn: #ffb74d;
     --bad: #ef5350;
@@ -65,8 +70,8 @@ a {
 button {
   font: inherit;
   border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--card);
+  border: 1px solid var(--button-border);
+  background: var(--button);
   color: var(--fg);
   padding: 7px 12px;
   cursor: pointer;
