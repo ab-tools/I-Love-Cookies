@@ -86,7 +86,8 @@ async function main() {
       return;
     }
     status.className = 'bad small';
-    status.textContent = translate('popup_reportFailed');
+    // The reason in brackets (e.g. 'HTTP 429: too many reports') helps when the user tells us about it.
+    status.textContent = `${translate('popup_reportFailed')}${result?.error ? ` (${result.error})` : ''}`;
     enableSend();
     fitDialog();
   };

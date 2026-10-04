@@ -50,9 +50,9 @@ export async function sendReport(tabId: number, anonymous: boolean, problem: Rep
         diagnostics: report.diagnostics,
       }),
     });
-    const body = (await response.json().catch(() => null)) as { url?: unknown } | null;
+    const body = (await response.json().catch(() => null)) as { url?: unknown; error?: unknown } | null;
     const issue = typeof body?.url === 'string' ? body.url : '';
-    if (!response.ok || !issue.toLowerCase().startsWith(`${REPO_URL.toLowerCase()}/issues/`)) return { error: `HTTP ${response.status}` };
+    if (!response.ok || !issue.toLowerCase().startsWith(`${REPO_URL.toLowerCase()}/issues/`)) return { error: `HTTP ${response.status}${typeof body?.error === 'string' ? `: ${body.error.slice(0, 80)}` : ''}` };
     await browser.tabs.create({ url: issue });
     return { ok: true };
   } catch (error) {
