@@ -1,0 +1,35 @@
+[
+  {
+    "name": "AppConsent",
+    "comment": "Replaces autoconsent's rule, which finds the dialog by its English iframe title only (\"Consent window\"); the French one is \"Fenêtre de consentement\".",
+    "prehideSelectors": [
+      "iframe[srcdoc*='cdn.appconsent.io/tcf2-clear/']"
+    ],
+    "detectCmp": [
+      {
+        "exists": "script[src*='cdn.appconsent.io/tcf2-clear/'][src*='core.bundle.js']"
+      }
+    ],
+    "detectPopup": [
+      {
+        "visible": "iframe[srcdoc*='cdn.appconsent.io/tcf2-clear/']"
+      }
+    ],
+    "optIn": [
+      {
+        "waitForThenClick": [
+          "iframe[srcdoc*='cdn.appconsent.io/tcf2-clear/']",
+          ".button__acceptAll"
+        ]
+      }
+    ],
+    "optOut": [],
+    "test": [
+      {
+        "waitForVisible": "iframe[srcdoc*='cdn.appconsent.io/tcf2-clear/']",
+        "timeout": 1000,
+        "check": "none"
+      }
+    ]
+  }
+]
