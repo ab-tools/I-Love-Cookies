@@ -6,3 +6,7 @@ declare module '@autoconsent-src/web' {
 declare module '@autoconsent-src/eval-snippets' {
   export const snippets: Record<string, (...args: unknown[]) => unknown>;
 }
+
+declare module '@autoconsent-src/eval-handler' {
+  export const evalState: { pending: Map<string, unknown> };
+}

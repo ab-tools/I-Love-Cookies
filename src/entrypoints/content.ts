@@ -1,6 +1,7 @@
 // autoconsent from its TS sources, so its snippet registry can be extended.
 import AutoConsent from '@autoconsent-src/web';
 import { snippets } from '@autoconsent-src/eval-snippets';
+import { evalState } from '@autoconsent-src/eval-handler';
 import type { BackgroundMessage, Config, ContentScriptMessage, RuleBundle } from '@duckduckgo/autoconsent';
 import { ilcSnippets } from '../background/snippets';
 import { browser } from 'wxt/browser';
@@ -128,6 +129,10 @@ export default defineContentScript({
         return true;
       }
       if (typeof msg?.type === 'string' && !msg.type.startsWith('ilc:')) {
+        // An answer for a request this document no longer waits for (it navigated, e.g. a redirect page): drop it
+        // instead of letting autoconsent log a warning.
+        const evalId = msg.type === 'evalResp' ? (message as { id?: string }).id : undefined;
+        if (evalId !== undefined && !evalState.pending.has(evalId)) return false;
         void consent.receiveMessageCallback(message as BackgroundMessage);
       }
       return false;
