@@ -77,13 +77,14 @@ function click(button: ButtonCandidate, result: HeuristicResult) {
  */
 export async function acceptBanner(banner: Element): Promise<HeuristicResult> {
   const result: HeuristicResult = { done: false, clicked: [], toggled: 0, partial: false };
-  const decision = decide(extractButtons(banner), hasToggles(banner));
+  const initial = extractButtons(banner);
+  const decision = decide(initial, hasToggles(banner));
   if (decision.action === 'save') return selectAllAndSave(banner, result);
   if (decision.action === 'click') {
     click(decision.button, result);
     result.done = true;
     // Not awaited: accepting often removes the frame, which must answer first.
-    void confirmFollowUp(banner, decision.button);
+    void confirmFollowUp(banner, decision.button, new Set(initial.map((b) => b.label)));
     return result;
   }
   if (decision.action === 'none') {
@@ -115,13 +116,20 @@ export async function acceptBanner(banner: Element): Promise<HeuristicResult> {
 
 /**
  * Some banners need a second step after accepting: a confirmation ("… will reload to apply your cookie
- * preferences. OK") or, where "accept all" only switched every purpose on in a preferences dialog, saving.
+ * preferences. OK"), an "accept all" the first click unlocked, or – where "accept all" only switched every
+ * purpose on in a preferences dialog – saving.
  */
-async function confirmFollowUp(banner: Element, clicked: ButtonCandidate): Promise<void> {
+async function confirmFollowUp(banner: Element, clicked: ButtonCandidate, before: ReadonlySet<string>): Promise<void> {
   await sleep(800);
   if (!banner.isConnected || !isOnScreen(banner)) return;
   const all = extractButtons(banner);
   const buttons = all.filter((b) => !isVetoed(b));
+  // "Accept all" that only became available through the first click (e.g. enabled after "read more").
+  const unlocked = buttons.find((b) => b.cls === 'ACCEPT_ALL' && !before.has(b.label));
+  if (unlocked) {
+    realisticClick(unlocked.element);
+    return;
+  }
   const save = clicked.cls === 'ACCEPT_ALL' ? buttons.find((b) => b.cls === 'SAVE') : undefined;
   if (save) {
     realisticClick(save.element);
