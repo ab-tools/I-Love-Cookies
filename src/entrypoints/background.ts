@@ -93,7 +93,7 @@ async function handleUiMessage(msg: UiMessage) {
       await pauseSite(msg.tabId, msg.paused);
       return { ok: true };
     case 'ilc:report':
-      return sendReport(msg.tabId, msg.anonymous, msg.problem);
+      return sendReport(msg.tabId, msg.anonymous, msg.problem, msg.note);
     case 'ilc:collectReport':
       return collectReportSnapshot(msg.tabId);
     case 'ilc:getRuleStatus':

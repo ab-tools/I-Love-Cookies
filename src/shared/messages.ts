@@ -61,7 +61,8 @@ export type ReportProblem = 'bannerVisible' | 'wrongClick' | 'pageBroken' | 'oth
 export type UiMessage =
   | { type: 'ilc:getTabState'; tabId: number }
   | { type: 'ilc:setSitePaused'; tabId: number; paused: boolean }
-  | { type: 'ilc:report'; tabId: number; anonymous: boolean; problem: ReportProblem }
+  /** note: the user's own words ("something else"). */
+  | { type: 'ilc:report'; tabId: number; anonymous: boolean; problem: ReportProblem; note?: string }
   | { type: 'ilc:collectReport'; tabId: number }
   | { type: 'ilc:getRuleStatus' }
   | { type: 'ilc:checkRuleUpdate' };

@@ -40,10 +40,7 @@ summary {
 #report-status {
   margin: 0;
 }
-/* Report dialog over the popup. */
-body.dialog-open {
-  min-height: 400px;
-}
+/* Report dialog over the popup (the popup takes the dialog's height, see fitDialog). */
 .dialog-backdrop {
   position: fixed;
   inset: 0;
@@ -107,4 +104,19 @@ body.dialog-open {
   min-width: 0;
   padding: 7px 4px;
   font-size: 13px;
+}
+#problem-note {
+  width: 100%;
+  resize: vertical;
+  font: inherit;
+  font-size: 13px;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--fg);
+}
+#problem-note:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
 }

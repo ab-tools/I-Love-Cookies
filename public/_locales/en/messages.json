@@ -45,6 +45,7 @@
   "popup_problemWrongClick": { "message": "Clicked Something Wrong" },
   "popup_problemPageBroken": { "message": "Page Broken After Accepting" },
   "popup_problemOther": { "message": "Something Else" },
+  "popup_problemNote": { "message": "What happened? (optional)" },
   "popup_close": { "message": "Close" },
   "popup_log": { "message": "Action Log" },
   "popup_logEmpty": { "message": "(empty)" },

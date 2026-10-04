@@ -35,6 +35,13 @@ describe('report', () => {
     expect(url.toString()).not.toContain('secret');
   });
 
+  it('prefills what happened and the user note', () => {
+    const url = new URL(buildIssueUrl(state(), { browser: 'chrome', userAgent: 'UA' }, undefined, 'other', '  Video does not start  '));
+    expect(url.searchParams.get('problem')).toBe('Other');
+    expect(url.searchParams.get('notes')).toBe('Video does not start');
+    expect(new URL(buildIssueUrl(state(), { browser: 'chrome', userAgent: 'UA' }, undefined, 'bannerVisible', '')).searchParams.has('notes')).toBe(false);
+  });
+
   it('names the build and the settings that change behaviour', () => {
     const details = new URL(
       buildIssueUrl(state(), { browser: 'chrome', userAgent: 'UA', build: 'abc1234', settings: 'pay-or-OK on, age checks off, rule updates on' }),

@@ -40,20 +40,33 @@ async function main() {
   const sendButtons = [$<HTMLButtonElement>('report-github'), $<HTMLButtonElement>('report-anonymous')];
   const status = $('report-status');
   const selected = () => problems.find((input) => input.checked)?.value as ReportProblem | undefined;
+  const note = $<HTMLTextAreaElement>('problem-note');
   const enableSend = () => sendButtons.forEach((button) => (button.disabled = !selected()));
+  // The popup grows to the dialog's height (it may be taller than the popup's own content).
+  const fitDialog = () => {
+    document.body.style.minHeight = '';
+    if (!dialog.hidden) document.body.style.minHeight = `${(dialog.firstElementChild as HTMLElement).offsetHeight + 16}px`;
+  };
   const closeDialog = () => {
     dialog.hidden = true;
-    document.body.classList.remove('dialog-open');
+    fitDialog();
     $('report').focus();
   };
   $('report').addEventListener('click', () => {
     dialog.hidden = false;
-    document.body.classList.add('dialog-open');
     status.hidden = true;
     enableSend();
+    fitDialog();
     (problems.find((input) => input.checked) ?? problems[0])?.focus();
   });
-  problems.forEach((input) => input.addEventListener('change', enableSend));
+  problems.forEach((input) =>
+    input.addEventListener('change', () => {
+      enableSend();
+      note.hidden = selected() !== 'other';
+      fitDialog();
+      if (!note.hidden) note.focus();
+    }),
+  );
   $('report-close').addEventListener('click', closeDialog);
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && !dialog.hidden) closeDialog();
@@ -65,7 +78,9 @@ async function main() {
     status.hidden = false;
     status.className = 'muted small';
     status.textContent = translate(anonymous ? 'popup_reportSending' : 'popup_reportOpening');
-    const result = await send<{ ok?: true; error?: string }>({ type: 'ilc:report', tabId, anonymous, problem });
+    fitDialog();
+    const text = problem === 'other' ? note.value.trim() : '';
+    const result = await send<{ ok?: true; error?: string }>({ type: 'ilc:report', tabId, anonymous, problem, note: text });
     if (result?.ok) {
       window.close();
       return;
@@ -73,6 +88,7 @@ async function main() {
     status.className = 'bad small';
     status.textContent = translate('popup_reportFailed');
     enableSend();
+    fitDialog();
   };
   $('report-github').addEventListener('click', () => void report(false));
   $('report-anonymous').addEventListener('click', () => void report(true));

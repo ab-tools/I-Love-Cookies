@@ -21,6 +21,9 @@ export const PROBLEM_LABELS: Record<ReportProblem, string> = {
   other: 'Other',
 };
 
+/** Longest note the user can add to a report. */
+export const MAX_NOTE_LENGTH = 500;
+
 /** Only scheme + host + path – never query strings or fragments (they can contain personal data). */
 export function sanitizeUrl(url: string): string {
   try {
@@ -73,7 +76,7 @@ function compactSnapshot(snapshot: ReportSnapshot, level: number): ReportSnapsho
   return { ...snapshot, frames, signals: level > 1 ? undefined : snapshot.signals };
 }
 
-export function buildReport(state: TabState, ctx: ReportContext, snapshot?: ReportSnapshot, problem?: ReportProblem): Report {
+export function buildReport(state: TabState, ctx: ReportContext, snapshot?: ReportSnapshot, problem?: ReportProblem, note?: string): Report {
   const site = state.site || 'unknown site';
   const title = `[Site] ${site}: ${state.outcome ?? state.phase}${state.cmp ? ` (${state.cmp})` : ''}`;
   const params = new URLSearchParams({
@@ -82,6 +85,7 @@ export function buildReport(state: TabState, ctx: ReportContext, snapshot?: Repo
     url: sanitizeUrl(state.url),
     browser: ctx.browser,
     ...(problem ? { problem: PROBLEM_LABELS[problem] } : {}),
+    ...(note?.trim() ? { notes: note.trim().slice(0, MAX_NOTE_LENGTH) } : {}),
   });
   const base = `${REPO_URL}/issues/new?${params.toString()}`;
   const length = (details: string, diagnostics: string) =>
@@ -109,8 +113,8 @@ export function buildReport(state: TabState, ctx: ReportContext, snapshot?: Repo
   return { title, details, diagnostics, url };
 }
 
-export function buildIssueUrl(state: TabState, ctx: ReportContext, snapshot?: ReportSnapshot, problem?: ReportProblem): string {
-  return buildReport(state, ctx, snapshot, problem).url;
+export function buildIssueUrl(state: TabState, ctx: ReportContext, snapshot?: ReportSnapshot, problem?: ReportProblem, note?: string): string {
+  return buildReport(state, ctx, snapshot, problem, note).url;
 }
 
 export function searchExistingIssuesUrl(site: string): string {
