@@ -364,6 +364,7 @@ export const ACCEPT = [
   'zgoda',
   'wyrażam zgodę',
   'zezwól',
+  'pozwól',
   'tak',
   `potwierdzam wszystk${W}`,
   // CS / SK

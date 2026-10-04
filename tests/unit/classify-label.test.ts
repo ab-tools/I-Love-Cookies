@@ -192,6 +192,7 @@ describe('classifyLabel examples', () => {
     ['Count me in', 'ACCEPT'],
     ['Ik snap het', 'ACKNOWLEDGE'],
     ['Megértettem', 'ACKNOWLEDGE'],
+    ['Pozwól wszystko', 'ACCEPT_ALL'],
     ['Accept All Non-Essential Cookies', 'ACCEPT_ALL'],
     ['Reject non-essential cookies', 'REJECT'],
     ['Do not accept non-essential cookies', 'REJECT'],
