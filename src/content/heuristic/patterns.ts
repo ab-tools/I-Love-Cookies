@@ -246,6 +246,7 @@ export const AGE = [
   'entra',
   'binnengaan',
   'wejdź',
+  'wchodzę',
   'vstoupit',
 ];
 
@@ -260,6 +261,8 @@ export const AGE_DENY = [
   'younger',
   'jünger',
   'poniżej',
+  'rezygnuję',
+  'wychodzę',
   'leave',
   'exit',
   'verlassen',

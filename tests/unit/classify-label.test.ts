@@ -261,6 +261,8 @@ describe('classifyLabel examples', () => {
     ['Rejtsd el!', 'ACKNOWLEDGE'],
     ['POTRDI', 'SAVE'],
     ['Apstiprināt', 'SAVE'],
+    ['Wchodzę', 'AGE_CONFIRM'],
+    ['Rezygnuję', 'OTHER'],
     ['Permiteți toate cookie-urile', 'ACCEPT_ALL'],
     ['Позволи всички бисквитки', 'ACCEPT_ALL'],
     ['Отказване на всички бисквитки', 'REJECT'],
