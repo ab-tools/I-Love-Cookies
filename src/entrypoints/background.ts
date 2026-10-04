@@ -4,7 +4,7 @@ import type { UiMessage } from '../shared/messages';
 import { getSettings, updateSettings } from '../shared/settings';
 import { getTabState, handleContentMessage, onInPageNavigation, onTabRemoved, onTopLevelCommitted, onTrustedClick } from '../background/orchestrator';
 import { RULES_INFO, activeRules } from '../background/rules';
-import { RULE_UPDATE_ALARM, checkForRuleUpdate, clearRuleSet, getRuleSet, getRuleUpdateStatus, invalidateRuleSet, scheduleRuleUpdates } from '../background/rule-updates';
+import { RULE_RETRY_ALARM, RULE_UPDATE_ALARM, checkForRuleUpdate, clearRuleSet, getRuleSet, getRuleUpdateStatus, invalidateRuleSet, scheduleRuleUpdates } from '../background/rule-updates';
 import { collectReportSnapshot } from '../background/report-snapshot';
 import { pauseSite } from '../background/site-actions';
 import { sendReport } from '../background/report-send';
@@ -12,7 +12,7 @@ import { sendReport } from '../background/report-send';
 export default defineBackground(() => {
   void scheduleRuleUpdates();
   browser.alarms.onAlarm.addListener((alarm) => {
-    if (alarm.name === RULE_UPDATE_ALARM) void checkForRuleUpdate();
+    if (alarm.name === RULE_UPDATE_ALARM || alarm.name === RULE_RETRY_ALARM) void checkForRuleUpdate();
   });
   browser.storage.onChanged.addListener((changes, area) => {
     if ((area === 'sync' && changes.settings) || (area === 'local' && changes.ruleSet)) invalidateRuleSet();

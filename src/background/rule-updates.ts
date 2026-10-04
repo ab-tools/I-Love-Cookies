@@ -5,6 +5,9 @@ import { getSettings } from '../shared/settings';
 import { allSnippets } from './snippets';
 
 export const RULE_UPDATE_ALARM = 'ilc:ruleUpdate';
+/** One more try soon after a checksum mismatch (the download cache may still serve the previous file). */
+export const RULE_RETRY_ALARM = 'ilc:ruleUpdateRetry';
+const RETRY_MINUTES = 30;
 
 /** Result of the last update check (shown on the options page). */
 export interface RuleUpdateStatus {
@@ -78,6 +81,7 @@ export async function checkForRuleUpdate(): Promise<RuleUpdateStatus> {
     }
   } catch (error) {
     status.error = String(error instanceof Error ? error.message : error).slice(0, 300);
+    if (status.error === 'checksum mismatch') await browser.alarms.create(RULE_RETRY_ALARM, { delayInMinutes: RETRY_MINUTES });
   }
   await browser.storage.local.set({ ruleUpdateStatus: status });
   return getRuleUpdateStatus();
