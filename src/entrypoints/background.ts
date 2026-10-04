@@ -4,7 +4,7 @@ import type { UiMessage } from '../shared/messages';
 import { getSettings, updateSettings } from '../shared/settings';
 import { getTabState, handleContentMessage, onInPageNavigation, onTabRemoved, onTopLevelCommitted, onTrustedClick } from '../background/orchestrator';
 import { RULES_INFO, activeRules } from '../background/rules';
-import { RULE_UPDATE_ALARM, checkForRuleUpdate, getRuleSet, getRuleUpdateStatus, invalidateRuleSet, scheduleRuleUpdates } from '../background/rule-updates';
+import { RULE_UPDATE_ALARM, checkForRuleUpdate, clearRuleSet, getRuleSet, getRuleUpdateStatus, invalidateRuleSet, scheduleRuleUpdates } from '../background/rule-updates';
 import { collectReportSnapshot } from '../background/report-snapshot';
 import { pauseSite } from '../background/site-actions';
 import { sendReport } from '../background/report-send';
@@ -16,6 +16,9 @@ export default defineBackground(() => {
   });
   browser.storage.onChanged.addListener((changes, area) => {
     if ((area === 'sync' && changes.settings) || (area === 'local' && changes.ruleSet)) invalidateRuleSet();
+    // Rule updates switched off: only the bundled rules apply, the downloaded set is removed.
+    const settings = area === 'sync' ? (changes.settings?.newValue as { remoteRules?: boolean } | undefined) : undefined;
+    if (settings && settings.remoteRules === false) void clearRuleSet();
   });
 
   browser.runtime.onMessage.addListener((message: unknown, sender, sendResponse) => {
