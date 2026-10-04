@@ -38,6 +38,8 @@ export function decide(buttons: readonly ButtonCandidate[], hasToggles = false, 
   const save = first('SAVE');
   const selectAll = first('SELECT_ALL');
   if (save && (hasToggles || selectAll)) return { action: 'save', button: save };
+  // A notice whose only answer is "Confirm" / "Save" (no categories, no reject) is acknowledged with it.
+  if (save && !hasToggles && !buttons.some((b) => b.cls === 'REJECT')) return { action: 'click', button: save, kind: 'acknowledge' };
   // "Select all" without a save button is the banner's accept-all button.
   if (selectAll) return { action: 'click', button: selectAll, kind: 'accept_all' };
   const settings = first('SETTINGS');

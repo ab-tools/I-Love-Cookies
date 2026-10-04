@@ -422,6 +422,7 @@ export const ACCEPT = [
   'setuju',
   'de acord',
   'jazeker',
+  `schvál${W}`,
   `toelat${W}`,
   'zgadzam się',
   // Separable verb: "ich stimme (allen Cookies / der Verwendung aller Cookies) zu".
@@ -609,6 +610,8 @@ export const ACKNOWLEDGE = [
   '(zur )?kenntnis genommen',
   'rendben',
   'ich verstehe',
+  '^продолжить( работу)?$',
+  '知道了',
   'hide (this |the |cookie )?(message|banner)',
   'all right',
   'ga verder',
@@ -669,6 +672,8 @@ export const SELECT_ALL = [
 
 /** Opening settings / more options / information. */
 export const SETTINGS = [
+  `konfigurier${W}`,
+  `configur${W}`,
   'settings',
   'preferences',
   'consent (settings|options|details|preferences|manager|tool)',
