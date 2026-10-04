@@ -194,6 +194,8 @@ describe('classifyLabel examples', () => {
     ['Megértettem', 'ACKNOWLEDGE'],
     ['Pozwól wszystko', 'ACCEPT_ALL'],
     ['ENIG', 'ACCEPT'],
+    ['Potrdi vse', 'ACCEPT_ALL'],
+    ['Potrdi izbrano', 'SAVE'],
     ['Ikke enig', 'REJECT'],
     ['Accept All Non-Essential Cookies', 'ACCEPT_ALL'],
     ['Reject non-essential cookies', 'REJECT'],

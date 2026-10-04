@@ -247,6 +247,7 @@ export const SAVE = [
   'bestätigen',
   'ausgewählte (cookies )?(verwenden|nutzen|zulassen|erlauben)',
   `patvirtinti pažymėt${W}`,
+  `potrdi izbran${W}`,
   // A bare "Confirm" saves the choices of a preferences dialog ("Confirm all" stays accept all).
   '^(confirm|confirmer|confirmar|conferma|bevestigen|potvrdit|potwierdź)$',
   'meine auswahl',
@@ -438,6 +439,7 @@ export const ACCEPT = [
   'cookies nehm ich gern',
   'count me in',
   'patvirtinti visus',
+  'potrdi vse',
   'use all cookies',
   'ich bestätige alle',
   `schvál${W}`,
