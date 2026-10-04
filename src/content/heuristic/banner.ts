@@ -10,6 +10,9 @@ const WEAK =
 const NEGATIVE_TEXT =
   /age verification|altersverifikation|are you (over|18)|bist du (über|18)|year of birth|geburtsjahr|ihr alter|dein alter|your age|volljährig|of legal age|\b(1[68]|21) (jahre|years|ans|años|anni|jaar|lat)\b|\b(1[68]|21)\+|mayor de edad|maggiorenne|majeur|meerderjarig|pełnoletn|choose (your )?(country|region|language)|wähle (dein )?(land|sprache)|select your (country|region|location)/i;
 
+/** GDPR's parental-consent note ("If you are under 16 …") in ordinary consent banners is no age gate. */
+const PARENTAL_CONSENT = /[^.!?]*\b(under|unter|moins de|menos de|meno di|onder|poniżej|alatti)\s+1[3-8]\b[^.!?]*/gi;
+
 /** Newsletter / app / notification prompts – unless the consent wording is strong (banners mention them too). */
 const SOFT_NEGATIVE_TEXT = /newsletter|subscribe to our|anmelden zum|install (our|the) app|download (our|the) app|push.?notification|benachrichtigungen/i;
 const STRONG_CONSENT_SCORE = 6;
@@ -61,7 +64,7 @@ function isOverlayLike(el: Element): boolean {
 }
 
 function hasHardNegative(el: Element, text: string, score: number): boolean {
-  if (NEGATIVE_TEXT.test(text)) return true;
+  if (NEGATIVE_TEXT.test(text.replace(PARENTAL_CONSENT, ''))) return true;
   if (score < STRONG_CONSENT_SCORE && SOFT_NEGATIVE_TEXT.test(text)) return true;
   const root = shadowRootOf(el) ?? el;
   if (root.querySelector('input[type=email],input[type=password],input[type=tel],input[type=date],input[type=search]')) return true;

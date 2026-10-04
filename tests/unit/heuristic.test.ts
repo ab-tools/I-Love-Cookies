@@ -71,6 +71,12 @@ describe('banner detection – special cases', () => {
     expect(findConsentBanners()).toEqual([]);
   });
 
+  it('treats the GDPR parental-consent note as an ordinary consent banner', () => {
+    document.body.innerHTML = `<div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT} Wenn Sie unter 16 Jahre alt sind und Ihre
+      Zustimmung zu freiwilligen Diensten geben möchten, müssen Sie Ihre Erziehungsberechtigten um Erlaubnis bitten. <button>Alle akzeptieren</button></div>`;
+    expect(findConsentBanners()).toHaveLength(1);
+  });
+
   it('finds sticky bars by their utility classes', () => {
     document.body.innerHTML = `<div class="sticky bottom-0" style="position:sticky" data-rect="0,600,1024,70">This website uses cookies to ensure you get the best experience. <button>Got It!</button></div>`;
     expect(findConsentBanners()).toHaveLength(1);

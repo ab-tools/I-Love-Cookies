@@ -445,6 +445,8 @@ export const ACCEPT = [
   'прийняти',
   'погоджуюсь',
   'погодитися',
+  'соглашаюсь',
+  'согласен',
 ];
 
 /** "All / everything" – turns ACCEPT into ACCEPT_ALL. Also the free option on consent-or-pay walls. */
