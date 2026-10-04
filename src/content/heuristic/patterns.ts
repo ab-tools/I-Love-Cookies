@@ -7,7 +7,15 @@ const W = '\\p{L}*';
 
 /** Paid / subscription options – never clicked. */
 export const PAY = [
-  '\\d+[.,]\\d{2}',
+  // Prices: labels are normalised, "1.67" / "9,99" become "1 67" / "9 99".
+  '\\d+[ .,]\\d{2}(?!\\d)',
+  '(al|pro|per|par|a) (mes|monat|month|mois|mese|mês)',
+  'monatlich',
+  'monthly',
+  `suscrib${W}`,
+  `abbona${W}`,
+  'assin(ar|e|atura)',
+  `subskryb${W}`,
   '€',
   'eur',
   'abos?',
@@ -421,6 +429,7 @@ export const ACCEPT = [
   'terima',
   `aktzeptier${W}`,
   'totally fine',
+  'thats cool',
   '(im|i am) fine with (this|that|it)',
   'approve',
   'đồng ý',

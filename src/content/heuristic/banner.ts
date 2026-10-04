@@ -1,4 +1,4 @@
-import { isOnScreen, shadowRootOf } from '../dom';
+import { isOnScreen, isVisible, shadowRootOf } from '../dom';
 
 /** Consent wording: strong words alone identify a banner, weak words only support it. */
 const STRONG =
@@ -67,8 +67,9 @@ function hasHardNegative(el: Element, text: string, score: number): boolean {
   if (NEGATIVE_TEXT.test(text.replace(PARENTAL_CONSENT, ''))) return true;
   if (score < STRONG_CONSENT_SCORE && SOFT_NEGATIVE_TEXT.test(text)) return true;
   const root = shadowRootOf(el) ?? el;
-  if (root.querySelector('input[type=email],input[type=password],input[type=tel],input[type=date],input[type=search]')) return true;
-  if (Array.from(root.querySelectorAll('select')).some((s) => s.options.length >= 10)) return true;
+  // Only visible fields: consent-or-pay walls keep a hidden login form for subscribers.
+  if (Array.from(root.querySelectorAll('input[type=email],input[type=password],input[type=tel],input[type=date],input[type=search]')).some(isVisible)) return true;
+  if (Array.from(root.querySelectorAll('select')).some((s) => s.options.length >= 10 && isVisible(s))) return true;
   if (root.querySelector('a[href*="apps.apple.com"],a[href*="play.google.com"]')) return true;
   return false;
 }
