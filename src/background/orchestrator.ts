@@ -20,6 +20,7 @@ import type { HeuristicScan } from '../content/heuristic/controller';
 import type { HeuristicResult } from '../content/heuristic/flow';
 import type { FrameInfo } from '../content/frames';
 import { attachDebugger, detachDebugger, trustedClick, trustedClicksAvailable } from './trusted-click';
+import { countHandled } from '../shared/stats';
 
 type Snippets = Record<string, (...args: unknown[]) => unknown>;
 const SNIPPETS = allSnippets as unknown as Snippets;
@@ -548,6 +549,10 @@ async function finish(state: TabState, frameId: number, result: VerificationResu
   setPhase(state, 'done');
   log(state, frameId, `result: ${result.outcome} – ${result.reasons.join('; ')}`);
   if (!isSuccess(result.outcome)) await bumpDaily(state.site, 'failures');
+  if (isSuccess(result.outcome) && !state.counted) {
+    state.counted = true;
+    void countHandled();
+  }
   await saveState(state);
   if (state.trustedTried) {
     void detachDebugger(state.tabId);
@@ -763,6 +768,8 @@ export function onTopLevelCommitted(tabId: number, url: string) {
       next.phase = 'done';
       next.log = previous.log;
       log(next, 0, 'page reloaded after consent');
+      next.counted = true;
+      if (!previous.counted) void countHandled();
     }
     await saveState(next);
   });

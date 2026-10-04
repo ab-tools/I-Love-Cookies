@@ -34,6 +34,9 @@
 
   "popup_siteActive": { "message": "Cookies auf dieser Website automatisch akzeptieren" },
   "popup_excludedBy": { "message": "Ausgeschlossen durch „$1“ in den Einstellungen." },
+  "locale": { "message": "de", "description": "Language of these messages (number and unit formats)." },
+  "popup_handledOne": { "message": "1 Banner beantwortet – etwa $2 gespart" },
+  "popup_handledMany": { "message": "$1 Banner beantwortet – etwa $2 gespart" },
   "popup_report": { "message": "Problem melden" },
   "popup_reportGithub": { "message": "Über GitHub melden" },
   "popup_reportAnonymous": { "message": "Anonym melden" },

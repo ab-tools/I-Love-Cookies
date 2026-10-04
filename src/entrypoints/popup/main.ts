@@ -7,6 +7,7 @@ import { exclusionFor } from '../../shared/settings';
 import { describeState } from '../../shared/describe';
 import { localizePage, translate } from '../../shared/i18n';
 import { WEBSITE_URL } from '../../shared/constants';
+import { formatTimeSaved, getStats } from '../../shared/stats';
 
 interface TabInfo {
   state: TabState;
@@ -123,5 +124,18 @@ $('open-options').addEventListener('click', (e) => {
   window.close();
 });
 
+/** "1,234 banners answered – about 1 hr saved" (hidden until the first one). */
+async function showCounter() {
+  const { handled } = await getStats();
+  if (handled === 0) return;
+  // Numbers and units in the language of the extension's texts (the browser may use one we have no texts for).
+  const locale = translate('locale');
+  const count = handled.toLocaleString(locale);
+  const element = $('handled-count');
+  element.textContent = translate(handled === 1 ? 'popup_handledOne' : 'popup_handledMany', [count, formatTimeSaved(handled, locale)]);
+  element.hidden = false;
+}
+
 localizePage();
+void showCounter();
 void main();

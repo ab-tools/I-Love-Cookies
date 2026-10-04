@@ -40,6 +40,9 @@ summary {
 #report-status {
   margin: 0;
 }
+#handled-count {
+  margin: -2px 2px 0;
+}
 /* Report dialog over the popup (the popup takes the dialog's height, see fitDialog). */
 .dialog-backdrop {
   position: fixed;

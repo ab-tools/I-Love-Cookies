@@ -40,6 +40,8 @@ export interface TabState {
   heuristicTried?: boolean;
   /** Generic heuristic already repeated with real mouse clicks. */
   trustedTried?: boolean;
+  /** This document's answered banner was added to the user's counter. */
+  counted?: boolean;
   /** API fallback already tried for the current popup. */
   apiTried?: boolean;
   outcome?: Outcome;
