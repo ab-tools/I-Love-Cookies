@@ -1,0 +1,61 @@
+[
+  {
+    "name": "automattic-cmp-optout",
+    "comment": "Replaces autoconsent's rule: it also claimed other banners whose form class contains \"cookie-banner\" but which have no accept-all link.",
+    "prehideSelectors": [
+      "form[class*=\"cookie-banner\"][method=\"post\"]"
+    ],
+    "detectCmp": [
+      {
+        "exists": "form[class*=\"cookie-banner\"][method=\"post\"] a[class*=\"accept-all-button\"]"
+      }
+    ],
+    "detectPopup": [
+      {
+        "visible": "form[class*=\"cookie-banner\"][method=\"post\"]",
+        "check": "any"
+      }
+    ],
+    "optIn": [
+      {
+        "click": "a[class*=\"accept-all-button\"]"
+      }
+    ],
+    "optOut": [],
+    "test": [
+      {
+        "waitForVisible": "form[class*=\"cookie-banner\"][method=\"post\"]",
+        "check": "none",
+        "timeout": 3000
+      }
+    ]
+  },
+  {
+    "name": "ilc-cookie-consent-quickform",
+    "comment": "In-page banner with one form per choice (e.g. polisen.se): submits the form that allows every purpose.",
+    "detectCmp": [
+      {
+        "exists": "form.js-cookie-consent-form input[name^=\"Purpose.\"]"
+      }
+    ],
+    "detectPopup": [
+      {
+        "visible": "form.js-cookie-consent-form",
+        "check": "any"
+      }
+    ],
+    "optIn": [
+      {
+        "waitForThenClick": "form.js-cookie-consent-form:has(input[name^=\"Purpose.\"]):not(:has(input[name^=\"Purpose.\"][value=\"False\"])) [type=submit]"
+      }
+    ],
+    "optOut": [],
+    "test": [
+      {
+        "waitForVisible": "form.js-cookie-consent-form",
+        "check": "none",
+        "timeout": 5000
+      }
+    ]
+  }
+]
