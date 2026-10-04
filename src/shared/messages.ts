@@ -73,6 +73,8 @@ export type IlcContentMessage =
   | { type: 'ilc:announceFrame'; token: string }
   /** Top frame: visibility and size of the <iframe> that announced the token. */
   | { type: 'ilc:frameInfo'; token: string }
+  /** Size of the frame's viewport. */
+  | { type: 'ilc:viewport' }
   /** After verified consent: remove a scroll lock the banner left behind. */
   | { type: 'ilc:unlockScroll' }
   /** In-page navigation: look for new banners. */
@@ -128,4 +130,9 @@ export interface ReportSnapshot {
   signals: unknown;
   /** Version of the active downloaded rule set. */
   ruleSet?: string;
+}
+
+export interface Viewport {
+  width: number;
+  height: number;
 }

@@ -57,6 +57,10 @@ export default defineContentScript({
         announceFrame((msg as Extract<IlcContentMessage, { type: 'ilc:announceFrame' }>).token);
         return false;
       }
+      if (msg?.type === 'ilc:viewport') {
+        sendResponse({ width: window.innerWidth, height: window.innerHeight });
+        return false;
+      }
       if (msg?.type === 'ilc:frameInfo') {
         sendResponse(frameInfo((msg as Extract<IlcContentMessage, { type: 'ilc:frameInfo' }>).token));
         return false;

@@ -56,8 +56,15 @@ export function normalizeLabel(text: string): string {
     .trim();
 }
 
-const compile = (sources: readonly string[]) =>
-  new RegExp(`(?<![\\p{L}\\p{N}])(?:${sources.map(stripMarks).join('|')})(?![\\p{L}\\p{N}])`, 'iu');
+/** Scripts without spaces between words: their patterns match anywhere in the label. */
+const UNSPACED = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Thai}]/u;
+
+const compile = (sources: readonly string[]) => {
+  const spaced = sources.filter((s) => !UNSPACED.test(s)).map(stripMarks);
+  const unspaced = sources.filter((s) => UNSPACED.test(s)).map(stripMarks);
+  const words = `(?<![\\p{L}\\p{N}])(?:${spaced.join('|')})(?![\\p{L}\\p{N}])`;
+  return new RegExp(unspaced.length ? `${words}|${unspaced.join('|')}` : words, 'iu');
+};
 
 const RE = {
   pay: compile(PAY),

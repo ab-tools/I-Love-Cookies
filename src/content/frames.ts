@@ -1,4 +1,4 @@
-import { isOnScreen } from './dom';
+import { isOnScreen, shadowRootOf } from './dom';
 
 export interface FrameInfo {
   visible: boolean;
@@ -8,8 +8,14 @@ export interface FrameInfo {
 
 const announced = new Map<string, FrameInfo>();
 
-function iframes(root: Document | ShadowRoot = document): HTMLIFrameElement[] {
-  return Array.from(root.querySelectorAll('iframe'));
+/** All iframes of the page, including those inside (open and closed) shadow roots. */
+function iframes(root: Document | ShadowRoot = document, found: HTMLIFrameElement[] = []): HTMLIFrameElement[] {
+  found.push(...Array.from(root.querySelectorAll('iframe')));
+  for (const el of Array.from(root.querySelectorAll('*'))) {
+    const shadow = shadowRootOf(el);
+    if (shadow) iframes(shadow, found);
+  }
+  return found;
 }
 
 /** Top frame: maps tokens posted by child frames to their <iframe> element's visibility and size. */

@@ -16,6 +16,8 @@ const PARENTAL_CONSENT = /[^.!?]*\b(under|unter|moins de|menos de|meno di|onder|
 /** Newsletter / app / notification prompts – unless the consent wording is strong (banners mention them too). */
 const SOFT_NEGATIVE_TEXT = /newsletter|subscribe to our|anmelden zum|install (our|the) app|download (our|the) app|push.?notification|benachrichtigungen/i;
 const STRONG_CONSENT_SCORE = 6;
+/** A whole frame document counts as a banner only with clear consent wording. */
+const FRAME_DOCUMENT_MIN_SCORE = 4;
 
 const NAVIGATION = 'header,nav,footer,main,article,[role=banner],[role=navigation],[role=contentinfo],[role=main],[role=menu],[role=tooltip]';
 const CLICKABLE = 'button,[role=button],a,input[type=button],input[type=submit],[onclick],[class*="btn"],[class*="button"]';
@@ -154,6 +156,15 @@ export function findConsentBanners(doc: Document = document): Banner[] {
     if (!root.querySelector(CLICKABLE) && !el.querySelector(CLICKABLE)) continue;
     if (hasHardNegative(el, text, score)) continue;
     banners.push({ element: el, text: text.slice(0, 2000), score, area });
+  }
+  // A consent page loaded into an iframe is the whole document, not an overlay inside it. (Acting on it still
+  // requires the <iframe> to be a visible overlay in the page.)
+  if (!banners.length && window !== window.top && doc.body && isOnScreen(doc.body)) {
+    const text = deepText(doc.body);
+    const score = consentScore(text);
+    if (score >= FRAME_DOCUMENT_MIN_SCORE && text.length >= 40 && doc.body.querySelector(CLICKABLE) && !hasHardNegative(doc.body, text, score)) {
+      banners.push({ element: doc.body, text: text.slice(0, 2000), score, area: 1 });
+    }
   }
   return banners.sort((a, b) => b.score - a.score || b.area - a.area);
 }

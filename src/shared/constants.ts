@@ -47,6 +47,8 @@ export const LIMITS = {
   heuristicGraceMs: 2500,
   /** A consent iframe must cover at least this share of the viewport for the heuristic to act in it. */
   minFrameOverlayArea: 0.05,
+  /** A consent frame whose <iframe> could not be identified must cover this share of the top viewport. */
+  unlinkedFrameMinArea: 0.25,
   /** Max duration of one generic accept (incl. settings flow). */
   heuristicActMs: 20000,
   /** Entries kept in the per-tab action log. */

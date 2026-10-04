@@ -7,7 +7,7 @@
 import { browser } from 'wxt/browser';
 import type { BackgroundMessage, Config, ContentScriptMessage } from '@duckduckgo/autoconsent';
 import { LIMITS } from '../shared/constants';
-import type { FrameVerification, IlcContentMessage, PausedReason, Phase, Strategy, TabState } from '../shared/messages';
+import type { FrameVerification, IlcContentMessage, PausedReason, Phase, Strategy, TabState, Viewport } from '../shared/messages';
 import { english } from '../shared/i18n';
 import { baseDomain, returnsToCallback } from '../shared/navigation';
 import { exclusionFor, getSettings, siteOf } from '../shared/settings';
@@ -569,7 +569,14 @@ async function isVisibleOverlayFrame(tabId: number, frameId: number): Promise<bo
   await sendToFrame(tabId, frameId, { type: 'ilc:announceFrame', token }).catch(() => undefined);
   await sleep(300);
   const info = await askFrame<FrameInfo>(tabId, 0, { type: 'ilc:frameInfo', token }, 2000);
-  return Boolean(info?.visible && info.area >= LIMITS.minFrameOverlayArea);
+  if (info) return info.visible && info.area >= LIMITS.minFrameOverlayArea;
+  // The <iframe> could not be identified (the page may swallow messages): a frame covering a large part of
+  // the top viewport is an overlay.
+  const [frame, top] = await Promise.all([
+    askFrame<Viewport>(tabId, frameId, { type: 'ilc:viewport' }, 2000),
+    askFrame<Viewport>(tabId, 0, { type: 'ilc:viewport' }, 2000),
+  ]);
+  return Boolean(frame && top && frame.width * frame.height >= LIMITS.unlinkedFrameMinArea * top.width * top.height);
 }
 
 async function runHeuristic(tabId: number, frameId: number) {
