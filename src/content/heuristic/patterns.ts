@@ -453,6 +453,7 @@ export const ACCEPT = [
   'погоджуюсь',
   'погодитися',
   'соглашаюсь',
+  'даю согласие',
   'согласен',
 ];
 
@@ -571,6 +572,8 @@ export const ACKNOWLEDGE = [
   '(zur )?kenntnis genommen',
   'rendben',
   'ich verstehe',
+  'acknowledge',
+  'отлично',
   '(hinweis )?gelesen',
   '^continue$',
   'geht klar',
