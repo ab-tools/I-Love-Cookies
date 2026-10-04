@@ -40,15 +40,17 @@ generic heuristic: unknown banner ────► if no rule handled it (or a ru
   ([strategy-data.json](src/background/strategy-data.json)); a direct click on the accept button where rules fail.
 - **Generic heuristic** ([src/content/heuristic/](src/content/heuristic/)) for banners no rule knows:
   - finds on-screen overlays/dialogs (also in shadow DOM) with consent wording, excluding newsletter, login,
-    age-gate, region and app dialogs;
+    region and app dialogs; age checks are confirmed too (setting, on by default);
   - classifies button labels in 30 languages; reject, "necessary only", paid / subscription, login and links
     leaving the page are vetoed before anything is chosen;
-  - clicks "accept all" > "accept" > "OK"; otherwise opens the settings and uses "accept all" there, or switches
-    every category on (never off) and saves;
+  - clicks "accept all" > "accept" > "OK" > "I am 18 or older"; otherwise opens the settings and uses "accept
+    all" there, or switches every category on (never off) and saves; notices that only offer "close" are closed;
+  - dialogs that ignore synthetic clicks are answered once more with real mouse clicks (Chromium: `debugger`
+    permission, attached only for that moment); such sites get real clicks right away on later visits;
   - measured against 7,005 labelled real banner buttons: ≥ 99.5 % precision for accepting labels.
   - Rules always get a head start; a real user click inside the banner stops all automation on that page.
 - **Settings:** "consent or pay" walls are accepted with the free option by default and can be left to the user
-  instead. Sites can be excluded by domain (`example.com`, includes subdomains), address (`example.com/forum`),
+  instead; age checks are confirmed by default and can be left to the user as well. Sites can be excluded by domain (`example.com`, includes subdomains), address (`example.com/forum`),
   wildcard pattern (`*.example.*`) or regular expression (`/^news\.[a-z]+\.de\//`), see
   [src/shared/exclusions.ts](src/shared/exclusions.ts).
 - **Loop guards:** one actor per tab, ≤ 2 attempts per frame and page load, daily per-site limits.
