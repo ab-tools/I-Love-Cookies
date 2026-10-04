@@ -26,7 +26,8 @@ const nameOf = (el: Element) => `${el.id} ${el.getAttribute('class') ?? ''}`;
 function labelOf(el: HTMLElement): string {
   const text =
     el.innerText?.trim() ||
-    (el as HTMLInputElement).value?.trim() ||
+    // Only form controls have a text value (<li value> is a number).
+    (el instanceof HTMLInputElement || el instanceof HTMLButtonElement ? el.value.trim() : '') ||
     el.getAttribute('aria-label')?.trim() ||
     el.getAttribute('title')?.trim() ||
     '';
