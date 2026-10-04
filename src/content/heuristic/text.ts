@@ -42,6 +42,8 @@ const NOUN_ONLY = new Set(
 );
 
 /** Labels naming more than the necessary category ("Essential + analytics") are not "necessary only". */
+/** "Accept non-essential cookies": the "non" is no negation of accepting. */
+const NON_ESSENTIAL_COOKIES = /non[ -]?essential cookies/;
 const OPTIONAL_COOKIES = /non essential|nicht (notwendig|essenziell)|optional|\+|analy|statisti|marketing|komfort|tracking/;
 
 /** Lower case without diacritics (capitals often drop them, e.g. Greek "ΣΥΜΦΩΝΩ" = "συμφωνώ"). */
@@ -103,7 +105,7 @@ export function classifyLabel(text: string): ButtonClass {
     RE.without.test(label) ||
     RE.revoke.test(label) ||
     (RE.necessary.test(label) && !OPTIONAL_COOKIES.test(label)) ||
-    (accepting && (RE.negation.test(label) || RE.only.test(label)))
+    (accepting && (RE.negation.test(label.replace(NON_ESSENTIAL_COOKIES, '')) || RE.only.test(label)))
   ) {
     return 'REJECT';
   }
