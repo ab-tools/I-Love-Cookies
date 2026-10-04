@@ -2,6 +2,7 @@ import { isOnScreen, realisticClick, shadowRootOf } from '../dom';
 import { findConsentBanners } from './banner';
 import { extractButtons, type ButtonCandidate } from './candidates';
 import { decide, isVetoed } from './policy';
+import { ACCEPTING, classifyLabel } from './text';
 
 export interface HeuristicResult {
   done: boolean;
@@ -48,6 +49,16 @@ export async function enableAllToggles(container: Element): Promise<{ toggled: n
   return { toggled, total: toggles.length };
 }
 
+/** An accepting button that is disabled (it unlocks once categories are chosen). */
+export function lockedAccept(container: Element): boolean {
+  const roots: (Element | ShadowRoot)[] = [container];
+  const own = shadowRootOf(container);
+  if (own) roots.push(own);
+  return roots
+    .flatMap((r) => Array.from(r.querySelectorAll<HTMLElement>('button[disabled],button[aria-disabled=true],[role=button][aria-disabled=true]')))
+    .some((b) => ACCEPTING.has(classifyLabel(b.innerText ?? '')));
+}
+
 /** The container has category switches the user could turn on. */
 export function hasToggles(container: Element): boolean {
   const roots: (Element | ShadowRoot)[] = [container];
@@ -78,7 +89,13 @@ function click(button: ButtonCandidate, result: HeuristicResult) {
 export async function acceptBanner(banner: Element): Promise<HeuristicResult> {
   const result: HeuristicResult = { done: false, clicked: [], toggled: 0, partial: false };
   const initial = extractButtons(banner);
-  const decision = decide(initial, hasToggles(banner));
+  let decision = decide(initial, hasToggles(banner), lockedAccept(banner));
+  if (decision.action === 'toggles') {
+    const { toggled } = await enableAllToggles(banner);
+    result.toggled = toggled;
+    await sleep(300);
+    decision = decide(extractButtons(banner));
+  }
   if (decision.action === 'save') return selectAllAndSave(banner, result);
   if (decision.action === 'click') {
     click(decision.button, result);
@@ -87,8 +104,8 @@ export async function acceptBanner(banner: Element): Promise<HeuristicResult> {
     void confirmFollowUp(banner, decision.button, new Set(initial.map((b) => b.label)));
     return result;
   }
-  if (decision.action === 'none') {
-    result.reason = decision.reason;
+  if (decision.action === 'none' || decision.action === 'toggles') {
+    result.reason = decision.action === 'none' ? decision.reason : 'accept button stays locked';
     return result;
   }
 

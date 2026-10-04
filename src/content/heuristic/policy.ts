@@ -5,6 +5,8 @@ export type Decision =
   | { action: 'settings'; button: ButtonCandidate }
   /** The banner is a settings layer already: select / switch on everything, then save with this button. */
   | { action: 'save'; button: ButtonCandidate }
+  /** The accept button is disabled until categories are chosen: switch everything on, then decide again. */
+  | { action: 'toggles' }
   | { action: 'none'; reason: string };
 
 /** Never clicked, whatever the label says. */
@@ -18,7 +20,7 @@ export function isVetoed(button: ButtonCandidate): boolean {
  * categories right away; `hasToggles`: switchable categories) > open the settings > nothing.
  * Paid, login, reject and navigating buttons are removed before anything is chosen.
  */
-export function decide(buttons: readonly ButtonCandidate[], hasToggles = false): Decision {
+export function decide(buttons: readonly ButtonCandidate[], hasToggles = false, lockedAccept = false): Decision {
   const allowed = buttons.filter((b) => !isVetoed(b));
   // The most prominent button of a class: real buttons before links and other clickable elements, then the
   // visually heaviest (call-to-action buttons over inline info links and expander strips).
@@ -40,5 +42,6 @@ export function decide(buttons: readonly ButtonCandidate[], hasToggles = false):
   if (selectAll) return { action: 'click', button: selectAll, kind: 'accept_all' };
   const settings = first('SETTINGS');
   if (settings) return { action: 'settings', button: settings };
+  if (hasToggles && lockedAccept) return { action: 'toggles' };
   return { action: 'none', reason: buttons.length ? 'no accepting button' : 'no buttons' };
 }

@@ -181,6 +181,18 @@ describe('acceptBanner', () => {
     expect(clicks).toEqual(['save']);
   });
 
+  it('switches categories on when the accept button is locked until then', async () => {
+    document.body.innerHTML = `
+      <div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT}
+        <label><input type="checkbox" id="all"> Alle Cookies</label>
+        <button id="required">Akceptuję wymagane</button><button id="accept" disabled>Akceptuję</button></div>`;
+    document.getElementById('all')!.addEventListener('change', () => document.getElementById('accept')!.removeAttribute('disabled'));
+    track();
+    const result = await acceptBanner(document.getElementById('cmp')!);
+    expect(result).toMatchObject({ done: true, toggled: 1, clicked: ['Akceptuję'] });
+    expect(clicks).toEqual(['accept']);
+  });
+
   it('uses "accept all" inside the settings layer when there is one', async () => {
     document.body.innerHTML = `
       <div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT}

@@ -105,6 +105,7 @@ describe('classifyLabel examples', () => {
     ['CIENTE', 'ACKNOWLEDGE'],
     ['ALL RIGHT', 'ACKNOWLEDGE'],
     ['GA VERDER', 'ACKNOWLEDGE'],
+    ['Alles toelaten', 'ACCEPT_ALL'],
     ['Nõustun kõigiga', 'ACCEPT_ALL'],
     ['Continuar', 'ACKNOWLEDGE'],
     ['全て同意', 'ACCEPT_ALL'],
