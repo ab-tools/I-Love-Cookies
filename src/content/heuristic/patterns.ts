@@ -250,6 +250,7 @@ export const SAVE = [
   `potrdi izbran${W}`,
   // A bare "Confirm" saves the choices of a preferences dialog ("Confirm all" stays accept all).
   '^(confirm|confirmer|confirmar|conferma|bevestigen|potvrdit|potwierdź)$',
+  '^(save|opslaan|enregistrer|salva|zapisz|uložit)$',
   'meine auswahl',
   'conferma (le mie )?scelte',
   `pieņemt atlas${W}`,

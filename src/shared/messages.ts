@@ -38,6 +38,8 @@ export interface TabState {
   signalMark?: number;
   /** Generic heuristic already used in this document. */
   heuristicTried?: boolean;
+  /** Generic heuristic already repeated with real mouse clicks. */
+  trustedTried?: boolean;
   /** API fallback already tried for the current popup. */
   apiTried?: boolean;
   outcome?: Outcome;
@@ -79,7 +81,8 @@ export type IlcContentMessage =
   | { type: 'ilc:unlockScroll' }
   /** In-page navigation: look for new banners. */
   | { type: 'ilc:rescan' }
-  | { type: 'ilc:heuristicAct' }
+  /** trusted: click with real mouse events (the browser's debugger interface). */
+  | { type: 'ilc:heuristicAct'; trusted?: boolean }
   /** Problem report: describe this frame's consent UI. */
   | { type: 'ilc:reportSnapshot' }
   /** Does the banner (of this CMP, or the generic one) offer a paid option? */

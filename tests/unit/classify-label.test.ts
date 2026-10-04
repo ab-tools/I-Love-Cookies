@@ -196,6 +196,7 @@ describe('classifyLabel examples', () => {
     ['ENIG', 'ACCEPT'],
     ['Potrdi vse', 'ACCEPT_ALL'],
     ['Potrdi izbrano', 'SAVE'],
+    ['Save', 'SAVE'],
     ['Ikke enig', 'REJECT'],
     ['Accept All Non-Essential Cookies', 'ACCEPT_ALL'],
     ['Reject non-essential cookies', 'REJECT'],

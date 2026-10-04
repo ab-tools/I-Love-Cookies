@@ -16,8 +16,16 @@ export default defineConfig({
     name: '__MSG_extName__',
     description: '__MSG_extDescription__',
     default_locale: 'en',
-    // browsingData: test builds only (wiping site data between automated visits).
-    permissions: ['scripting', 'storage', 'webNavigation', 'alarms', ...(mode === 'e2e' ? ['browsingData'] : [])],
+    // browsingData: test builds only (wiping site data between automated visits). debugger (Chromium): real mouse
+    // clicks for consent dialogs that ignore synthetic ones.
+    permissions: [
+      'scripting',
+      'storage',
+      'webNavigation',
+      'alarms',
+      ...(browser === 'firefox' ? [] : ['debugger']),
+      ...(mode === 'e2e' ? ['browsingData'] : []),
+    ],
     host_permissions: ['<all_urls>'],
     action: { default_title: '__MSG_extName__' },
     ...(browser === 'firefox'

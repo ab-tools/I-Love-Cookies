@@ -41,7 +41,7 @@ export async function enableAllToggles(container: Element): Promise<{ toggled: n
     if (isOn(toggle)) continue;
     const label = toggle instanceof HTMLInputElement ? toggle.labels?.[0] : null;
     const target = toggle.getBoundingClientRect().width > 0 ? toggle : (label ?? toggle);
-    realisticClick(target);
+    await realisticClick(target);
     await sleep(30);
     if (!isOn(toggle)) toggle.click(); // custom widgets sometimes only react to a plain click
     if (isOn(toggle)) toggled++;
@@ -77,9 +77,9 @@ async function waitFor<T>(probe: () => T | null | undefined, timeoutMs: number):
   }
 }
 
-function click(button: ButtonCandidate, result: HeuristicResult) {
-  realisticClick(button.element);
+async function click(button: ButtonCandidate, result: HeuristicResult) {
   result.clicked.push(button.label);
+  await realisticClick(button.element);
 }
 
 /**
@@ -98,7 +98,7 @@ export async function acceptBanner(banner: Element): Promise<HeuristicResult> {
   }
   if (decision.action === 'save') return selectAllAndSave(banner, result);
   if (decision.action === 'click') {
-    click(decision.button, result);
+    await click(decision.button, result);
     result.done = true;
     // Not awaited: accepting often removes the frame, which must answer first.
     void confirmFollowUp(banner, decision.button, new Set(initial.map((b) => b.label)));
@@ -110,7 +110,7 @@ export async function acceptBanner(banner: Element): Promise<HeuristicResult> {
   }
 
   // Settings layer: may replace the banner, open a new dialog or expand in place.
-  click(decision.button, result);
+  await click(decision.button, result);
   await sleep(400);
   const layer =
     (await waitFor(() => {
@@ -124,7 +124,7 @@ export async function acceptBanner(banner: Element): Promise<HeuristicResult> {
 
   const acceptAll = extractButtons(layer).find((b) => !isVetoed(b) && b.cls === 'ACCEPT_ALL');
   if (acceptAll) {
-    click(acceptAll, result);
+    await click(acceptAll, result);
     result.done = true;
     return result;
   }
@@ -144,24 +144,24 @@ async function confirmFollowUp(banner: Element, clicked: ButtonCandidate, before
   // "Accept all" that only became available through the first click (e.g. enabled after "read more").
   const unlocked = buttons.find((b) => b.cls === 'ACCEPT_ALL' && !before.has(b.label));
   if (unlocked) {
-    realisticClick(unlocked.element);
+    void realisticClick(unlocked.element);
     return;
   }
   const save = clicked.cls === 'ACCEPT_ALL' || clicked.cls === 'SELECT_ALL' ? buttons.find((b) => b.cls === 'SAVE') : undefined;
   if (save) {
-    realisticClick(save.element);
+    void realisticClick(save.element);
     return;
   }
   if (all.some((b) => b.cls === 'REJECT')) return;
   const confirm = buttons.find((b) => ['ACKNOWLEDGE', 'ACCEPT', 'ACCEPT_ALL'].includes(b.cls) && b.label !== clicked.label);
-  if (confirm) realisticClick(confirm.element);
+  if (confirm) void realisticClick(confirm.element);
 }
 
 /** Settings layer: "select all" if offered, every category switched on (never off), then save. */
 async function selectAllAndSave(layer: Element, result: HeuristicResult): Promise<HeuristicResult> {
   const selectAll = extractButtons(layer).find((b) => !isVetoed(b) && b.cls === 'SELECT_ALL');
   if (selectAll) {
-    click(selectAll, result);
+    await click(selectAll, result);
     await sleep(300);
   }
   const { toggled, total } = await enableAllToggles(layer);
@@ -188,7 +188,7 @@ async function selectAllAndSave(layer: Element, result: HeuristicResult): Promis
     result.reason = 'no save button';
     return result;
   }
-  click(save, result);
+  await click(save, result);
   result.done = true;
   return result;
 }

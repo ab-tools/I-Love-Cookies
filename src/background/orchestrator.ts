@@ -19,6 +19,7 @@ import { updateBadge } from './badge';
 import type { HeuristicScan } from '../content/heuristic/controller';
 import type { HeuristicResult } from '../content/heuristic/flow';
 import type { FrameInfo } from '../content/frames';
+import { attachDebugger, detachDebugger, trustedClick, trustedClicksAvailable } from './trusted-click';
 
 type Snippets = Record<string, (...args: unknown[]) => unknown>;
 const SNIPPETS = allSnippets as unknown as Snippets;
@@ -105,6 +106,12 @@ async function bumpDaily(site: string, field: 'attempts' | 'failures'): Promise<
   const counter = await getDaily(site);
   counter[field]++;
   await browser.storage.local.set({ [`daily:${site}`]: counter });
+}
+
+/** Sites whose consent dialog only reacts to real mouse clicks: answered with them right away next time. */
+const trustedKey = (site: string) => `trustedClicks:${baseDomain(site)}`;
+async function needsTrustedClicks(site: string): Promise<boolean> {
+  return Boolean((await browser.storage.local.get(trustedKey(site)))[trustedKey(site)]);
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -521,6 +528,16 @@ async function finish(state: TabState, frameId: number, result: VerificationResu
   log(state, frameId, `result: ${result.outcome} – ${result.reasons.join('; ')}`);
   if (!isSuccess(result.outcome)) await bumpDaily(state.site, 'failures');
   await saveState(state);
+  if (state.trustedTried) {
+    void detachDebugger(state.tabId);
+    if (state.strategy === 'heuristic' && isSuccess(result.outcome)) await browser.storage.local.set({ [trustedKey(state.site)]: Date.now() });
+  }
+  if (result.outcome === 'FAILED' && state.strategy === 'heuristic' && !state.trustedTried && trustedClicksAvailable()) {
+    const docId = documentIds.get(state.tabId);
+    setTimeout(() => {
+      if (documentIds.get(state.tabId) === docId) void withTab(state.tabId, () => trustedRetry(state.tabId));
+    }, 500);
+  }
   if (result.outcome === 'FAILED' && state.strategy !== 'heuristic' && !state.heuristicTried) {
     const docId = documentIds.get(state.tabId);
     setTimeout(() => {
@@ -553,6 +570,14 @@ async function onHeuristicFound(tabId: number, frameId: number, scan: HeuristicS
 async function heuristicFallback(tabId: number) {
   const state = await loadState(tabId);
   if (!state || state.heuristicTried || state.phase !== 'done' || state.outcome !== 'FAILED') return;
+  const best = await bestBanner(tabId);
+  if (!best) return;
+  log(state, best.frameId, `rule failed – generic banner ${best.scan.fingerprint}: ${best.scan.buttons.join(' | ')}`);
+  await runHeuristic(tabId, best.frameId);
+}
+
+/** The frame with the most convincing banner the heuristic can answer. */
+async function bestBanner(tabId: number): Promise<{ frameId: number; scan: HeuristicScan } | null> {
   const frames = (await browser.webNavigation.getAllFrames({ tabId }).catch(() => null)) ?? [{ frameId: 0 }];
   let best: { frameId: number; scan: HeuristicScan } | null = null;
   for (const { frameId } of frames) {
@@ -560,9 +585,35 @@ async function heuristicFallback(tabId: number) {
     if (!scan || scan.decision === 'none') continue;
     if (!best || scan.score > best.scan.score || (scan.score === best.scan.score && scan.top)) best = { frameId, scan };
   }
+  return best;
+}
+
+/** The generic answer did not take: some pages only react to real mouse clicks – answer once more with those. */
+async function trustedRetry(tabId: number) {
+  const state = await loadState(tabId);
+  if (!state || state.trustedTried || state.phase !== 'done' || state.outcome !== 'FAILED' || state.strategy !== 'heuristic') return;
+  const best = await bestBanner(tabId);
   if (!best) return;
-  log(state, best.frameId, `rule failed – generic banner ${best.scan.fingerprint}: ${best.scan.buttons.join(' | ')}`);
-  await runHeuristic(tabId, best.frameId);
+  state.trustedTried = true;
+  await saveState(state);
+  if (!(await attachDebugger(tabId))) return;
+  log(state, best.frameId, `generic banner ${best.scan.fingerprint}: answering with real mouse clicks`);
+  await runHeuristic(tabId, best.frameId, true);
+  const current = await loadState(tabId);
+  if (current?.phase !== 'acting' && current?.phase !== 'verifying') await detachDebugger(tabId);
+}
+
+/** Real mouse click requested by a frame during a trusted run. */
+export async function onTrustedClick(tabId: number, frameId: number, x: number, y: number): Promise<boolean> {
+  return trustedClick(tabId, frameId, x, y, locateFrame);
+}
+
+/** Position of a frame's <iframe> in its parent frame (null if it cannot be identified). */
+async function locateFrame(tabId: number, frameId: number, parentFrameId: number): Promise<FrameInfo | null> {
+  const token = crypto.randomUUID();
+  await sendToFrame(tabId, frameId, { type: 'ilc:announceFrame', token }).catch(() => undefined);
+  await sleep(150);
+  return askFrame<FrameInfo>(tabId, parentFrameId, { type: 'ilc:frameInfo', token }, 2000);
 }
 
 /** A child frame's banner only counts if its <iframe> is a visible overlay in the top frame. */
@@ -581,9 +632,9 @@ async function isVisibleOverlayFrame(tabId: number, frameId: number): Promise<bo
   return Boolean(frame && top && frame.width * frame.height >= LIMITS.unlinkedFrameMinArea * top.width * top.height);
 }
 
-async function runHeuristic(tabId: number, frameId: number) {
+async function runHeuristic(tabId: number, frameId: number, trusted = false) {
   const state = await loadState(tabId);
-  if (!state || state.heuristicTried) return;
+  if (!state || (state.heuristicTried && !trusted)) return;
   if (frameId !== 0 && !(await isVisibleOverlayFrame(tabId, frameId))) {
     log(state, frameId, 'generic banner in a frame that is not a visible overlay – ignored');
     await saveState(state);
@@ -592,6 +643,11 @@ async function runHeuristic(tabId: number, frameId: number) {
   const now = Date.now();
   if (state.claim && state.claim.until > now) return;
   if (await leaveToUser(state, frameId, { heuristic: true })) return;
+  if (!trusted && !state.trustedTried && trustedClicksAvailable() && (await needsTrustedClicks(state.site)) && (await attachDebugger(tabId))) {
+    trusted = true;
+    state.trustedTried = true;
+    log(state, frameId, 'generic banner: this site needs real mouse clicks');
+  }
   state.heuristicTried = true;
   state.cmp ??= 'generic banner';
   state.strategy = 'heuristic';
@@ -606,7 +662,7 @@ async function runHeuristic(tabId: number, frameId: number) {
   await saveState(state);
   await bumpDaily(state.site, 'attempts');
 
-  const result = await askFrame<HeuristicResult>(tabId, frameId, { type: 'ilc:heuristicAct' }, LIMITS.heuristicActMs);
+  const result = await askFrame<HeuristicResult>(tabId, frameId, { type: 'ilc:heuristicAct', trusted }, LIMITS.heuristicActMs);
   state.claim = undefined;
   if (!result?.done) {
     await finish(state, frameId, { outcome: 'FAILED', reasons: [`generic banner: ${result?.reason ?? 'no answer from frame'}`] });
@@ -649,6 +705,7 @@ export function onTopLevelCommitted(tabId: number, url: string) {
   documentIds.set(tabId, (documentIds.get(tabId) ?? 0) + 1);
   return withTab(tabId, async () => {
     const previous = await loadState(tabId);
+    if (previous?.trustedTried) void detachDebugger(tabId);
     const next = freshState(tabId, url);
     const acting = previous && (previous.phase === 'acting' || previous.phase === 'verifying');
     // After consent, sites reload, move within the same site, or a separate consent page returns to its callback URL.
@@ -685,6 +742,7 @@ export async function onInPageNavigation(tabId: number) {
 }
 
 export async function onTabRemoved(tabId: number) {
+  void detachDebugger(tabId);
   states.delete(tabId);
   queues.delete(tabId);
   documentIds.delete(tabId);

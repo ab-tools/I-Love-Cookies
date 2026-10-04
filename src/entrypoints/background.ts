@@ -2,7 +2,7 @@ import { browser } from 'wxt/browser';
 import type { ContentScriptMessage } from '@duckduckgo/autoconsent';
 import type { UiMessage } from '../shared/messages';
 import { getSettings, updateSettings } from '../shared/settings';
-import { getTabState, handleContentMessage, onInPageNavigation, onTabRemoved, onTopLevelCommitted } from '../background/orchestrator';
+import { getTabState, handleContentMessage, onInPageNavigation, onTabRemoved, onTopLevelCommitted, onTrustedClick } from '../background/orchestrator';
 import { RULES_INFO, activeRules } from '../background/rules';
 import { RULE_UPDATE_ALARM, checkForRuleUpdate, getRuleSet, getRuleUpdateStatus, invalidateRuleSet, scheduleRuleUpdates } from '../background/rule-updates';
 import { collectReportSnapshot } from '../background/report-snapshot';
@@ -31,6 +31,13 @@ export default defineBackground(() => {
     // Test-only bridge (see content.ts), compiled in only with `wxt build --mode e2e`.
     if (import.meta.env.MODE === 'e2e' && msg.type === 'ilc:e2e' && sender.tab?.id !== undefined) {
       handleE2eMessage(msg as { type: string; action: string }, sender.tab.id).then(sendResponse);
+      return true;
+    }
+
+    // Real mouse click for a frame during a trusted run.
+    if (msg.type === 'ilc:trustedClick' && sender.tab?.id !== undefined && sender.frameId !== undefined) {
+      const { x, y } = msg as { x: number; y: number };
+      onTrustedClick(sender.tab.id, sender.frameId, x, y).then(sendResponse, () => sendResponse(false));
       return true;
     }
 

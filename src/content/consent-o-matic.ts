@@ -212,7 +212,7 @@ export class ComEngine {
       case 'click': {
         const target = this.finder.findOne(action as ComLocator);
         if (target) {
-          realisticClick(target);
+          await realisticClick(target);
           this.clicks++;
           await sleep(100);
         }

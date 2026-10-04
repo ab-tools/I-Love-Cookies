@@ -1,4 +1,4 @@
-import { isOnScreen } from '../dom';
+import { isOnScreen, trustedClicksOn } from '../dom';
 import { findConsentBanners } from './banner';
 import { extractButtons } from './candidates';
 import { acceptBanner, hasToggles, lockedAccept, type HeuristicResult } from './flow';
@@ -48,7 +48,7 @@ export class HeuristicController {
     document.addEventListener(
       'click',
       (event) => {
-        if (!event.isTrusted || !this.banner || this.userDecided) return;
+        if (!event.isTrusted || trustedClicksOn() || !this.banner || this.userDecided) return;
         if (event.composedPath().includes(this.banner)) {
           this.userDecided = true;
           this.report({ type: 'ilc:userDecided' });

@@ -6,7 +6,7 @@ import { ilcSnippets } from '../background/snippets';
 import { browser } from 'wxt/browser';
 import type { FrameVerification, IlcContentMessage } from '../shared/messages';
 import { isScrollLocked, unlockScroll } from '../content/scroll';
-import { clickDeepUntilGone, isDeepVisible, isOnScreen, setPageWorldClick } from '../content/dom';
+import { clickDeepUntilGone, isDeepVisible, isOnScreen, setPageWorldClick, setTrustedClick } from '../content/dom';
 import { ConsentOMaticCMP, type ComRule } from '../content/consent-o-matic';
 import { HeuristicController } from '../content/heuristic/controller';
 import { announceFrame, frameInfo, listenForFrameTokens } from '../content/frames';
@@ -83,7 +83,17 @@ export default defineContentScript({
         return false;
       }
       if (msg?.type === 'ilc:heuristicAct') {
-        heuristic.act().then(sendResponse, (error: unknown) => sendResponse({ done: false, clicked: [], toggled: 0, partial: false, reason: String(error) }));
+        // Trusted: every click of this run is a real mouse click by the browser (pages that ignore synthetic events).
+        if ((msg as Extract<IlcContentMessage, { type: 'ilc:heuristicAct' }>).trusted) {
+          setTrustedClick(async (x, y) => {
+            await browser.runtime.sendMessage({ type: 'ilc:trustedClick', x, y }).catch(() => undefined);
+          });
+        }
+        heuristic
+          .act()
+          .then(sendResponse, (error: unknown) => sendResponse({ done: false, clicked: [], toggled: 0, partial: false, reason: String(error) }))
+          // Follow-up clicks of the run (confirmations) come within a few seconds.
+          .finally(() => setTimeout(() => setTrustedClick(null), 5000));
         return true;
       }
       if (msg?.type === 'ilc:reportSnapshot') {

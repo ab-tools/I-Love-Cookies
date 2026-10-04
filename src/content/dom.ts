@@ -58,10 +58,24 @@ export function setPageWorldClick(handler: (el: HTMLElement) => void): void {
   pageWorldClick = handler;
 }
 
-/** Clicks like a user would: pointer/mouse events at the element's centre, then click(). */
-export function realisticClick(el: Element): void {
+let trustedClick: ((x: number, y: number) => Promise<void>) | null = null;
+
+/** Real mouse clicks at a viewport position (by the browser, for pages that ignore synthetic events); null ends them. */
+export function setTrustedClick(handler: ((x: number, y: number) => Promise<void>) | null): void {
+  trustedClick = handler;
+}
+
+/** Real clicks are ours right now (not the user's). */
+export const trustedClicksOn = (): boolean => trustedClick !== null;
+
+/**
+ * Clicks like a user would: pointer/mouse events at the element's centre, then click() – or a real mouse click
+ * while trusted clicks are on. Resolves once the click was delivered.
+ */
+export async function realisticClick(el: Element): Promise<void> {
   (el as HTMLElement).scrollIntoView?.({ block: 'center' });
   const rect = el.getBoundingClientRect();
+  if (trustedClick) return trustedClick(rect.left + rect.width / 2, rect.top + rect.height / 2);
   const init = {
     bubbles: true,
     cancelable: true,
@@ -86,7 +100,7 @@ export function realisticClick(el: Element): void {
 export function clickDeep(chain: readonly string[]): boolean {
   const target = deepQueryAll(chain).find(isVisible);
   if (!target) return false;
-  realisticClick(target);
+  void realisticClick(target);
   return true;
 }
 
