@@ -24,11 +24,6 @@
         <div class="row wrap" id="report-buttons">
           <button id="report" data-i18n="popup_report"></button>
         </div>
-        <div class="row" id="report-choice" hidden>
-          <button class="primary" id="report-github" data-i18n="popup_reportGithub"></button>
-          <button class="primary" id="report-anonymous" data-i18n="popup_reportAnonymous"></button>
-        </div>
-        <p class="muted small" id="report-status" hidden></p>
       </section>
 
       <section class="log-row">
@@ -43,6 +38,24 @@
         </nav>
       </section>
     </main>
+
+    <div class="dialog-backdrop" id="report-dialog" hidden>
+      <div class="dialog card" role="dialog" aria-modal="true" aria-labelledby="report-dialog-title">
+        <button type="button" class="dialog-close" id="report-close" data-i18n-aria-label="popup_close">×</button>
+        <h2 id="report-dialog-title" data-i18n="popup_problemTitle"></h2>
+        <div class="problems" role="radiogroup" aria-labelledby="report-dialog-title">
+          <label class="problem"><input type="radio" name="problem" value="bannerVisible" checked /> <span data-i18n="popup_problemBanner"></span></label>
+          <label class="problem"><input type="radio" name="problem" value="wrongClick" /> <span data-i18n="popup_problemWrongClick"></span></label>
+          <label class="problem"><input type="radio" name="problem" value="pageBroken" /> <span data-i18n="popup_problemPageBroken"></span></label>
+          <label class="problem"><input type="radio" name="problem" value="other" /> <span data-i18n="popup_problemOther"></span></label>
+        </div>
+        <div class="row" id="report-choice">
+          <button class="primary" id="report-github" data-i18n="popup_reportGithub"></button>
+          <button class="primary" id="report-anonymous" data-i18n="popup_reportAnonymous"></button>
+        </div>
+        <p class="muted small" id="report-status" hidden></p>
+      </div>
+    </div>
     <script type="module" src="./main.ts"></script>
   </body>
 </html>

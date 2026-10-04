@@ -1,6 +1,7 @@
 import { browser } from 'wxt/browser';
 import { REPO_URL, REPORT_API_URL } from '../shared/constants';
-import { buildReport, sanitizeUrl } from '../shared/report';
+import { PROBLEM_LABELS, buildReport, sanitizeUrl } from '../shared/report';
+import type { ReportProblem } from '../shared/messages';
 import { exclusionFor, getSettings } from '../shared/settings';
 import { getTabState } from './orchestrator';
 import { collectReportSnapshot } from './report-snapshot';
@@ -9,7 +10,7 @@ import { collectReportSnapshot } from './report-snapshot';
  * Reports the tab's page: via GitHub opens the prefilled issue form (the user submits it with their account);
  * anonymously sends the same content to the report service, which files the issue and returns its address.
  */
-export async function sendReport(tabId: number, anonymous: boolean): Promise<{ ok: true } | { error: string }> {
+export async function sendReport(tabId: number, anonymous: boolean, problem: ReportProblem): Promise<{ ok: true } | { error: string }> {
   const state = await getTabState(tabId);
   const snapshot = await collectReportSnapshot(tabId).catch(() => undefined);
   const settings = await getSettings();
@@ -24,6 +25,7 @@ export async function sendReport(tabId: number, anonymous: boolean): Promise<{ o
       settings: `pay-or-OK ${onOff(settings.payOrOk)}, age checks ${onOff(settings.ageGates)}, rule updates ${onOff(settings.remoteRules)}${excluded ? ', site excluded' : ''}`,
     },
     snapshot,
+    problem,
   );
   if (!anonymous) {
     await browser.tabs.create({ url: report.url });
@@ -41,6 +43,7 @@ export async function sendReport(tabId: number, anonymous: boolean): Promise<{ o
         extensionVersion: state.extensionVersion,
         language: navigator.language,
         title: report.title,
+        problem: PROBLEM_LABELS[problem],
         details: report.details,
         diagnostics: report.diagnostics,
       }),

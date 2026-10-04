@@ -1,5 +1,5 @@
 import { ISSUE_TEMPLATE, REPO_URL } from './constants';
-import type { ReportSnapshot, TabState } from './messages';
+import type { ReportProblem, ReportSnapshot, TabState } from './messages';
 
 /** GitHub rejects very long URLs; keep well below its ~8 KB limit. */
 const MAX_URL_LENGTH = 7000;
@@ -12,6 +12,14 @@ export interface ReportContext {
   /** Settings that change what the extension does, e.g. "pay-or-OK on, age checks on, rule updates on". */
   settings?: string;
 }
+
+/** Options of the issue form's "What happened?" field. */
+export const PROBLEM_LABELS: Record<ReportProblem, string> = {
+  bannerVisible: 'The cookie banner stayed visible',
+  wrongClick: 'The extension clicked something wrong (subscription, login, link …)',
+  pageBroken: 'The site is broken / not scrollable after accepting',
+  other: 'Other',
+};
 
 /** Only scheme + host + path – never query strings or fragments (they can contain personal data). */
 export function sanitizeUrl(url: string): string {
@@ -65,7 +73,7 @@ function compactSnapshot(snapshot: ReportSnapshot, level: number): ReportSnapsho
   return { ...snapshot, frames, signals: level > 1 ? undefined : snapshot.signals };
 }
 
-export function buildReport(state: TabState, ctx: ReportContext, snapshot?: ReportSnapshot): Report {
+export function buildReport(state: TabState, ctx: ReportContext, snapshot?: ReportSnapshot, problem?: ReportProblem): Report {
   const site = state.site || 'unknown site';
   const title = `[Site] ${site}: ${state.outcome ?? state.phase}${state.cmp ? ` (${state.cmp})` : ''}`;
   const params = new URLSearchParams({
@@ -73,6 +81,7 @@ export function buildReport(state: TabState, ctx: ReportContext, snapshot?: Repo
     title,
     url: sanitizeUrl(state.url),
     browser: ctx.browser,
+    ...(problem ? { problem: PROBLEM_LABELS[problem] } : {}),
   });
   const base = `${REPO_URL}/issues/new?${params.toString()}`;
   const length = (details: string, diagnostics: string) =>
@@ -100,8 +109,8 @@ export function buildReport(state: TabState, ctx: ReportContext, snapshot?: Repo
   return { title, details, diagnostics, url };
 }
 
-export function buildIssueUrl(state: TabState, ctx: ReportContext, snapshot?: ReportSnapshot): string {
-  return buildReport(state, ctx, snapshot).url;
+export function buildIssueUrl(state: TabState, ctx: ReportContext, snapshot?: ReportSnapshot, problem?: ReportProblem): string {
+  return buildReport(state, ctx, snapshot, problem).url;
 }
 
 export function searchExistingIssuesUrl(site: string): string {

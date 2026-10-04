@@ -40,3 +40,71 @@ summary {
 #report-status {
   margin: 0;
 }
+/* Report dialog over the popup. */
+body.dialog-open {
+  min-height: 400px;
+}
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.45);
+}
+.dialog {
+  position: relative;
+  width: 100%;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
+.dialog h2 {
+  margin: 0;
+}
+.problems {
+  display: grid;
+  gap: 6px;
+}
+.problem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+}
+.problem:has(input:checked) {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+.dialog-close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 20px;
+  line-height: 1;
+}
+.dialog-close:hover {
+  color: var(--fg);
+}
+.dialog h2 {
+  padding-right: 28px;
+}
+
+.dialog #report-choice button {
+  min-width: 0;
+  padding: 7px 4px;
+  font-size: 13px;
+}

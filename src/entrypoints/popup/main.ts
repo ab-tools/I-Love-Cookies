@@ -1,7 +1,7 @@
 import { browser } from 'wxt/browser';
 import '../../assets/ui.css';
 import './style.css';
-import type { TabState, UiMessage } from '../../shared/messages';
+import type { ReportProblem, TabState, UiMessage } from '../../shared/messages';
 import type { Settings } from '../../shared/settings';
 import { exclusionFor } from '../../shared/settings';
 import { describeState } from '../../shared/describe';
@@ -34,24 +34,45 @@ async function main() {
     await send({ type: 'ilc:setSitePaused', tabId, paused: !active });
     window.close();
   });
+  // Report dialog: what the user saw, then how to report.
+  const dialog = $('report-dialog');
+  const problems = Array.from(document.querySelectorAll<HTMLInputElement>('input[name=problem]'));
+  const sendButtons = [$<HTMLButtonElement>('report-github'), $<HTMLButtonElement>('report-anonymous')];
+  const status = $('report-status');
+  const selected = () => problems.find((input) => input.checked)?.value as ReportProblem | undefined;
+  const enableSend = () => sendButtons.forEach((button) => (button.disabled = !selected()));
+  const closeDialog = () => {
+    dialog.hidden = true;
+    document.body.classList.remove('dialog-open');
+    $('report').focus();
+  };
   $('report').addEventListener('click', () => {
-    $('report-buttons').hidden = true;
-    $('report-choice').hidden = false;
+    dialog.hidden = false;
+    document.body.classList.add('dialog-open');
+    status.hidden = true;
+    enableSend();
+    (problems.find((input) => input.checked) ?? problems[0])?.focus();
+  });
+  problems.forEach((input) => input.addEventListener('change', enableSend));
+  $('report-close').addEventListener('click', closeDialog);
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !dialog.hidden) closeDialog();
   });
   const report = async (anonymous: boolean) => {
-    $('report-choice').hidden = true;
-    const status = $('report-status');
+    const problem = selected();
+    if (!problem) return;
+    sendButtons.forEach((button) => (button.disabled = true));
     status.hidden = false;
     status.className = 'muted small';
     status.textContent = translate(anonymous ? 'popup_reportSending' : 'popup_reportOpening');
-    const result = await send<{ ok?: true; error?: string }>({ type: 'ilc:report', tabId, anonymous });
+    const result = await send<{ ok?: true; error?: string }>({ type: 'ilc:report', tabId, anonymous, problem });
     if (result?.ok) {
       window.close();
       return;
     }
     status.className = 'bad small';
     status.textContent = translate('popup_reportFailed');
-    $('report-choice').hidden = false;
+    enableSend();
   };
   $('report-github').addEventListener('click', () => void report(false));
   $('report-anonymous').addEventListener('click', () => void report(true));

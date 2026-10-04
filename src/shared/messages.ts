@@ -54,11 +54,14 @@ export interface TabState {
   log: LogEntry[];
 }
 
+/** What the user saw, chosen when reporting. */
+export type ReportProblem = 'bannerVisible' | 'wrongClick' | 'pageBroken' | 'other';
+
 /** Messages from extension pages (popup / options) to the background. */
 export type UiMessage =
   | { type: 'ilc:getTabState'; tabId: number }
   | { type: 'ilc:setSitePaused'; tabId: number; paused: boolean }
-  | { type: 'ilc:report'; tabId: number; anonymous: boolean }
+  | { type: 'ilc:report'; tabId: number; anonymous: boolean; problem: ReportProblem }
   | { type: 'ilc:collectReport'; tabId: number }
   | { type: 'ilc:getRuleStatus' }
   | { type: 'ilc:checkRuleUpdate' };

@@ -20,12 +20,13 @@ export const translate: Translate = (key, substitutions = []) => {
   }
 };
 
-/** Fills elements marked with data-i18n (text), data-i18n-title and data-i18n-placeholder. */
+/** Fills elements marked with data-i18n (text), data-i18n-title, data-i18n-placeholder and data-i18n-aria-label. */
 export function localizePage(t: Translate = translate) {
   document.documentElement.lang = browser.i18n?.getUILanguage?.() ?? 'en';
   for (const el of document.querySelectorAll<HTMLElement>('[data-i18n]')) el.textContent = t(el.dataset.i18n as MessageKey);
   for (const el of document.querySelectorAll<HTMLElement>('[data-i18n-title]')) el.title = t(el.dataset.i18nTitle as MessageKey);
   for (const el of document.querySelectorAll<HTMLInputElement>('[data-i18n-placeholder]')) el.placeholder = t(el.dataset.i18nPlaceholder as MessageKey);
+  for (const el of document.querySelectorAll<HTMLElement>('[data-i18n-aria-label]')) el.setAttribute('aria-label', t(el.dataset.i18nAriaLabel as MessageKey));
   const title = document.querySelector<HTMLElement>('title[data-i18n]');
   if (title) document.title = title.textContent ?? document.title;
 }
