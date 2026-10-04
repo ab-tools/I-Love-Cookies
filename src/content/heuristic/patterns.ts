@@ -158,6 +158,7 @@ export const NEGATION = [
   'μην',
   'δεν',
   'δε',
+  'nisam',
 ];
 
 /** "Continue without (accepting)". */
@@ -444,6 +445,9 @@ export const ACCEPT = [
   `namesti${W}`,
   `nainštal${W}`,
   'jöhetnek a sütik',
+  'installa tutt[ie]',
+  'install all',
+  `suglas${W}`,
   `εγκαταστ${W}`,
   '^da$',
   `prihvat${W}`,
@@ -717,6 +721,10 @@ export const ACKNOWLEDGE = [
   'зрозумів',
   'ενημερώθηκα',
   'det er greit',
+  'jeg forstår',
+  'окей',
+  '^nastavi$',
+  'bericht verbergen',
   'έλαβα γνώση',
   'εντάξει',
   'разбирам',
