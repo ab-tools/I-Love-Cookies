@@ -4,6 +4,7 @@ import '../../assets/page.css';
 import { getSettings, setSitePaused, updateSettings, type Settings } from '../../shared/settings';
 import { normalizeExclusion, parseExclusion } from '../../shared/exclusions';
 import { localizePage, translate } from '../../shared/i18n';
+import { WEBSITE_URL } from '../../shared/constants';
 import type { RuleUpdateStatus } from '../../background/rule-updates';
 
 type BooleanSetting = 'payOrOk' | 'ageGates' | 'debug' | 'remoteRules';
@@ -39,7 +40,14 @@ for (const key of TOGGLES) {
   renderPaused(settings);
   checkButton.disabled = !settings.remoteRules;
   const { version } = browser.runtime.getManifest();
-  (document.getElementById('about') as HTMLElement).textContent = translate('options_aboutText', [version]);
+  const about = document.getElementById('about') as HTMLElement;
+  about.textContent = `${translate('options_aboutText', [version])} `;
+  const website = document.createElement('a');
+  website.href = WEBSITE_URL;
+  website.target = '_blank';
+  website.rel = 'noopener';
+  website.textContent = new URL(WEBSITE_URL).host;
+  about.append(website);
   renderRules((await browser.runtime.sendMessage({ type: 'ilc:getRuleStatus' })) as RuleInfo);
 }
 
