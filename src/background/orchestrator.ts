@@ -783,5 +783,9 @@ export async function onTabRemoved(tabId: number) {
 }
 
 export async function getTabState(tabId: number, url?: string): Promise<TabState> {
-  return (await loadState(tabId)) ?? freshState(tabId, url ?? '');
+  const stored = await loadState(tabId);
+  if (stored) return stored;
+  // No state yet (e.g. a tab opened before the extension was installed or reloaded): the tab knows its address.
+  const address = url ?? (await browser.tabs.get(tabId).then((tab) => tab.url ?? '', () => ''));
+  return freshState(tabId, address);
 }
