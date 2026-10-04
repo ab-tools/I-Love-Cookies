@@ -24,6 +24,13 @@ function labelOf(el: HTMLElement): string {
     el.getAttribute('title')?.trim() ||
     '';
   if (text) return text;
+  // Custom elements (<music-button>Accept</music-button>): the inner button shows the host's slotted text.
+  const root = el.getRootNode();
+  if (root instanceof ShadowRoot) {
+    const host = root.host as HTMLElement;
+    const hosted = host.innerText?.trim() || host.getAttribute('aria-label')?.trim();
+    if (hosted && hosted.length <= 80) return hosted;
+  }
   // Icon fonts / CSS-generated labels
   const before = getComputedStyle(el, '::before').content;
   const after = getComputedStyle(el, '::after').content;
@@ -69,6 +76,8 @@ function isHitTestable(el: HTMLElement, banner: Element, box: Element = el): boo
   const hit = (root.elementFromPoint ?? document.elementFromPoint).call(root, rect.left + rect.width / 2, rect.top + rect.height / 2);
   if (!hit) return true; // no layout information (e.g. tests) – do not block
   if (hit === el || el.contains(hit) || hit.contains(el)) return true;
+  // Hit-testing inside a custom element (<music-button>) can report its host.
+  for (let r = el.getRootNode(); r instanceof ShadowRoot; r = r.host.getRootNode()) if (hit === r.host || hit.contains(r.host)) return true;
   return !banner.contains(hit) && !(shadowRootOf(banner)?.contains(hit) ?? false) && !hit.contains(banner);
 }
 
