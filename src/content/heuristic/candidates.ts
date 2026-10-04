@@ -131,7 +131,9 @@ export function extractButtons(banner: Element): ButtonCandidate[] {
       if (!box || !isHitTestable(el, banner, box) || (el as HTMLButtonElement).disabled) return [];
       const label = labelOf(el);
       const rect = box.getBoundingClientRect();
-      const cls = classifyLabel(label);
+      // Buttons with a description under the label ("Accept all", then ": consent to all cookies …"): the first line decides.
+      const firstLine = label.split('\n')[0]!.trim();
+      const cls = classifyLabel(label.length > 48 && firstLine ? firstLine : label);
       return label ? [{ element: box, label, cls, navigates: navigatesAway(el, ACCEPTING.has(cls)), prominence: Math.round(Math.min(rect.height, 64) * 1000 + Math.min(rect.width, 400)) }] : [];
     });
 }
