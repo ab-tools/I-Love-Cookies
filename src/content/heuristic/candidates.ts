@@ -30,6 +30,9 @@ function labelOf(el: HTMLElement): string {
   return [before, after].filter((c) => c && c !== 'none' && c !== 'normal').join(' ').replace(/^"|"$/g, '');
 }
 
+/** Addresses of consent endpoints ("/cookies/accept", "?cookie_all=1", "/dismiss-notice"). */
+const CONSENT_ENDPOINT = /cookie|consent|accept|agree|allow|dismiss|gdpr|dsgvo|opt-?in/i;
+
 /** Information pages a consent banner links to – never a consent endpoint. */
 const INFO_PAGE = /polic|privacy|datenschutz|richtlinie|impressum|imprint|legal|terms|agb|conditions|cookie-?(info|notice|statement|erklaerung)/i;
 
@@ -49,7 +52,7 @@ function navigatesAway(el: HTMLElement, accepting: boolean): boolean {
     const url = new URL(anchor.href, location.href);
     if (url.origin !== location.origin) return true;
     if (url.pathname === location.pathname) return false;
-    return !accepting || INFO_PAGE.test(url.pathname);
+    return !accepting || INFO_PAGE.test(url.pathname) || !CONSENT_ENDPOINT.test(url.pathname + url.search);
   } catch {
     return true;
   }

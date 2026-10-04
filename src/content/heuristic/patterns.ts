@@ -412,6 +412,8 @@ export const ACCEPT = [
   'de acord',
   'jazeker',
   `godkend${W}`,
+  `godkjenn${W}`,
+  'bin dabei',
   'jeg samtykker',
   'jag samtycker',
   'terima',
