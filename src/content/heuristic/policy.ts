@@ -34,7 +34,10 @@ export function decide(buttons: readonly ButtonCandidate[], hasToggles = false):
   const acknowledge = first('ACKNOWLEDGE');
   if (acknowledge) return { action: 'click', button: acknowledge, kind: 'acknowledge' };
   const save = first('SAVE');
-  if (save && (hasToggles || first('SELECT_ALL'))) return { action: 'save', button: save };
+  const selectAll = first('SELECT_ALL');
+  if (save && (hasToggles || selectAll)) return { action: 'save', button: save };
+  // "Select all" without a save button is the banner's accept-all button.
+  if (selectAll) return { action: 'click', button: selectAll, kind: 'accept_all' };
   const settings = first('SETTINGS');
   if (settings) return { action: 'settings', button: settings };
   return { action: 'none', reason: buttons.length ? 'no accepting button' : 'no buttons' };

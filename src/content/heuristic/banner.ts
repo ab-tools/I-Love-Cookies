@@ -123,12 +123,17 @@ function overlaysAroundConsentText(doc: Document, found: Set<Element>): void {
  * wording and at least one clickable element, and must not look like a newsletter, login, age or region dialog.
  */
 export function findConsentBanners(doc: Document = document): Banner[] {
-  const set = new Set(overlayElements(doc));
-  overlaysAroundConsentText(doc, set);
-  const overlays = [...set];
+  const all = new Set(overlayElements(doc));
+  overlaysAroundConsentText(doc, all);
   const viewport = Math.max(1, window.innerWidth * window.innerHeight);
+  const areaOf = (el: Element) => {
+    const rect = el.getBoundingClientRect();
+    return ((Math.min(rect.right, window.innerWidth) - Math.max(rect.left, 0)) * (Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0))) / viewport;
+  };
+  // Only visible overlays count – an invisible wrapper must not hide the dialog inside it.
+  const set = new Set([...all].filter((el) => !el.matches(NAVIGATION) && isOnScreen(el) && areaOf(el) >= 0.01));
   const banners: Banner[] = [];
-  for (const el of overlays) {
+  for (const el of set) {
     // outermost overlay only
     let parent: Element | null = el.parentElement;
     let nested = false;
@@ -139,10 +144,8 @@ export function findConsentBanners(doc: Document = document): Banner[] {
       }
       parent = parent.parentElement;
     }
-    if (nested || el.matches(NAVIGATION) || !isOnScreen(el)) continue;
-    const rect = el.getBoundingClientRect();
-    const area = (Math.min(rect.right, window.innerWidth) - Math.max(rect.left, 0)) * (Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0)) / viewport;
-    if (area < 0.01) continue;
+    if (nested) continue;
+    const area = areaOf(el);
     const text = deepText(el);
     const score = consentScore(text);
     if (score < 2 || text.length < 40) continue;

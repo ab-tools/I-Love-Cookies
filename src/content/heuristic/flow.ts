@@ -130,7 +130,7 @@ async function confirmFollowUp(banner: Element, clicked: ButtonCandidate, before
     realisticClick(unlocked.element);
     return;
   }
-  const save = clicked.cls === 'ACCEPT_ALL' ? buttons.find((b) => b.cls === 'SAVE') : undefined;
+  const save = clicked.cls === 'ACCEPT_ALL' || clicked.cls === 'SELECT_ALL' ? buttons.find((b) => b.cls === 'SAVE') : undefined;
   if (save) {
     realisticClick(save.element);
     return;
