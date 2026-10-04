@@ -468,6 +468,12 @@ async function verify(tabId: number, frameId: number, docId: number | undefined)
     acceptButton: state.cmp && state.strategy !== 'heuristic' ? (await effectiveStrategy(state.cmp)).acceptButton : undefined,
   } as const;
   let frame = await askFrame<FrameVerification>(tabId, frameId, verifyMsg, LIMITS.verifyTimeoutMs);
+  // Banners often close with an animation (slow on busy machines): look again before falling back or failing.
+  if (frame?.popupVisible || frame?.popupOnScreen) {
+    await sleep(LIMITS.closeAnimationMs);
+    if (documentIds.get(tabId) !== docId) return;
+    frame = await askFrame<FrameVerification>(tabId, frameId, verifyMsg, LIMITS.verifyTimeoutMs);
+  }
   if ((frame?.popupVisible || frame?.popupOnScreen) && state.cmp && (await tryApiFallback(state, frameId, state.cmp))) {
     await sleep(LIMITS.settleMs);
     frame = await askFrame<FrameVerification>(tabId, frameId, verifyMsg, LIMITS.verifyTimeoutMs);

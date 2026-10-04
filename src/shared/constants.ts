@@ -34,6 +34,8 @@ export const LIMITS = {
   leftoverBannerMinScore: 4,
   /** Let the page settle before verifying. */
   settleMs: 1500,
+  /** Second look when the dialog still seems open (closing animations). */
+  closeAnimationMs: 2500,
   /** Max time for one frame to answer a verification request. */
   verifyTimeoutMs: 5000,
   /** How long to wait for a CMP's JavaScript API to become ready, and the polling interval. */

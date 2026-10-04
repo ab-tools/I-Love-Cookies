@@ -30,6 +30,9 @@ function labelOf(el: HTMLElement): string {
   return [before, after].filter((c) => c && c !== 'none' && c !== 'normal').join(' ').replace(/^"|"$/g, '');
 }
 
+/** Information pages a consent banner links to – never a consent endpoint. */
+const INFO_PAGE = /polic|privacy|datenschutz|richtlinie|impressum|imprint|legal|terms|agb|conditions|cookie-?(info|notice|statement|erklaerung)/i;
+
 /**
  * Following the element would leave the page. Accepting links to the same site (consent endpoints like
  * "/cookies/accept" or "?cookie_all=1" that return to the page) do not count; other links, other sites and new tabs do.
@@ -45,7 +48,8 @@ function navigatesAway(el: HTMLElement, accepting: boolean): boolean {
     // Same page with only a different query (e.g. "?do=AcceptConsent") is a consent action, not leaving.
     const url = new URL(anchor.href, location.href);
     if (url.origin !== location.origin) return true;
-    return url.pathname !== location.pathname && !accepting;
+    if (url.pathname === location.pathname) return false;
+    return !accepting || INFO_PAGE.test(url.pathname);
   } catch {
     return true;
   }
@@ -105,8 +109,8 @@ export function extractButtons(banner: Element): ButtonCandidate[] {
   const elements = new Set(roots.flatMap((r) => clickablesIn(r)));
   for (const el of roots.flatMap((r) => pointerControls(r, elements))) elements.add(el);
   // Keep the outermost clickable of nested ones (<button><span role=button>…</span></button>).
-  // Tabs of a dialog ("Consent | Details | About") are navigation, not answers.
-  for (const el of elements) if (el.closest('[role=tab],[role=tablist]')) elements.delete(el);
+  // Tabs of a dialog ("Consent | Details | About") are navigation, category switches are settings – no answers.
+  for (const el of elements) if (el.closest('[role=tab],[role=tablist],[role=switch],[role=checkbox]') || el.matches('[aria-checked],input[type=checkbox]')) elements.delete(el);
   // A "clickable" around several controls or a lot of text is a container (e.g. a dialog with onclick), not a button.
   for (const el of [...elements]) {
     const inner = [...elements].filter((other) => other !== el && el.contains(other));

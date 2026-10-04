@@ -93,10 +93,11 @@ describe('links', () => {
         <a id="same" href="/cookies/accept">Accept all cookies</a>
         <a id="info" href="/privacy">Privacy policy</a>
         <a id="away" href="https://other.example/accept">Accept</a>
-        <a id="tab" href="/accept" target="_blank">Accept</a></div>`;
+        <a id="tab" href="/accept" target="_blank">Accept</a>
+        <a id="policy" href="/policy/cookiepolicy">Optionale Einwilligung</a></div>`;
     const buttons = extractButtons(document.getElementById('cmp')!);
     const nav = Object.fromEntries(buttons.map((b) => [b.element.id, b.navigates]));
-    expect(nav).toEqual({ same: false, info: true, away: true, tab: true });
+    expect(nav).toEqual({ same: false, info: true, away: true, tab: true, policy: true });
     expect(decide(buttons)).toMatchObject({ action: 'click', button: { label: 'Accept all cookies' } });
   });
 });

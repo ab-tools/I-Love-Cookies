@@ -33,6 +33,7 @@ export const PAY = [
 
 /** Account actions – never clicked. */
 export const LOGIN = [
+  'continue with (google|apple|facebook|microsoft|email|e mail|github|twitter|x|linkedin|amazon|phone)',
   'log ?in',
   'sign ?(in|up)',
   'register',
@@ -453,6 +454,7 @@ export const ALL = [
   'alle',
   'alles',
   'allen',
+  'allem',
   'tout',
   'tous',
   'toutes',
@@ -541,7 +543,6 @@ export const CLOSE = [
 
 /** Acknowledging a notice that offers no choice: OK / got it / understood. */
 export const ACKNOWLEDGE = [
-  'continue to (the )?(site|website)',
   'weiter zur (seite|website|webseite)',
   'continuer vers le site',
   'continua (sul|al) sito',
@@ -561,7 +562,7 @@ export const ACKNOWLEDGE = [
   '(zur )?kenntnis genommen',
   'rendben',
   '(hinweis )?gelesen',
-  'continue',
+  '^continue$',
   'geht klar',
   'compris',
   'jai compris',
