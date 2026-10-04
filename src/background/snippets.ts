@@ -204,6 +204,21 @@ function acceptCcm19() {
   return true;
 }
 
+/**
+ * Google Funding Choices notice for legitimate interest only (floating "Privacy and cookie settings" panel in a
+ * shadow root, no consent button): opens the data preferences, where "accept all" is offered.
+ */
+function openFundingChoicesPreferences() {
+  for (const host of Array.from(document.querySelectorAll('body > div'))) {
+    const link = host.shadowRoot?.querySelector('.fc-navigate-to-data-preferences') as HTMLElement | null | undefined;
+    if (link) {
+      link.click();
+      return true;
+    }
+  }
+  return false;
+}
+
 /** Clicks the element the content script marked (links whose "javascript:" target only runs in the page's world). */
 function clickMarked(token: string) {
   const el = document.querySelector(`[data-ilc-click="${token}"]`) as HTMLElement | null;
@@ -232,6 +247,7 @@ export const ilcSnippets = {
   ILC_API_SHOPIFY: apiShopify,
   ILC_CCM19_ACCEPT: acceptCcm19,
   ILC_CLICK_MARKED: clickMarked,
+  ILC_FC_OPEN_PREFERENCES: openFundingChoicesPreferences,
 };
 
 /** All snippets that may run in a page: autoconsent's built-ins + ours. */

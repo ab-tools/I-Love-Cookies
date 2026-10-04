@@ -1,0 +1,56 @@
+[
+  {
+    "name": "funding-choices",
+    "comment": "Replaces autoconsent's rule: also handles the notice for legitimate interest only (no consent button) by accepting all in the data preferences.",
+    "prehideSelectors": [
+      ".fc-consent-root,.fc-dialog-container,.fc-dialog-overlay,.fc-dialog-content"
+    ],
+    "detectCmp": [
+      {
+        "exists": ".fc-consent-root"
+      }
+    ],
+    "detectPopup": [
+      {
+        "exists": ".fc-dialog-container"
+      }
+    ],
+    "optIn": [
+      {
+        "if": {
+          "visible": ".fc-cta-consent",
+          "check": "any"
+        },
+        "then": [
+          {
+            "click": ".fc-cta-consent"
+          }
+        ],
+        "else": [
+          {
+            "eval": "ILC_FC_OPEN_PREFERENCES"
+          },
+          {
+            "waitForThenClick": ".fc-data-preferences-accept-all",
+            "timeout": 5000
+          },
+          {
+            "wait": 1000
+          },
+          {
+            "if": {
+              "visible": ".fc-confirm-choices",
+              "check": "any"
+            },
+            "then": [
+              {
+                "click": ".fc-confirm-choices"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "optOut": []
+  }
+]
