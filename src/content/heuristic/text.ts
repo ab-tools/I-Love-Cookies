@@ -103,7 +103,7 @@ export function classifyLabel(text: string): ButtonClass {
   if (RE.save.test(label)) return 'SAVE';
   if (RE.selectAll.test(label)) return 'SELECT_ALL';
   const all = RE.all.test(label);
-  if (RE.close.test(label) && !accepting) return 'OTHER';
+  if (RE.close.test(label) && !accepting && !RE.acknowledge.test(label)) return 'OTHER';
   if (RE.settings.test(label) && !(accepting && all)) return 'SETTINGS';
   if (accepting) return all ? 'ACCEPT_ALL' : 'ACCEPT';
   if (RE.acknowledge.test(label)) return 'ACKNOWLEDGE';
