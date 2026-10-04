@@ -62,7 +62,7 @@ generic heuristic: unknown banner ────► if no rule handled it (or a ru
 - **No data collection.** Data leaves the browser only when the user reports a problem: "Report Using GitHub"
   opens a prefilled issue form, "Report Anonymously" sends the same content to a report service that files the
   issue. A report contains the page address without parameters, the banner's structure, text and buttons (with
-  their classified labels), detected consent platforms and the extension's log.
+  their classified labels), detected consent platforms and the extension's log. See the [privacy policy](PRIVACY.md).
 
 ## Development
 
