@@ -2,7 +2,7 @@ import { isOnScreen, isVisible, shadowRootOf } from '../dom';
 
 /** Consent wording: strong words alone identify a banner, weak words only support it. */
 const STRONG =
-  /cookie|consent|einwillig|zustimmung|gdpr|dsgvo|rgpd|toestemming|souhlas|zgod[ay]|consentimiento|consenso|samtykke|samtycke|suostum|evästee|sütik|kolačić|piškot|slapuk|sīkdat|küpsis|çerez|куки|cookies/i;
+  /cookie|consent|einwillig|zustimmung|gdpr|dsgvo|rgpd|toestemming|souhlas|zgod[ay]|consentimiento|consenso|samtykke|samtycke|suostum|evästee|sütik|kolačić|piškot|slapuk|sīkdat|küpsis|çerez|куки|cookies|privacy (choices|preferences|settings)|datenschutz-?(einstellungen|präferenzen)|préférences de confidentialité/i;
 const WEAK =
   /partner|vendor|anbieter|fournisseur|proveedor|fornitor|tracking|personali[sz]|werbung|advertis|publicit|pubblicit|reklam|analy|datenschutz|privacy|confidentialit|privacidad|privatnost|adatvédel|prywatnoś|soukromí|integritet|privatliv|yksityisyy|ιδιωτικ|защит|gizlilik/gi;
 

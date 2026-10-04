@@ -33,7 +33,7 @@ export type ButtonClass =
 export const ACCEPTING: ReadonlySet<ButtonClass> = new Set(['ACCEPT_ALL', 'ACCEPT', 'ACKNOWLEDGE']);
 
 /** Longer texts are sentences, not button labels. */
-const MAX_LABEL_LENGTH = 48;
+const MAX_LABEL_LENGTH = 64;
 /** Bare nouns: tabs or headings of a dialog ("Consent | Details | About cookies"), never answers. */
 const NOUN_ONLY = new Set(
   ['consent', 'toestemming', 'consentement', 'consenso', 'consentimiento', 'samtykke', 'samtycke', 'suostumus'].map((w) =>
