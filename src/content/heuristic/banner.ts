@@ -13,6 +13,15 @@ const NEGATIVE_TEXT =
 
 /** GDPR's parental-consent note ("If you are under 16 …") in ordinary consent banners is no age gate. */
 const PARENTAL_CONSENT = /[^.!?]*\b(under|unter|moins de|menos de|meno di|onder|poniżej|alatti)\s+1[3-8]\b[^.!?]*/gi;
+/** "If you agree and are over 18, click …": a condition for consenting, not an age gate. */
+const AGE_CONDITION = /[^.!?]*\b(if|wenn|falls|si|se|jeśli|jeżeli|pokud|ha|dacă|om)\b[^.!?]*\b1[3-8]\b[^.!?]*/gi;
+const CONSENT_WORD = /cookie|consent|zustimm|einwillig|accept|akzept|acept|accett|erlaub|zgod|souhlas/i;
+/** Adult sites: their combined age-and-cookie dialogs are age gates. */
+const ADULT_SITE = /nur für erwachsene|adults? only|for adults|adult (content|website|site)|sexually explicit|pornogra/i;
+
+const ageGateText = (text: string) =>
+  ADULT_SITE.test(text) ||
+  NEGATIVE_TEXT.test(text.replace(PARENTAL_CONSENT, '').replace(AGE_CONDITION, (s) => (CONSENT_WORD.test(s) ? '' : s)));
 
 /** Newsletter / app / notification prompts – unless the consent wording is strong (banners mention them too). */
 const SOFT_NEGATIVE_TEXT = /newsletter|subscribe to our|anmelden zum|install (our|the) app|download (our|the) app|push.?notification|benachrichtigungen/i;
@@ -67,7 +76,7 @@ function isOverlayLike(el: Element): boolean {
 }
 
 function hasHardNegative(el: Element, text: string, score: number): boolean {
-  if (NEGATIVE_TEXT.test(text.replace(PARENTAL_CONSENT, ''))) return true;
+  if (ageGateText(text)) return true;
   if (score < STRONG_CONSENT_SCORE && SOFT_NEGATIVE_TEXT.test(text)) return true;
   const root = shadowRootOf(el) ?? el;
   // Only visible fields: consent-or-pay walls keep a hidden login form for subscribers.

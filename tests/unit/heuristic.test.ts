@@ -84,6 +84,18 @@ describe('banner detection – special cases', () => {
     expect(findConsentBanners()).toHaveLength(1);
   });
 
+  it('treats "if you agree and are over 18" as a consent condition, but not a declaration or an adult site', () => {
+    document.body.innerHTML = `<div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT} Wenn Sie der Verarbeitung zustimmen
+      und über 18 Jahre alt sind, klicken Sie auf ALLE ERLAUBEN. <button>Alle erlauben</button></div>`;
+    expect(findConsentBanners()).toHaveLength(1);
+    document.body.innerHTML = `<div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT} Al visitar nuestro sitio web,
+      declaras que eres mayor de 18 años y aceptas las cookies. <button>Aceptar todas las cookies</button></div>`;
+    expect(findConsentBanners()).toEqual([]);
+    document.body.innerHTML = `<div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT} Diese Website ist nur für Erwachsene.
+      <button>Annehmen</button></div>`;
+    expect(findConsentBanners()).toEqual([]);
+  });
+
   it('treats the GDPR parental-consent note as an ordinary consent banner', () => {
     document.body.innerHTML = `<div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT} Wenn Sie unter 16 Jahre alt sind und Ihre
       Zustimmung zu freiwilligen Diensten geben möchten, müssen Sie Ihre Erziehungsberechtigten um Erlaubnis bitten. <button>Alle akzeptieren</button></div>`;
