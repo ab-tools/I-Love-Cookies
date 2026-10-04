@@ -69,16 +69,21 @@ export class HeuristicController {
 
   scan(): HeuristicScan | null {
     if (window.innerWidth < MIN_FRAME.width || window.innerHeight < MIN_FRAME.height) return null;
-    const [banner] = findConsentBanners();
-    if (!banner) return null;
+    // The best banner that can be answered; otherwise the best one (for logs and reports).
+    const evaluated = findConsentBanners().map((banner) => {
+      const buttons = extractButtons(banner.element);
+      return { banner, buttons, decision: decide(buttons, hasToggles(banner.element), lockedAccept(banner.element)).action };
+    });
+    const chosen = evaluated.find((e) => e.decision !== 'none') ?? evaluated[0];
+    if (!chosen) return null;
+    const { banner, buttons, decision } = chosen;
     this.banner = banner.element;
-    const buttons = extractButtons(banner.element);
     return {
       score: banner.score,
       area: Math.round(banner.area * 100) / 100,
       fingerprint: fingerprint(banner.element),
       buttons: buttons.slice(0, 10).map((b) => `${b.cls}:${b.label}`.slice(0, 60)),
-      decision: decide(buttons, hasToggles(banner.element), lockedAccept(banner.element)).action,
+      decision,
       top: window === window.top,
     };
   }
