@@ -93,7 +93,9 @@ summary {
   font-size: 20px;
   line-height: 1;
 }
-.dialog-close:hover {
+/* The close mark stays plain on hover (no orange button). */
+button.dialog-close:hover {
+  background: transparent;
   color: var(--fg);
 }
 .dialog h2 {

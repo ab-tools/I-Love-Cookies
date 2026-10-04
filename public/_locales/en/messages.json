@@ -43,7 +43,7 @@
   "popup_problemTitle": { "message": "What's the Problem?" },
   "popup_problemBanner": { "message": "Banner Still Visible" },
   "popup_problemWrongClick": { "message": "Clicked Something Wrong" },
-  "popup_problemPageBroken": { "message": "Page Broken After Accepting" },
+  "popup_problemPageBroken": { "message": "Page Broken" },
   "popup_problemOther": { "message": "Something Else" },
   "popup_problemNote": { "message": "What happened? (optional)" },
   "popup_close": { "message": "Close" },

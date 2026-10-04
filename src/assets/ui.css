@@ -77,6 +77,11 @@ button.primary {
   color: var(--accent-fg);
   font-weight: 600;
 }
+button:not(:disabled):hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-fg);
+}
 button:disabled {
   opacity: 0.5;
   cursor: default;
