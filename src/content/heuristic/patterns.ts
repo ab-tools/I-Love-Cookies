@@ -741,6 +741,8 @@ export const ACKNOWLEDGE = [
   'отлично',
   '(hinweis )?gelesen',
   '^continue$',
+  '^(turpināt|fortsätt|fortsett|fortsæt|jatka)$',
+  '^tęsti( naršymą)?$',
   'geht klar',
   'compris',
   'jai compris',

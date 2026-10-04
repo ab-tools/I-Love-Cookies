@@ -100,6 +100,17 @@ describe('banner detection – special cases', () => {
     expect(findConsentBanners()).toHaveLength(1);
   });
 
+  it('confirms an 18+ warning whose only answer is "Continue"', () => {
+    document.body.innerHTML = `<div id="age" style="position:fixed" data-rect="0,0,1024,700">Sexuellt innehåll (18+).
+      Denna webbplats innehåller material som är olämpligt för minderåriga. <button>Fortsätt</button><button>Avvisa</button></div>`;
+    const [gate] = findConsentBanners();
+    expect(gate?.element.id).toBe('age');
+    expect(decide(extractButtons(gate!.element))).toMatchObject({ action: 'click', button: { label: 'Fortsätt' } });
+    heuristicOptions.ageGates = false;
+    expect(findConsentBanners()).toEqual([]);
+    heuristicOptions.ageGates = true;
+  });
+
   it('finds banners in Bulgarian and Polish wording, also as a fixed <article>', () => {
     document.body.innerHTML = `<article id="bg" style="position:fixed" data-rect="0,700,1024,60">Използваме бисквитки, за да подобрим
       изживяването ви. <button>Приеми всички</button></article>`;

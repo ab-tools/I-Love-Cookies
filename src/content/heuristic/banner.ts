@@ -172,7 +172,7 @@ export function findConsentBanners(doc: Document = document): Banner[] {
     // button next to privacy wording identifies them.
     if (score < 2 && (text.match(WEAK) ?? []).length >= 2 && extractButtons(el).some((b) => b.cls === 'ACCEPT_ALL')) score = 2;
     // Age checks without cookie wording ("Are you 18 or older? Enter"), when switched on.
-    const ageGate = score < 2 && heuristicOptions.ageGates && ageGateText(text) && extractButtons(el).some((b) => b.cls === 'AGE_CONFIRM' || b.cls === 'ACCEPT');
+    const ageGate = score < 2 && heuristicOptions.ageGates && ageGateText(text) && extractButtons(el).some((b) => b.cls === 'AGE_CONFIRM' || b.cls === 'ACCEPT' || b.cls === 'ACKNOWLEDGE');
     if (ageGate) score = 2;
     if (score < 2 || text.length < (ageGate ? 15 : 40)) continue;
     const root = shadowRootOf(el) ?? el;
