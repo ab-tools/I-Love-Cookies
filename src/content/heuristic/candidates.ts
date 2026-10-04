@@ -50,9 +50,9 @@ const INFO_PAGE = /polic|privacy|datenschutz|richtlinie|impressum|imprint|legal|
 function navigatesAway(el: HTMLElement, accepting: boolean): boolean {
   const anchor = el.closest('a[href]') as HTMLAnchorElement | null;
   if (!anchor) return false;
-  const href = anchor.getAttribute('href') ?? '';
+  const href = (anchor.getAttribute('href') ?? '').trim();
   // In-page anchors and script links do not leave the page (even with a target attribute).
-  if (!href || href.startsWith('#') || href.startsWith('javascript:')) return false;
+  if (!href || href.startsWith('#') || href.toLowerCase().startsWith('javascript:')) return false;
   if (anchor.target && anchor.target !== '_self') return true;
   try {
     // Same page with only a different query (e.g. "?do=AcceptConsent") is a consent action, not leaving.

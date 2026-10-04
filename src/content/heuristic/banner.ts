@@ -81,7 +81,9 @@ function hasHardNegative(el: Element, text: string, score: number): boolean {
   const root = shadowRootOf(el) ?? el;
   // Only visible fields: consent-or-pay walls keep a hidden login form for subscribers.
   if (Array.from(root.querySelectorAll('input[type=email],input[type=password],input[type=tel],input[type=date],input[type=search]')).some(isVisible)) return true;
-  if (Array.from(root.querySelectorAll('select')).some((s) => s.options.length >= 10 && isVisible(s))) return true;
+  // A language switch inside a clear consent banner is no region chooser.
+  const languageSwitch = (s: HTMLSelectElement) => score >= STRONG_CONSENT_SCORE && /lang/i.test(`${s.id} ${s.name} ${s.className}`);
+  if (Array.from(root.querySelectorAll('select')).some((s) => s.options.length >= 10 && isVisible(s) && !languageSwitch(s))) return true;
   if (root.querySelector('a[href*="apps.apple.com"],a[href*="play.google.com"]')) return true;
   return false;
 }

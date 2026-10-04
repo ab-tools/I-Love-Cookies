@@ -62,6 +62,14 @@ describe('banner detection', () => {
     expect(extractButtons(host).map((b) => [b.label, b.cls])).toEqual([['Alle akzeptieren', 'ACCEPT_ALL']]);
   });
 
+  it('treats script links as staying on the page and allows a language switch in a consent banner', () => {
+    document.body.innerHTML = `<div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT}
+      <select class="language-select">${'<option>Lang</option>'.repeat(12)}</select>
+      <a href="Javascript:record_accept_all();">Accepter les cookies</a></div>`;
+    const [banner] = findConsentBanners();
+    expect(extractButtons(banner!.element).map((b) => [b.cls, b.navigates])).toEqual([['ACCEPT', false]]);
+  });
+
   it('labels buttons inside custom elements by their slotted text', () => {
     document.body.innerHTML = `<div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT}
       <x-button>Cookies Akzeptieren</x-button></div>`;
