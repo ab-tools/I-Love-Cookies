@@ -1,4 +1,5 @@
 import { isOnScreen, isVisible, shadowRootOf } from '../dom';
+import { extractButtons } from './candidates';
 
 /** Consent wording: strong words alone identify a banner, weak words only support it. */
 const STRONG =
@@ -150,7 +151,10 @@ export function findConsentBanners(doc: Document = document): Banner[] {
     if (nested) continue;
     const area = areaOf(el);
     const text = deepText(el);
-    const score = consentScore(text);
+    let score = consentScore(text);
+    // Privacy dialogs without the usual words ("Choose how we use your personal information"): an "accept all"
+    // button next to privacy wording identifies them.
+    if (score < 2 && (text.match(WEAK) ?? []).length >= 2 && extractButtons(el).some((b) => b.cls === 'ACCEPT_ALL')) score = 2;
     if (score < 2 || text.length < 40) continue;
     const root = shadowRootOf(el) ?? el;
     if (!root.querySelector(CLICKABLE) && !el.querySelector(CLICKABLE)) continue;
