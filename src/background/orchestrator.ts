@@ -420,6 +420,11 @@ async function onOptInResult(tabId: number, frameId: number, cmp: string, result
   }
 
   log(state, frameId, `rule for ${cmp} done`);
+  // A late answer must not reopen a document another frame has already answered successfully.
+  if (state.phase === 'done' && isSuccess(state.outcome)) {
+    await saveState(state);
+    return;
+  }
   setPhase(state, 'verifying');
   await saveState(state);
   // Usually autoconsentDone follows immediately. Intermediate CMPs (e.g. a top frame that only waits
