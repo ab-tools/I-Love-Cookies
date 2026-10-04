@@ -105,6 +105,7 @@ describe('classifyLabel examples', () => {
     ['CIENTE', 'ACKNOWLEDGE'],
     ['ALL RIGHT', 'ACKNOWLEDGE'],
     ['GA VERDER', 'ACKNOWLEDGE'],
+    ['Hide cookie message', 'ACKNOWLEDGE'],
     ['Alles toelaten', 'ACCEPT_ALL'],
     ['Nõustun kõigiga', 'ACCEPT_ALL'],
     ['Continuar', 'ACKNOWLEDGE'],

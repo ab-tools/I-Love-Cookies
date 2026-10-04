@@ -609,6 +609,7 @@ export const ACKNOWLEDGE = [
   '(zur )?kenntnis genommen',
   'rendben',
   'ich verstehe',
+  'hide (this |the |cookie )?(message|banner)',
   'all right',
   'ga verder',
   'ciente',

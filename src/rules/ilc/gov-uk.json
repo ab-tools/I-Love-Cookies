@@ -1,0 +1,47 @@
+[
+  {
+    "name": "gov.uk",
+    "comment": "GOV.UK design system banner. Replaces autoconsent's rule: after accepting, the banner shows a confirmation with a \"Hide cookie message\" button, which its popup check took for the open banner. Accepts, then hides the confirmation.",
+    "detectCmp": [
+      {
+        "exists": ".govuk-cookie-banner__message"
+      }
+    ],
+    "detectPopup": [
+      {
+        "visible": [
+          ".govuk-cookie-banner__message",
+          "xpath///button[contains(., 'Accept')] | //a[contains(., 'Accept')]"
+        ]
+      }
+    ],
+    "optIn": [
+      {
+        "click": [
+          ".govuk-cookie-banner__message",
+          "xpath///button[contains(., 'Accept')] | //a[contains(., 'Accept')]"
+        ]
+      },
+      {
+        "wait": 500
+      },
+      {
+        "if": {
+          "visible": "button[data-hide-cookie-banner], .govuk-cookie-banner__message[role=alert] .govuk-button",
+          "check": "any"
+        },
+        "then": [
+          {
+            "click": "button[data-hide-cookie-banner], .govuk-cookie-banner__message[role=alert] .govuk-button"
+          }
+        ]
+      }
+    ],
+    "optOut": [],
+    "test": [
+      {
+        "cookieContains": "cookies_preferences_set=true"
+      }
+    ]
+  }
+]
