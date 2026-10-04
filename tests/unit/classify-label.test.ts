@@ -91,6 +91,8 @@ describe('classifyLabel examples', () => {
     ['Godkend kun obligatoriske', 'REJECT'],
     ['Jag samtycker', 'ACCEPT'],
     ['Ich verstehe', 'ACKNOWLEDGE'],
+    ['Piekrist visiem', 'ACCEPT_ALL'],
+    ['Pieņemt atlasi', 'SAVE'],
     ['ДАЮ СОГЛАСИЕ', 'ACCEPT'],
     ['ACKNOWLEDGE', 'ACKNOWLEDGE'],
     ['Alle Cookies aktzeptieren', 'ACCEPT_ALL'],

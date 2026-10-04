@@ -237,6 +237,7 @@ export const SAVE = [
   // A bare "Confirm" saves the choices of a preferences dialog ("Confirm all" stays accept all).
   '^(confirm|confirmer|confirmar|conferma|bevestigen|potvrdit|potwierdź)$',
   'meine auswahl',
+  `pieņemt atlas${W}`,
   '(enregistrer|valider|confirmer|accepter) (mes |les )?(choix|préférences|paramètres|la sélection|sélection)',
   '(guardar|confirmar|aceptar|permitir) (la )?(selección|configuración|preferencias|mis preferencias)',
   'guardar',
@@ -404,6 +405,7 @@ export const ACCEPT = [
   'aktsepteeri',
   'luba',
   'piekrītu',
+  'piekrist',
   'pieņemt',
   'apstiprināt (visas|visus|visu)',
   'setuju',
@@ -501,6 +503,7 @@ export const ALL = [
   'visu',
   'visas',
   'visus',
+  'visiem',
   'viską',
   'tümünü',
   'hepsini',
