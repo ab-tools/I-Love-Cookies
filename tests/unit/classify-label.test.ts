@@ -101,6 +101,8 @@ describe('classifyLabel examples', () => {
     ['Alle Cookies aktzeptieren', 'ACCEPT_ALL'],
     ['Totally fine!', 'ACCEPT'],
     ['ZGADZAM SIĘ', 'ACCEPT'],
+    ['Ich stimme allen Cookies zu', 'ACCEPT_ALL'],
+    ['Autorizzare tutti i cookie', 'ACCEPT_ALL'],
     ['OK, fermer', 'ACKNOWLEDGE'],
     ['Close', 'OTHER'],
     ["Let's go!", 'ACKNOWLEDGE'],

@@ -423,7 +423,9 @@ export const ACCEPT = [
   'de acord',
   'jazeker',
   'zgadzam się',
-  'ich stimme der verwendung (aller|von allen) cookies zu',
+  // Separable verb: "ich stimme (allen Cookies / der Verwendung aller Cookies) zu".
+  `stimme( ${W}){0,4} zu`,
+  `autorizz${W}`,
   'accepte',
   'ich lasse (alle )?cookies zu',
   '^(alle|all) cookies$',
