@@ -14,7 +14,7 @@ export type Phase =
  * · heuristic = generic banner detection without a rule
  */
 /** Why the extension is inactive on a page (translated as reason_<code>). */
-export type PausedReason = 'off' | 'sitePaused' | 'failuresToday' | 'attemptsToday' | 'keepsComingBack' | 'userDecided' | 'payOrOk';
+export type PausedReason = 'off' | 'sitePaused' | 'failuresToday' | 'attemptsToday' | 'keepsComingBack' | 'userDecided' | 'payOrOk' | 'ageGate';
 
 export type Strategy = 'rule' | 'api' | 'click' | 'heuristic';
 

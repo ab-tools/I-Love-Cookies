@@ -1,0 +1,51 @@
+[
+  {
+    "name": "ilc-age-royal-queen-seeds",
+    "comment": "Combined age check, cookie consent and country choice. Ticks the required consent box and stays on the current shop (its main button switches to the visitor's country shop).",
+    "detectCmp": [
+      {
+        "exists": ".ftup-wrapper .cookie-popup__accept"
+      }
+    ],
+    "detectPopup": [
+      {
+        "visible": ".ftup-wrapper"
+      }
+    ],
+    "optIn": [
+      {
+        "if": {
+          "exists": "#ftup-accept:not(:checked)"
+        },
+        "then": [
+          {
+            "click": "#ftup-accept"
+          }
+        ]
+      },
+      {
+        "if": {
+          "visible": ".ftup-current-country"
+        },
+        "then": [
+          {
+            "click": ".ftup-current-country"
+          }
+        ],
+        "else": [
+          {
+            "waitForThenClick": ".ftup-age-cookie-btns .cookie-popup__accept"
+          }
+        ]
+      }
+    ],
+    "optOut": [],
+    "test": [
+      {
+        "waitForVisible": ".ftup-wrapper",
+        "check": "none",
+        "timeout": 3000
+      }
+    ]
+  }
+]

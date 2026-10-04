@@ -30,6 +30,7 @@
   "reason_keepsComingBack": { "message": "the banner keeps coming back" },
   "reason_userDecided": { "message": "you made a choice in the banner" },
   "reason_payOrOk": { "message": "\"consent or pay\" wall – accepting these is switched off in the settings" },
+  "reason_ageGate": { "message": "age check – confirming these is switched off in the settings" },
 
   "popup_siteActive": { "message": "Accept cookies automatically on this site" },
   "popup_excludedBy": { "message": "Excluded by “$1” in the settings." },

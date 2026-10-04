@@ -30,6 +30,7 @@
   "reason_keepsComingBack": { "message": "das Banner erscheint immer wieder" },
   "reason_userDecided": { "message": "du hast im Banner selbst gewählt" },
   "reason_payOrOk": { "message": "„Zustimmen oder bezahlen“-Seite – das Akzeptieren ist in den Einstellungen ausgeschaltet" },
+  "reason_ageGate": { "message": "Altersabfrage – das Bestätigen ist in den Einstellungen ausgeschaltet" },
 
   "popup_siteActive": { "message": "Cookies auf dieser Website automatisch akzeptieren" },
   "popup_excludedBy": { "message": "Ausgeschlossen durch „$1“ in den Einstellungen." },

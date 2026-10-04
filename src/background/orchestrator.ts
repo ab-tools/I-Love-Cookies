@@ -320,6 +320,14 @@ async function onPopupFound(tabId: number, frameId: number, cmp: string, waiting
     return;
   }
   state.attempts[frameId] = attempts;
+  // Rules that confirm an age check (named "ilc-age-…") act only while age checks are switched on.
+  if (cmp.startsWith('ilc-age-') && !(await getSettings()).ageGates) {
+    state.pausedReason = 'ageGate';
+    setPhase(state, 'paused');
+    log(state, frameId, english('reason_ageGate'));
+    await saveState(state);
+    return;
+  }
   if (await leaveToUser(state, frameId, { cmp })) return;
   await bumpDaily(state.site, 'attempts');
 
