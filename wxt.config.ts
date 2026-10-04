@@ -1,3 +1,4 @@
+import { execSync } from 'node:child_process';
 import { resolve } from 'node:path';
 import { defineConfig } from 'wxt';
 import { GECKO_ID } from './src/shared/constants';
@@ -9,7 +10,11 @@ export default defineConfig({
   manifestVersion: 3,
   // autoconsent's TS sources (its package only exports a prebuilt bundle). Bundler-only alias: TypeScript uses
   // the declarations in src/types/autoconsent-src.d.ts instead of type-checking autoconsent's sources.
-  vite: () => ({ resolve: { alias: { '@autoconsent-src': resolve('node_modules/@duckduckgo/autoconsent/lib') } } }),
+  vite: () => ({
+    resolve: { alias: { '@autoconsent-src': resolve('node_modules/@duckduckgo/autoconsent/lib') } },
+    // Build identifier in problem reports: the commit the package was built from (+ marker for local changes).
+    define: { __ILC_BUILD__: JSON.stringify(buildId()) },
+  }),
   // Source archive for AMO review: everything needed to reproduce the build, nothing else.
   zip: { excludeSources: ['.github/**'] },
   manifest: ({ browser, mode }) => ({
@@ -48,3 +53,13 @@ export default defineConfig({
         }),
   }),
 });
+
+function buildId(): string {
+  try {
+    const commit = execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim();
+    const dirty = execSync('git status --porcelain --untracked-files=no', { encoding: 'utf8' }).trim() !== '';
+    return dirty ? `${commit}+` : commit;
+  } catch {
+    return 'unknown';
+  }
+}

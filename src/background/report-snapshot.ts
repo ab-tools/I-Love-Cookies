@@ -20,12 +20,18 @@ async function frameSnapshot(tabId: number, frameId: number): Promise<FrameSnaps
 /** Structured report data from all frames of a tab: the top frame plus frames with consent UI. */
 export async function collectReportSnapshot(tabId: number): Promise<ReportSnapshot> {
   const frames = (await browser.webNavigation.getAllFrames({ tabId }).catch(() => null)) ?? [{ frameId: 0 }];
-  const snapshots = await Promise.all(frames.map((f) => frameSnapshot(tabId, f.frameId)));
-  const relevant = snapshots.filter((s): s is FrameSnapshot => !!s && (s.top || s.cmps.length > 0 || !!s.banner));
+  const snapshots = await Promise.all(
+    frames.map(async (f) => {
+      const snapshot = await frameSnapshot(tabId, f.frameId);
+      // Fenced and prerendered frames see themselves as top: only frame 0 is the page.
+      return snapshot && { ...snapshot, top: f.frameId === 0 };
+    }),
+  );
+  const relevant = snapshots.filter((s): s is FrameSnapshot => !!s && (s.top || s.cmps.length > 0 || (!!s.banner && s.banner.area > 0)));
   const signals = await Promise.race([runSnippet(tabId, 0, 'ILC_READ_CONSENT_SIGNALS', [0]).catch(() => null), timeout(LIMITS.snapshotTimeoutMs, null)]);
   return {
     frames: relevant.sort((a, b) => Number(b.top) - Number(a.top)).slice(0, MAX_FRAMES),
     signals,
-    ruleSet: (await getRuleSet())?.version,
+    ruleSet: (await getRuleSet())?.version ?? 'bundled',
   };
 }

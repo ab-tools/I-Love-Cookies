@@ -66,7 +66,8 @@ export function bannerElement(cmpContainers: readonly string[], knownBanner: Ele
       // invalid selector in a rule
     }
   }
-  if (window !== window.top && document.body && consentScore(deepText(document.body)) >= 2) return document.body;
+  // Only a rendered frame: an invisible one (e.g. a tracking sync frame) reports its script text as page text.
+  if (window !== window.top && document.body && isOnScreen(document.body) && consentScore(deepText(document.body)) >= 2) return document.body;
   return null;
 }
 

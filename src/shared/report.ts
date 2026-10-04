@@ -7,6 +7,10 @@ const MAX_URL_LENGTH = 7000;
 export interface ReportContext {
   browser: string;
   userAgent: string;
+  /** Commit the extension was built from. */
+  build?: string;
+  /** Settings that change what the extension does, e.g. "pay-or-OK on, age checks on, rule updates on". */
+  settings?: string;
 }
 
 /** Only scheme + host + path – never query strings or fragments (they can contain personal data). */
@@ -21,7 +25,8 @@ export function sanitizeUrl(url: string): string {
 
 export function buildReportDetails(state: TabState, ctx: ReportContext): string {
   const lines = [
-    `extension: ${state.extensionVersion}`,
+    `extension: ${state.extensionVersion}${ctx.build ? ` (build ${ctx.build})` : ''}`,
+    ...(ctx.settings ? [`settings: ${ctx.settings}`] : []),
     `browser: ${ctx.browser} (${ctx.userAgent})`,
     `phase: ${state.phase}${state.pausedReason ? ` (${state.pausedReason})` : ''}`,
     `cmp: ${state.cmp ?? 'none detected'}`,

@@ -35,6 +35,14 @@ describe('report', () => {
     expect(url.toString()).not.toContain('secret');
   });
 
+  it('names the build and the settings that change behaviour', () => {
+    const details = new URL(
+      buildIssueUrl(state(), { browser: 'chrome', userAgent: 'UA', build: 'abc1234', settings: 'pay-or-OK on, age checks off, rule updates on' }),
+    ).searchParams.get('details');
+    expect(details).toContain('extension: 0.1.0 (build abc1234)');
+    expect(details).toContain('settings: pay-or-OK on, age checks off, rule updates on');
+  });
+
   it('keeps the URL below GitHub limits even with a long log', () => {
     const log = Array.from({ length: 60 }, (_, i) => ({ t: 1000 + i, frameId: i, msg: 'x'.repeat(200) }));
     expect(buildIssueUrl(state({ log }), { browser: 'firefox', userAgent: 'UA' }).length).toBeLessThan(7500);
