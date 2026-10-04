@@ -119,7 +119,7 @@ export const REJECT = [
   `afvis${W}`,
   `avvis${W}`,
   'hylkää',
-  'keeldu',
+  `keeldu${W}`,
   'noraidīt',
   'atmesti',
   'reddet',
@@ -480,6 +480,9 @@ export const ACCEPT = [
   // Baltic
   `nõustu${W}`,
   'aktsepteeri',
+  // Not just "nõus": without diacritics it is French "nous".
+  `nõus kõig${W}`,
+  '^(olen )?nõus$',
   'luba',
   'piekrītu',
   'piekrist',
