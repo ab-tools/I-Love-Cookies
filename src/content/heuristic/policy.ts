@@ -48,7 +48,8 @@ export function decide(buttons: readonly ButtonCandidate[], hasToggles = false, 
   if (selectAll) return { action: 'click', button: selectAll, kind: 'accept_all' };
   const settings = first('SETTINGS');
   if (settings) return { action: 'settings', button: settings };
-  if (hasToggles && lockedAccept) return { action: 'toggles' };
+  // Locked accept button, or a settings screen offering only "necessary only": switch everything on, then decide again.
+  if (hasToggles && (lockedAccept || buttons.some((b) => b.cls === 'REJECT'))) return { action: 'toggles' };
   // Nothing to consent to: closed so the page is usable as if there never was a banner.
   const close = first('CLOSE');
   if (close) return { action: 'click', button: close, kind: 'close' };

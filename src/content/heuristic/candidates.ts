@@ -1,5 +1,5 @@
 import { isOnScreen, shadowRootOf } from '../dom';
-import { ACCEPTING, classifyLabel, type ButtonClass } from './text';
+import { ACCEPTING, classifyLabel, isConsentNoun, type ButtonClass } from './text';
 
 export interface ButtonCandidate {
   element: HTMLElement;
@@ -15,6 +15,13 @@ export interface ButtonCandidate {
 const CLICKABLE = 'button,[role=button],a,input[type=button],input[type=submit],[onclick]';
 /** Elements styled as buttons – only used when they contain no other control (not whole button groups). */
 const BUTTON_LIKE = '[class*="btn"],[class*="button"],[tabindex="0"]';
+/** Close icons without text ("<div class=close><i class=icon-close></i></div>"). */
+const CLOSE_ICON = '[class*="close" i],[id*="close" i],[aria-label*="close" i],[title*="close" i]';
+const CLOSE_NAME = /(^|[-_\s])(close|closer|close-?btn|close-?button|close-?icon)([-_\s]|$)|(icon|eico|ico|fa)-(close|times|x)\b/i;
+/** Ids and classes of accept-all buttons whose label is only a noun ("Consent"). */
+const ACCEPT_NAME = /(^|[-_\s])(accept|allow|agree|all|cta-consent)([-_\s]|$)/i;
+
+const nameOf = (el: Element) => `${el.id} ${el.getAttribute('class') ?? ''}`;
 
 function labelOf(el: HTMLElement): string {
   const text =
@@ -31,6 +38,7 @@ function labelOf(el: HTMLElement): string {
     const hosted = host.innerText?.trim() || host.getAttribute('aria-label')?.trim();
     if (hosted && hosted.length <= 80) return hosted;
   }
+  if (CLOSE_NAME.test(nameOf(el)) || CLOSE_NAME.test(nameOf(el.firstElementChild ?? el))) return '×';
   // Icon fonts / CSS-generated labels
   const before = getComputedStyle(el, '::before').content;
   const after = getComputedStyle(el, '::after').content;
@@ -106,6 +114,10 @@ function clickablesIn(root: Element | ShadowRoot, found: HTMLElement[] = []): HT
   for (const el of Array.from(root.querySelectorAll<HTMLElement>(BUTTON_LIKE))) {
     if (!el.matches(CLICKABLE) && !el.querySelector(`${CLICKABLE},${BUTTON_LIKE}`) && !el.closest(CLICKABLE)) found.push(el);
   }
+  for (const el of Array.from(root.querySelectorAll<HTMLElement>(CLOSE_ICON))) {
+    if (el.matches(CLICKABLE) || el.closest(CLICKABLE) || el.querySelector(`${CLICKABLE},${BUTTON_LIKE}`) || (el.innerText ?? '').trim().length > 2) continue;
+    if (CLOSE_NAME.test(nameOf(el)) || el.matches('[aria-label*="close" i],[title*="close" i]')) found.push(el);
+  }
   for (const el of Array.from(root.querySelectorAll('*'))) {
     const shadow = shadowRootOf(el);
     if (shadow) clickablesIn(shadow, found);
@@ -142,7 +154,9 @@ export function extractButtons(banner: Element): ButtonCandidate[] {
       const rect = box.getBoundingClientRect();
       // Buttons with a description under the label ("Accept all", then ": consent to all cookies …"): the first line decides.
       const firstLine = label.split('\n')[0]!.trim();
-      const cls = classifyLabel(label.length > 48 && firstLine ? firstLine : label);
+      let cls = classifyLabel(label.length > 48 && firstLine ? firstLine : label);
+      // "Consent" next to "Consent to selected": the bare noun is the accept-all button when its name says so.
+      if (cls === 'OTHER' && isConsentNoun(label) && ACCEPT_NAME.test(nameOf(el))) cls = 'ACCEPT_ALL';
       return label ? [{ element: box, label, cls, navigates: navigatesAway(el, ACCEPTING.has(cls)), prominence: Math.round(Math.min(rect.height, 64) * 1000 + Math.min(rect.width, 400)) }] : [];
     });
 }

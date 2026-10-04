@@ -135,3 +135,8 @@ export function agreesTo(text: string): boolean {
   const cls = classifyLabel(text);
   return ACCEPTING.has(cls) || (cls === 'SETTINGS' && RE.accept.test(normalizeLabel(text)));
 }
+
+/** A bare consent noun ("Consent") – a tab or heading unless the element says otherwise. */
+export function isConsentNoun(text: string): boolean {
+  return NOUN_ONLY.has(normalizeLabel(text));
+}

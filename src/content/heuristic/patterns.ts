@@ -67,6 +67,7 @@ export const LOGIN = [
 /** Explicit rejection. */
 export const REJECT = [
   'exclude',
+  `одбиј${W}`,
   '同意しません',
   '我不接受',
   '不接受',
@@ -280,6 +281,7 @@ export const SAVE = [
   'ausgewählte (cookies )?(verwenden|nutzen|zulassen|erlauben)',
   `patvirtinti pažymėt${W}`,
   `potrdi izbran${W}`,
+  'consent to (the )?selected',
   // A bare "Confirm" saves the choices of a preferences dialog ("Confirm all" stays accept all).
   '^(confirm|confirmer|confirmar|conferma|bevestigen|potvrdit|potwierdź)$',
   '^(save|opslaan|enregistrer|salva|zapisz|uložit)$',
@@ -473,6 +475,7 @@ export const ACCEPT = [
   'cookies nehm ich gern',
   'count me in',
   'patvirtinti visus',
+  `прифат${W}`,
   'potrdi vse',
   'use all cookies',
   'ich bestätige alle',
@@ -576,6 +579,8 @@ export const ALL = [
   'sve',
   `összes${W}`,
   'mind',
+  'сите',
+  'сви',
   `minden${W}`,
   'tot',
   'toate',
@@ -718,6 +723,9 @@ export const ACKNOWLEDGE = [
   'anladım',
   'понятно',
   'зрозуміло',
+  'tamam',
+  'tamamdır',
+  'გასაგებია',
 ];
 
 /** Selecting every toggle in a settings dialog (used by the settings flow). */
@@ -740,6 +748,8 @@ export const SELECT_ALL = [
 /** Opening settings / more options / information. */
 export const SETTINGS = [
   `konfigurier${W}`,
+  'tercihler',
+  `yönet${W}`,
   `configur${W}`,
   'settings',
   'preferences',

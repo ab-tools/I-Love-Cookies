@@ -4,7 +4,7 @@ import { heuristicOptions } from './options';
 
 /** Consent wording: strong words alone identify a banner, weak words only support it. */
 const STRONG =
-  /cookie|consent|einwillig|zustimmung|gdpr|dsgvo|rgpd|toestemming|souhlas|zgod[ay]|consentimiento|consenso|samtykke|samtycke|suostum|evästee|sütik|kolačić|piškot|slapuk|sīkdat|küpsis|çerez|куки|cookies|privacy (choices|preferences|settings)|datenschutz-?(einstellungen|präferenzen)|préférences de confidentialité/i;
+  /cookie|consent|einwillig|zustimmung|gdpr|dsgvo|rgpd|toestemming|souhlas|zgod[ay]|consentimiento|consenso|samtykke|samtycke|suostum|evästee|sütik|kolačić|piškot|slapuk|sīkdat|küpsis|çerez|куки|cookies|бисквитк|колачи|ciastecz|ქუქი|privacy (choices|preferences|settings)|datenschutz-?(einstellungen|präferenzen)|préférences de confidentialité/i;
 const WEAK =
   /partner|vendor|anbieter|fournisseur|proveedor|fornitor|tracking|personali[sz]|werbung|advertis|publicit|pubblicit|reklam|analy|datenschutz|privacy|confidentialit|privacidad|privatnost|adatvédel|prywatnoś|soukromí|integritet|privatliv|yksityisyy|ιδιωτικ|защит|gizlilik/gi;
 
@@ -32,8 +32,9 @@ const STRONG_CONSENT_SCORE = 6;
 /** A whole frame document counts as a banner only with clear consent wording. */
 const FRAME_DOCUMENT_MIN_SCORE = 4;
 
-const NAVIGATION = 'header,nav,footer,main,article,[role=banner],[role=navigation],[role=contentinfo],[role=main],[role=menu],[role=tooltip]';
-const CLICKABLE = 'button,[role=button],a,input[type=button],input[type=submit],[onclick],[class*="btn"],[class*="button"]';
+const NAVIGATION = 'header,nav,footer,main,[role=banner],[role=navigation],[role=contentinfo],[role=main],[role=menu],[role=tooltip]';
+const CLICKABLE =
+  'button,[role=button],a,input[type=button],input[type=submit],[onclick],[class*="btn"],[class*="button"],[class*="close" i],[aria-label*="close" i]';
 
 export interface Banner {
   element: Element;
@@ -123,7 +124,7 @@ function overlayElements(root: Document | ShadowRoot | Element, found: Element[]
  */
 function overlaysAroundConsentText(doc: Document, found: Set<Element>): void {
   const walker = doc.createTreeWalker(doc.body ?? doc.documentElement, NodeFilter.SHOW_TEXT, {
-    acceptNode: (node) => (/cookie|consent|einwillig|zustimm/i.test(node.nodeValue ?? '') ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP),
+    acceptNode: (node) => (/cookie|consent|einwillig|zustimm|бисквитк|колачи|ciastecz/i.test(node.nodeValue ?? '') ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP),
   });
   for (let node = walker.nextNode(), n = 0; node && n < 50; node = walker.nextNode(), n++) {
     let el = node.parentElement;

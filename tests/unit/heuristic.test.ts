@@ -100,6 +100,29 @@ describe('banner detection – special cases', () => {
     expect(findConsentBanners()).toHaveLength(1);
   });
 
+  it('finds banners in Bulgarian and Polish wording, also as a fixed <article>', () => {
+    document.body.innerHTML = `<article id="bg" style="position:fixed" data-rect="0,700,1024,60">Използваме бисквитки, за да подобрим
+      изживяването ви. <button>Приеми всички</button></article>`;
+    expect(findConsentBanners().map((b) => b.element.id)).toEqual(['bg']);
+    document.body.innerHTML = `<div id="pl" style="position:fixed" data-rect="0,700,1024,60">Używamy ciasteczek, dzięki którym nasza strona
+      jest dla Ciebie bardziej przyjazna. <a id="accept_all_button" class="button">Akceptuję</a></div>`;
+    expect(findConsentBanners().map((b) => b.element.id)).toEqual(['pl']);
+  });
+
+  it('closes notices whose close button is an icon without text', () => {
+    document.body.innerHTML = `<div id="notice" style="position:fixed" data-rect="0,700,1024,60">We use cookies to offer you a better
+      experience. <div class="close"><i class="efont eico-close"></i></div></div>`;
+    const [banner] = findConsentBanners();
+    expect(decide(extractButtons(banner!.element))).toMatchObject({ action: 'click', kind: 'close' });
+  });
+
+  it('takes a bare "Consent" button as accept all when its name says so', () => {
+    document.body.innerHTML = `<div id="cmp" style="position:fixed" data-rect="0,700,1024,200">${BANNER_TEXT}
+      <a class="cookies__cta cookies-all">Consent</a><a class="cookies__cta cookies-selected">Consent to selected</a></div>`;
+    const [banner] = findConsentBanners();
+    expect(decide(extractButtons(banner!.element))).toMatchObject({ action: 'click', kind: 'accept_all', button: { label: 'Consent' } });
+  });
+
   it('closes notices that offer nothing but "close"', () => {
     document.body.innerHTML = `<div id="notice" style="position:fixed" data-rect="0,700,1024,60">This website uses cookies to ensure you get
       the best experience. <a href="/privacy">Privacy Policy</a> <button id="x">×</button></div>`;
