@@ -16,23 +16,20 @@ body:
       placeholder: https://www.example.com/
     validations:
       required: true
-  - type: dropdown
+  - type: input
     id: browser
     attributes:
       label: Browser
-      options: [chrome, firefox, edge, other]
+      description: Chrome, Firefox, Edge, Opera or another browser.
+      placeholder: Chrome
     validations:
       required: true
-  - type: dropdown
+  - type: input
     id: problem
     attributes:
       label: What happened?
-      options:
-        - The cookie banner stayed visible
-        - Only some cookies were accepted (badge "~")
-        - The extension clicked something wrong (subscription, login, link …)
-        - The site is broken / not scrollable after accepting
-        - Other
+      description: "The cookie banner stayed visible · The extension clicked something wrong (subscription, login, link …) · The site is broken / not scrollable after accepting · Other"
+      placeholder: The cookie banner stayed visible
     validations:
       required: true
   - type: textarea

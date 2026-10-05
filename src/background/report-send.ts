@@ -1,6 +1,6 @@
 import { browser } from 'wxt/browser';
 import { REPO_URL, REPORT_API_URL } from '../shared/constants';
-import { MAX_NOTE_LENGTH, PROBLEM_LABELS, buildReport, sanitizeUrl } from '../shared/report';
+import { MAX_NOTE_LENGTH, PROBLEM_LABELS, browserName, buildReport, sanitizeUrl } from '../shared/report';
 import type { ReportProblem } from '../shared/messages';
 import { exclusionFor, getSettings } from '../shared/settings';
 import { getTabState } from './orchestrator';
@@ -19,7 +19,7 @@ export async function sendReport(tabId: number, anonymous: boolean, problem: Rep
   const report = buildReport(
     state,
     {
-      browser: import.meta.env.BROWSER,
+      browser: browserName(import.meta.env.BROWSER, navigator.userAgent),
       userAgent: navigator.userAgent,
       build: __ILC_BUILD__,
       settings: `pay-or-OK ${onOff(settings.payOrOk)}, age checks ${onOff(settings.ageGates)}, rule updates ${onOff(settings.remoteRules)}${excluded ? ', site excluded' : ''}`,
@@ -40,7 +40,7 @@ export async function sendReport(tabId: number, anonymous: boolean, problem: Rep
       body: JSON.stringify({
         site: state.site,
         url: sanitizeUrl(state.url),
-        browser: `${import.meta.env.BROWSER} (${navigator.userAgent})`,
+        browser: `${browserName(import.meta.env.BROWSER, navigator.userAgent)} (${navigator.userAgent})`,
         extensionVersion: state.extensionVersion,
         language: navigator.language,
         title: report.title,

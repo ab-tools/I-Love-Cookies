@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { TabState } from '../../src/shared/messages';
-import { buildIssueUrl, sanitizeUrl } from '../../src/shared/report';
+import { browserName, buildIssueUrl, sanitizeUrl } from '../../src/shared/report';
 import { describeState } from '../../src/shared/describe';
 import { exclusionFor, siteOf, DEFAULT_SETTINGS } from '../../src/shared/settings';
 
@@ -77,4 +77,13 @@ describe('settings helpers', () => {
     expect(exclusionFor(settings, 'https://shop.example.com/x')).toBe('example.com');
     expect(exclusionFor(settings, 'https://notexample.com/')).toBeNull();
   });
+
+describe('browserName', () => {
+  it('names the browser the Chrome package runs in', () => {
+    expect(browserName('firefox', 'Mozilla/5.0 (Windows NT 10.0; rv:157.0) Gecko/20100101 Firefox/157.0')).toBe('Firefox');
+    expect(browserName('chrome', 'Mozilla/5.0 AppleWebKit/537.36 Chrome/154.0 Safari/537.36 Edg/154.0')).toBe('Edge');
+    expect(browserName('chrome', 'Mozilla/5.0 AppleWebKit/537.36 Chrome/154.0 Safari/537.36 OPR/120.0')).toBe('Opera');
+    expect(browserName('chrome', 'Mozilla/5.0 AppleWebKit/537.36 Chrome/154.0 Safari/537.36')).toBe('Chrome');
+  });
+});
 });

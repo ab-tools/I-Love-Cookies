@@ -21,6 +21,14 @@ export const PROBLEM_LABELS: Record<ReportProblem, string> = {
   other: 'Other',
 };
 
+/** Browser name as people write it (the Chrome package also runs in Edge and Opera). */
+export function browserName(build: string, userAgent: string): string {
+  if (build === 'firefox' || /Firefox\//.test(userAgent)) return 'Firefox';
+  if (/Edg\//.test(userAgent)) return 'Edge';
+  if (/OPR\//.test(userAgent)) return 'Opera';
+  return 'Chrome';
+}
+
 /** Longest note the user can add to a report. */
 export const MAX_NOTE_LENGTH = 500;
 
