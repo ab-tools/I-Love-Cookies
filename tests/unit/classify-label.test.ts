@@ -264,6 +264,7 @@ describe('classifyLabel examples', () => {
     ['Confermo', 'SAVE'],
     ['FORTSETZEN', 'ACKNOWLEDGE'],
     ['V poriadku', 'ACKNOWLEDGE'],
+    ['VERDERGAAN MET ALLE COOKIES', 'ACKNOWLEDGE'],
     ['Potvrdit vše', 'ACCEPT_ALL'],
     ['Skrij obvestilo', 'ACKNOWLEDGE'],
     ['DEACORD', 'ACCEPT'],

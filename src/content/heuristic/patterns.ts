@@ -750,6 +750,7 @@ export const ACKNOWLEDGE = [
   'hide (this |the |cookie )?(message|banner)',
   'all right',
   'ga verder',
+  'verdergaan',
   'ciente',
   '^continu(ar|a)$',
   'habe es',
