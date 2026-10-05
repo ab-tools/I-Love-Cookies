@@ -264,6 +264,8 @@ describe('classifyLabel examples', () => {
     ['Confermo', 'SAVE'],
     ['FORTSETZEN', 'ACKNOWLEDGE'],
     ['V poriadku', 'ACKNOWLEDGE'],
+    ['ΑΠΟΔΕΧΟΜΑΙ ΤΑ ΠΑΝΤΑ', 'ACCEPT_ALL'],
+    ['ΑΠΟΡΡΙΠΤΩ ΤΑ ΠΑΝΤΑ', 'REJECT'],
     ['Täpsustan oma valikuid', 'SETTINGS'],
     ['Kinnitan oma valikud', 'SAVE'],
     ['Sauvegarder', 'SAVE'],
