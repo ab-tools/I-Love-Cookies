@@ -1,0 +1,16 @@
+[
+  {
+    "name": "civic-cookie-control",
+    "comment": "Civic Cookie Control. Replaces autoconsent's rule: its selector list matched the hidden \"accept recommended\" button of the settings panel first, and its popup check counted the \"revisit\" container that stays after consent – on sites that reload after consent it answered again and again. The notice's own accept button comes first.",
+    "detectCmp": [{ "exists": "#ccc-module,#ccc-notify" }],
+    "detectPopup": [{ "visible": "#ccc-notify, #ccc-module", "check": "any" }, { "eval": "ILC_CIVIC_POPUP_SHOWN" }],
+    "optIn": [
+      {
+        "if": { "visible": "#ccc-notify-accept, #ccc-notify .ccc-notify-button.ccc-button-solid:not(#ccc-recommended-settings), #ccc-notify .ccc-accept-button", "check": "any" },
+        "then": [{ "click": "#ccc-notify-accept, #ccc-notify .ccc-notify-button.ccc-button-solid:not(#ccc-recommended-settings), #ccc-notify .ccc-accept-button" }],
+        "else": [{ "waitForThenClick": "#ccc-recommended-settings,#ccc-notify-accept,.ccc-accept-button" }]
+      }
+    ],
+    "optOut": []
+  }
+]

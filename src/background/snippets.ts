@@ -155,6 +155,15 @@ function iubendaNeedsConsent() {
   const api = window._iub && window._iub.cs && window._iub.cs.api;
   return Boolean(api && typeof api.isConsentGiven === 'function' && !api.isConsentGiven());
 }
+/** Civic keeps its notice and panel as fixed elements just outside the viewport after consent. */
+function civicPopupShown() {
+  return ['#ccc-notify', '#ccc-module'].some((sel) => {
+    const el = document.querySelector(sel);
+    if (!el || getComputedStyle(el).display === 'none') return false;
+    const r = el.getBoundingClientRect();
+    return r.width > 0 && r.height > 0 && r.top < window.innerHeight && r.bottom > 0 && r.left < window.innerWidth && r.right > 0;
+  });
+}
 function apiKlaro() {
   if (window.klaro && typeof window.klaro.getManager === 'function') {
     const manager = window.klaro.getManager();
@@ -243,6 +252,7 @@ export const ilcSnippets = {
   ILC_API_KLARO: apiKlaro,
   ILC_API_COOKIEHUB: apiCookieHub,
   ILC_API_CIVIC: apiCivic,
+  ILC_CIVIC_POPUP_SHOWN: civicPopupShown,
   ILC_API_COOKIEFIRST: apiCookieFirst,
   ILC_API_SHOPIFY: apiShopify,
   ILC_CCM19_ACCEPT: acceptCcm19,
