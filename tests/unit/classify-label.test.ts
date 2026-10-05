@@ -264,6 +264,7 @@ describe('classifyLabel examples', () => {
     ['Confermo', 'SAVE'],
     ['FORTSETZEN', 'ACKNOWLEDGE'],
     ['V poriadku', 'ACKNOWLEDGE'],
+    ['Confirmo que tenho 18 anos ou mais.', 'AGE_CONFIRM'],
     ['ΑΠΟΔΕΧΟΜΑΙ ΤΑ ΠΑΝΤΑ', 'ACCEPT_ALL'],
     ['ΑΠΟΡΡΙΠΤΩ ΤΑ ΠΑΝΤΑ', 'REJECT'],
     ['Täpsustan oma valikuid', 'SETTINGS'],

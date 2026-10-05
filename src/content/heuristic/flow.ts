@@ -41,6 +41,9 @@ export async function enableAllToggles(container: Element): Promise<{ toggled: n
   for (const toggle of toggles.slice(0, MAX_TOGGLES)) {
     if (isOn(toggle)) continue;
     const label = toggle instanceof HTMLInputElement ? toggle.labels?.[0] : null;
+    // "Functional only" is no category to switch on; "I am 18 or older" only with age checks switched on.
+    const cls = classifyLabel((label?.innerText ?? toggle.getAttribute('aria-label') ?? '').slice(0, 64));
+    if (cls === 'REJECT' || (cls === 'AGE_CONFIRM' && !heuristicOptions.ageGates)) continue;
     const target = toggle.getBoundingClientRect().width > 0 ? toggle : (label ?? toggle);
     await realisticClick(target);
     await sleep(30);
@@ -142,6 +145,8 @@ export async function acceptBanner(banner: Element): Promise<HeuristicResult> {
   }
   if (decision.action === 'save') return selectAllAndSave(banner, result);
   if (decision.action === 'click') {
+    // Categories shown as checkboxes next to the buttons: all switched on before accepting.
+    if ((decision.kind === 'accept_all' || decision.kind === 'accept') && hasToggles(banner)) result.toggled += (await enableAllToggles(banner)).toggled;
     await tickConsentCheckboxes(banner);
     await click(decision.button, result);
     result.done = true;

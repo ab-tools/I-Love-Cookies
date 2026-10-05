@@ -263,7 +263,7 @@ describe('acceptBanner', () => {
     expect(clicks).toEqual(['accept']);
   });
 
-  it('ticks a required "I accept the cookie settings" checkbox before accepting, but no category box', async () => {
+  it('ticks a required "I accept the cookie settings" checkbox and every category box before accepting', async () => {
     document.body.innerHTML = `
       <div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT}
         <input type="checkbox" id="terms"><label for="terms">Akzeptieren <a href="#s">Cookie-Einstellungen</a> und <a href="#p">Datenschutzerklärung</a></label>
@@ -273,7 +273,21 @@ describe('acceptBanner', () => {
     const result = await acceptBanner(document.getElementById('cmp')!);
     expect(result).toMatchObject({ done: true, clicked: ['Zustimmen & weiter'] });
     expect((document.getElementById('terms') as HTMLInputElement).checked).toBe(true);
-    expect((document.getElementById('marketing') as HTMLInputElement).checked).toBe(false);
+    expect((document.getElementById('marketing') as HTMLInputElement).checked).toBe(true);
+  });
+
+  it('leaves an "I am 18 or older" box alone when age checks are switched off', async () => {
+    heuristicOptions.ageGates = false;
+    document.body.innerHTML = `
+      <div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT}
+        <input type="checkbox" id="age"><label for="age">Confirmo que tenho 18 anos ou mais.</label>
+        <input type="checkbox" id="ads"><label for="ads">Cookies de publicidade</label>
+        <button id="accept">Aceitar todos</button></div>`;
+    track();
+    await acceptBanner(document.getElementById('cmp')!);
+    heuristicOptions.ageGates = true;
+    expect((document.getElementById('age') as HTMLInputElement).checked).toBe(false);
+    expect((document.getElementById('ads') as HTMLInputElement).checked).toBe(true);
   });
 
   it('switches every category on with toggle buttons, then closes the dialog', async () => {

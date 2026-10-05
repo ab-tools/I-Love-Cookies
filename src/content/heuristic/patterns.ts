@@ -244,6 +244,8 @@ export const AGE = [
   'älter',
   'ans',
   'años',
+  'anos',
+  'tenho (mais de )?\\d+',
   'anni',
   'enter',
   'betreten',
