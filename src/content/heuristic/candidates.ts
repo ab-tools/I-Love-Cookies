@@ -23,9 +23,23 @@ const ACCEPT_NAME = /(^|[-_\s])(accept|allow|agree|all|cta-consent)([-_\s]|$)/i;
 
 const nameOf = (el: Element) => `${el.id} ${el.getAttribute('class') ?? ''}`;
 
+/** Icon fonts whose glyph is written as a word ("arrow_forward"). */
+const ICON_LIGATURE = '[class*="material-icons"],[class*="material-symbols"]';
+
+/** The element's text without icon ligature words – unless the icon is all there is. */
+function textOf(el: HTMLElement): string {
+  const text = el.innerText?.trim() ?? '';
+  let stripped = text;
+  for (const icon of el.querySelectorAll<HTMLElement>(ICON_LIGATURE)) {
+    const word = icon.innerText?.trim();
+    if (word) stripped = stripped.replace(word, ' ');
+  }
+  return stripped.trim() || text;
+}
+
 function labelOf(el: HTMLElement): string {
   const text =
-    el.innerText?.trim() ||
+    textOf(el) ||
     // Only form controls have a text value (<li value> is a number).
     (el instanceof HTMLInputElement || el instanceof HTMLButtonElement ? el.value.trim() : '') ||
     el.getAttribute('aria-label')?.trim() ||

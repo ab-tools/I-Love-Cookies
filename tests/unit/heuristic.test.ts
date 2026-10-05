@@ -77,6 +77,12 @@ describe('banner detection', () => {
     document.querySelector('x-button')!.attachShadow({ mode: 'open' }).innerHTML = '<button><slot></slot></button>';
     expect(extractButtons(document.getElementById('cmp')!).map((b) => [b.label, b.cls])).toEqual([['Cookies Akzeptieren', 'ACCEPT']]);
   });
+
+  it('leaves icon ligature words out of button labels', () => {
+    document.body.innerHTML = `<div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT}
+      <button>Sunt de acord<i class="material-icons">arrow_forward</i></button></div>`;
+    expect(extractButtons(document.getElementById('cmp')!).map((b) => [b.label, b.cls])).toEqual([['Sunt de acord', 'ACCEPT']]);
+  });
 });
 
 describe('banner detection – special cases', () => {
