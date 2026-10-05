@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Sirdata",
+    "comment": "Sirdata CMP. Replaces autoconsent's rule: its accept button selector is a generated class name that changes between versions; the button is found by its \"accept all\" label instead.",
+    "prehideSelectors": ["#sd-cmp"],
+    "detectCmp": [{ "exists": "#sd-cmp" }],
+    "detectPopup": [{ "visible": "#sd-cmp" }],
+    "optIn": [
+      {
+        "waitForThenClick": "xpath///*[@id='sd-cmp']//*[self::button or @role='button'][normalize-space(.)='Tout accepter' or normalize-space(.)='Accept all' or normalize-space(.)='Alle akzeptieren' or normalize-space(.)='Aceptar todo' or normalize-space(.)='Accetta tutto' or normalize-space(.)='Aceitar tudo' or normalize-space(.)='Alles accepteren' or normalize-space(.)='Akceptuj wszystko' or normalize-space(.)='Acceptera alla' or normalize-space(.)='Accepter alle' or normalize-space(.)='Přijmout vše' or normalize-space(.)='Acceptați tot' or normalize-space(.)='Összes elfogadása' or normalize-space(.)='Αποδοχή όλων' or normalize-space(.)='Приемане на всички']",
+        "timeout": 6000
+      }
+    ],
+    "optOut": []
+  }
+]
