@@ -1,0 +1,10 @@
+[
+  {
+    "name": "ilc-cookiechoices",
+    "comment": "Google's cookiechoices.js notice (\"This site uses cookies from Google …\"): a dismiss button or, in the icon variant, an empty dismiss link.",
+    "detectCmp": [{ "exists": "#cookieChoiceInfo" }],
+    "detectPopup": [{ "visible": "#cookieChoiceInfo" }],
+    "optIn": [{ "waitForThenClick": "#cookieChoiceDismiss, #cookieChoiceDismissIcon" }],
+    "optOut": []
+  }
+]
