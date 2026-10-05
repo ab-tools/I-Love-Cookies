@@ -164,6 +164,14 @@ function civicPopupShown() {
     return r.width > 0 && r.height > 0 && r.top < window.innerHeight && r.bottom > 0 && r.left < window.innerWidth && r.right > 0;
   });
 }
+/** ING's dialog lives in the top layer, inside nested shadow roots, where autoconsent's visibility test fails. */
+function ingPopupShown() {
+  const level0 = document.querySelector('ing-cc-manager')?.shadowRoot?.querySelector('ing-cc-dialog-level0');
+  const accept = level0?.shadowRoot?.querySelector('ing-button.cc-l0__button__accept');
+  if (!accept) return false;
+  const r = accept.getBoundingClientRect();
+  return r.width > 0 && r.height > 0 && r.top < window.innerHeight && r.bottom > 0;
+}
 function apiKlaro() {
   if (window.klaro && typeof window.klaro.getManager === 'function') {
     const manager = window.klaro.getManager();
@@ -253,6 +261,7 @@ export const ilcSnippets = {
   ILC_API_COOKIEHUB: apiCookieHub,
   ILC_API_CIVIC: apiCivic,
   ILC_CIVIC_POPUP_SHOWN: civicPopupShown,
+  ILC_ING_POPUP_SHOWN: ingPopupShown,
   ILC_API_COOKIEFIRST: apiCookieFirst,
   ILC_API_SHOPIFY: apiShopify,
   ILC_CCM19_ACCEPT: acceptCcm19,

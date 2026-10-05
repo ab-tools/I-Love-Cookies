@@ -1,0 +1,10 @@
+[
+  {
+    "name": "ilc-ing",
+    "comment": "ING Germany's own consent dialog (<ing-cc-manager>, nested open shadow roots; the outer element is 0×0, so the generic detection discards it).",
+    "detectCmp": [{ "exists": "ing-cc-manager" }],
+    "detectPopup": [{ "eval": "ILC_ING_POPUP_SHOWN" }],
+    "optIn": [{ "waitForThenClick": ["ing-cc-manager", "ing-cc-dialog-level0", "ing-button.cc-l0__button__accept"] }],
+    "optOut": []
+  }
+]
