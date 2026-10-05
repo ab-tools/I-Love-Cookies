@@ -20,6 +20,8 @@ const SCAN_DELAYS_MS = [2500, 5000, 9000, 15000, 25000, 40000, 60000];
 /** Scans after the first scroll and after in-page (SPA) navigation. */
 const RESCAN_DELAYS_MS = [1000, 3000, 8000];
 const MIN_FRAME = { width: 300, height: 80 };
+/** How long DOM changes trigger a scan (banners that appear late). */
+const LATE_BANNER_WATCH_MS = 180000;
 
 /** Buttons that answer the banner (a remaining settings icon does not). */
 const CHOICES: ReadonlySet<ButtonClass> = new Set(['ACCEPT_ALL', 'ACCEPT', 'ACKNOWLEDGE', 'REJECT']);
@@ -44,6 +46,7 @@ export class HeuristicController {
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', begin, { once: true });
     else begin();
     window.addEventListener('scroll', () => this.rescan(), { once: true, passive: true });
+    this.observeLateBanners();
     // A real user click inside the banner: the user decides, we stay out.
     document.addEventListener(
       'click',
@@ -56,6 +59,24 @@ export class HeuristicController {
       },
       true,
     );
+  }
+
+  /** Banners that appear later (timers, first interaction): scan after DOM changes, at most every 2.5 s, for a few minutes. */
+  private observeLateBanners() {
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const observer = new MutationObserver(() => {
+      if (this.reported.size || timer) return;
+      timer = setTimeout(() => {
+        timer = undefined;
+        this.autoReport();
+      }, 2500);
+    });
+    const begin = () => {
+      observer.observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'style'] });
+      setTimeout(() => observer.disconnect(), LATE_BANNER_WATCH_MS);
+    };
+    if (document.documentElement) begin();
+    else document.addEventListener('DOMContentLoaded', begin, { once: true });
   }
 
   /** Scan again soon, e.g. after a scroll or an in-page navigation. */
