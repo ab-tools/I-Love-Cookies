@@ -1,0 +1,10 @@
+[
+  {
+    "name": "ilc-piwik-pro",
+    "comment": "Piwik PRO Consent Manager popup.",
+    "detectCmp": [{ "exists": "#ppms_cm_popup_overlay" }],
+    "detectPopup": [{ "visible": "#ppms_cm_popup_overlay #ppms_cm_agree-to-all" }],
+    "optIn": [{ "waitForThenClick": "#ppms_cm_popup_overlay #ppms_cm_agree-to-all" }],
+    "optOut": []
+  }
+]
