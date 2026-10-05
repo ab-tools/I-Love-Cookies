@@ -1,0 +1,10 @@
+[
+  {
+    "name": "ilc-cookie-notice",
+    "comment": "WordPress plugin \"Cookie Notice\" (dFactory / Hu-manity). Short notices are often below the generic detection's threshold.",
+    "detectCmp": [{ "exists": "#cookie-notice #cn-accept-cookie" }],
+    "detectPopup": [{ "visible": "#cookie-notice #cn-accept-cookie" }],
+    "optIn": [{ "waitForThenClick": "#cookie-notice #cn-accept-cookie" }],
+    "optOut": []
+  }
+]
