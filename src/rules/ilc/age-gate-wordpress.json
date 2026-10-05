@@ -1,0 +1,10 @@
+[
+  {
+    "name": "ilc-age-wordpress-age-gate",
+    "comment": "WordPress plugin \"Age Gate\": a full-screen age check over the page (and over its cookie banner). Only with age checks switched on.",
+    "detectCmp": [{ "exists": ".age-gate-wrapper .age-gate-submit-yes" }],
+    "detectPopup": [{ "visible": ".age-gate-wrapper .age-gate-submit-yes" }],
+    "optIn": [{ "click": ".age-gate-wrapper .age-gate-submit-yes" }],
+    "optOut": []
+  }
+]
