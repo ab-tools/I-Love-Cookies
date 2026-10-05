@@ -85,7 +85,9 @@ function consentCheckboxes(container: Element): HTMLElement[] {
       box.closest('label');
     // Without a <label>: the short text next to the box.
     const nearby = box.parentElement?.innerText ?? '';
-    return agreesTo(label?.innerText ?? box.getAttribute('aria-label') ?? (nearby.length <= 120 ? nearby : ''));
+    const text = label?.innerText ?? box.getAttribute('aria-label') ?? (nearby.length <= 120 ? nearby : '');
+    // "I confirm I am over 18 and accept …" – an age confirmation, when age checks are switched on.
+    return agreesTo(text) || (heuristicOptions.ageGates && classifyLabel(text.slice(0, 64)) === 'AGE_CONFIRM');
   });
 }
 
