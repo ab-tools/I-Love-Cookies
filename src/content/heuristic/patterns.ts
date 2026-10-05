@@ -54,7 +54,8 @@ export const LOGIN = [
   'sinscrire',
   'iniciar sesión',
   'registrarse',
-  'accedi',
+  // "Accedi al sito" is entering the site, not logging in.
+  'accedi(?! al sito)',
   'registrati',
   'inloggen',
   'registreren',
@@ -393,6 +394,8 @@ export const ACCEPT = [
   'consenti',
   'consento',
   'acconsento',
+  `acconsent${W}`,
+  'dai il (tuo )?consenso',
   'va bene',
   // PT
   'aceit(ar|o|e|a)',
@@ -732,6 +735,8 @@ export const ACKNOWLEDGE = [
   'jeg forstår',
   'v poriadku',
   'skrij obvestilo',
+  'tudomásul vettem',
+  '^(verbergen|göm)$',
   'οκ',
   'окей',
   '^nastavi$',
