@@ -146,6 +146,13 @@ export async function acceptBanner(banner: Element): Promise<HeuristicResult> {
       return candidates.find((el) => extractButtons(el).some((b) => !isVetoed(b) && ['ACCEPT_ALL', 'SAVE', 'SELECT_ALL'].includes(b.cls)));
     }, 3000)) ?? null;
   if (!layer) {
+    // A notice whose "settings" only explain ("More information") but that can be closed ("Hide").
+    const close = initial.find((b) => !isVetoed(b) && b.cls === 'CLOSE' && b.element.isConnected && isOnScreen(b.element));
+    if (close) {
+      await click(close, result);
+      result.done = true;
+      return result;
+    }
     result.reason = 'settings layer without accept / save button';
     return result;
   }
