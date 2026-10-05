@@ -707,8 +707,15 @@ async function runHeuristic(tabId: number, frameId: number, trusted = false) {
 
   const result = await askFrame<HeuristicResult>(tabId, frameId, { type: 'ilc:heuristicAct', trusted }, LIMITS.heuristicActMs);
   state.claim = undefined;
-  if (!result?.done) {
-    await finish(state, frameId, { outcome: 'FAILED', reasons: [`generic banner: ${result?.reason ?? 'no answer from frame'}`] });
+  if (!result) {
+    // Accepting often removes the consent frame before it can answer: let the verifier look at the page.
+    log(state, frameId, 'generic banner: no answer from frame – checking the page');
+    await saveState(state);
+    void scheduleVerify(tabId, frameId, LIMITS.settleMs);
+    return;
+  }
+  if (!result.done) {
+    await finish(state, frameId, { outcome: 'FAILED', reasons: [`generic banner: ${result.reason ?? 'no answer'}`] });
     return;
   }
   const toggles = result.toggled ? `, ${result.toggled} toggles switched on` : '';
