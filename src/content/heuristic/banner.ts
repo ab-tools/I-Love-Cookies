@@ -94,6 +94,8 @@ function hasHardNegative(el: Element, text: string, score: number): boolean {
 }
 
 const NAMED_LIKE_CONSENT = /cookie|consent|gdpr|privacy|banner|cmp|\b(fixed|sticky)\b/i;
+/** Elements named like a cookie notice. */
+const CONSENT_NAMED = '[id*="cookie" i],[class*="cookie" i],[id*="consent" i],[class*="consent" i],[id*="gdpr" i],[id*="piskot" i]';
 
 /**
  * Cheap pre-filter before computing styles: fixed elements have no offsetParent; dialogs, elements named like
@@ -118,13 +120,16 @@ function overlayElements(root: Document | ShadowRoot | Element, found: Element[]
   return found;
 }
 
+/** "Cookie" and "consent" in the languages whose banners rarely say "cookie". */
+const CONSENT_TEXT = /cookie|consent|einwillig|zustimm|бисквитк|колачи|ciastecz|kolačić|piškot|süti|sušienk|sušenk|eväste|küpsis|slapuk|sīkdat|kakor|çerez/i;
+
 /**
  * Sticky bars with generated class names pass none of the cheap pre-filters: check the few ancestors of text
  * mentioning cookies instead.
  */
 function overlaysAroundConsentText(doc: Document, found: Set<Element>): void {
   const walker = doc.createTreeWalker(doc.body ?? doc.documentElement, NodeFilter.SHOW_TEXT, {
-    acceptNode: (node) => (/cookie|consent|einwillig|zustimm|бисквитк|колачи|ciastecz/i.test(node.nodeValue ?? '') ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP),
+    acceptNode: (node) => (CONSENT_TEXT.test(node.nodeValue ?? '') ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP),
   });
   for (let node = walker.nextNode(), n = 0; node && n < 50; node = walker.nextNode(), n++) {
     let el = node.parentElement;
@@ -153,6 +158,7 @@ export function findConsentBanners(doc: Document = document): Banner[] {
   // Only visible overlays count – an invisible wrapper must not hide the dialog inside it.
   const set = new Set([...all].filter((el) => !el.matches(NAVIGATION) && isOnScreen(el) && areaOf(el) >= 0.01));
   const banners: Banner[] = [];
+  const rejected: Element[] = [];
   for (const el of set) {
     // outermost overlay only
     let parent: Element | null = el.parentElement;
@@ -177,8 +183,24 @@ export function findConsentBanners(doc: Document = document): Banner[] {
     if (score < 2 || text.length < (ageGate ? 15 : 40)) continue;
     const root = shadowRootOf(el) ?? el;
     if (!root.querySelector(CLICKABLE) && !el.querySelector(CLICKABLE)) continue;
-    if (hasHardNegative(el, text, score)) continue;
+    if (hasHardNegative(el, text, score)) {
+      rejected.push(el);
+      continue;
+    }
     banners.push({ element: el, text: text.slice(0, 2000), score, area });
+  }
+  // A cookie notice built into a fixed page header (next to search and login): the notice itself is the banner.
+  if (!banners.length) {
+    const hosts = [...rejected, ...[...all].filter((el) => el.matches(NAVIGATION) && isOnScreen(el))];
+    for (const host of hosts) {
+      for (const el of Array.from(host.querySelectorAll(CONSENT_NAMED))) {
+        if (el.parentElement?.closest(CONSENT_NAMED) || !isOnScreen(el)) continue;
+        const text = deepText(el);
+        const score = consentScore(text);
+        if (score < 2 || text.length < 40 || !el.querySelector(CLICKABLE) || hasHardNegative(el, text, score)) continue;
+        banners.push({ element: el, text: text.slice(0, 2000), score, area: areaOf(el) });
+      }
+    }
   }
   // A consent page loaded into an iframe is the whole document, not an overlay inside it. (Acting on it still
   // requires the <iframe> to be a visible overlay in the page.)

@@ -1,6 +1,6 @@
 import { isOnScreen, realisticClick, shadowRootOf } from '../dom';
 import { findConsentBanners } from './banner';
-import { extractButtons, type ButtonCandidate } from './candidates';
+import { ACCEPT_ALL_NAME, extractButtons, nameOf, type ButtonCandidate } from './candidates';
 import { heuristicOptions } from './options';
 import { decide, isVetoed } from './policy';
 import { ACCEPTING, agreesTo, classifyLabel } from './text';
@@ -57,7 +57,7 @@ export function lockedAccept(container: Element): boolean {
   if (own) roots.push(own);
   return roots
     .flatMap((r) => Array.from(r.querySelectorAll<HTMLElement>('button[disabled],button[aria-disabled=true],[role=button][aria-disabled=true]')))
-    .some((b) => ACCEPTING.has(classifyLabel(b.innerText ?? '')));
+    .some((b) => ACCEPTING.has(classifyLabel(b.innerText ?? '')) || ACCEPT_ALL_NAME.test(nameOf(b)));
 }
 
 /** The container has category switches the user could turn on. */

@@ -16,7 +16,7 @@ export interface HeuristicScan {
 }
 
 /** Scan schedule after load; banners usually appear within a few seconds, lazy ones on first interaction. */
-const SCAN_DELAYS_MS = [2500, 5000, 9000, 15000, 25000];
+const SCAN_DELAYS_MS = [2500, 5000, 9000, 15000, 25000, 40000, 60000];
 /** Scans after the first scroll and after in-page (SPA) navigation. */
 const RESCAN_DELAYS_MS = [1000, 3000, 8000];
 const MIN_FRAME = { width: 300, height: 150 };

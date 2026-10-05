@@ -164,7 +164,8 @@ export const NEGATION = [
 ];
 
 /** "Continue without (accepting)". */
-export const WITHOUT = ['without', 'zonder', 'ohne', 'sans', 'sin', 'senza', 'sem', 'bez', 'без', 'χωρίς', 'utan', 'uden', 'uten', 'ilman', 'ilma', 'olmadan'];
+// Portuguese "sem" only in phrases: in Slovenian it means "am" ("Pozabil sem").
+export const WITHOUT = ['without', 'zonder', 'ohne', 'sans', 'sin', 'senza', 'continuar sem', 'sem (aceitar|consentir|concordar|cookies)', 'bez', 'без', 'χωρίς', 'utan', 'uden', 'uten', 'ilman', 'ilma', 'olmadan'];
 
 /** Necessary / essential cookies only. */
 export const NECESSARY = [

@@ -264,6 +264,8 @@ describe('classifyLabel examples', () => {
     ['Confermo', 'SAVE'],
     ['FORTSETZEN', 'ACKNOWLEDGE'],
     ['V poriadku', 'ACKNOWLEDGE'],
+    ['Pozabil sem', 'OTHER'],
+    ['Continuar sem aceitar', 'REJECT'],
     ["Det er super!", 'ACKNOWLEDGE'],
     ["Ich habs!", 'ACKNOWLEDGE'],
     ["ESTOU DE ACORDO", 'ACCEPT'],

@@ -78,6 +78,30 @@ describe('banner detection', () => {
     expect(extractButtons(document.getElementById('cmp')!).map((b) => [b.label, b.cls])).toEqual([['Cookies Akzeptieren', 'ACCEPT']]);
   });
 
+  it('keeps answer buttons inside a tab list and reads ids that say accept all', () => {
+    document.body.innerHTML = `<div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT}
+      <div role="tablist"><button role="tab">Detalii</button><button>Accept toate</button><button>Resping toate</button></div></div>`;
+    expect(extractButtons(document.getElementById('cmp')!).map((b) => [b.label, b.cls])).toEqual([
+      ['Accept toate', 'ACCEPT_ALL'],
+      ['Resping toate', 'REJECT'],
+    ]);
+    document.body.innerHTML = `<div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT}
+      <button id="btn-accept-all">Bestätigen</button><button id="btn-reject-all">Ablehnen</button></div>`;
+    expect(extractButtons(document.getElementById('cmp')!)[0]).toMatchObject({ label: 'Bestätigen', cls: 'ACCEPT_ALL' });
+  });
+
+  it('labels a link by the input button inside it', () => {
+    document.body.innerHTML = `<div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT}
+      <a href="/asp/souhlas.asp"><input type="button" value="Povolit"></a></div>`;
+    expect(extractButtons(document.getElementById('cmp')!)).toMatchObject([{ label: 'Povolit', cls: 'ACCEPT', navigates: false }]);
+  });
+
+  it('finds a cookie notice built into a fixed header with a search field', () => {
+    document.body.innerHTML = `<div id="head" style="position:fixed" data-rect="0,0,1024,200"><div id="CookielawBanner">${BANNER_TEXT}
+      <a href="javascript:void(0)">I agree</a></div><input type="search" data-rect="0,150,300,30"></div>`;
+    expect(findConsentBanners().map((b) => b.element.id)).toEqual(['CookielawBanner']);
+  });
+
   it('leaves icon ligature words out of button labels', () => {
     document.body.innerHTML = `<div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT}
       <button>Sunt de acord<i class="material-icons">arrow_forward</i></button></div>`;

@@ -20,8 +20,12 @@ const CLOSE_ICON = '[class*="close" i],[id*="close" i],[aria-label*="close" i],[
 const CLOSE_NAME = /(^|[-_\s])(close|closer|close-?btn|close-?button|close-?icon)([-_\s]|$)|(icon|eico|ico|fa)-(close|times|x)\b/i;
 /** Ids and classes of accept-all buttons whose label is only a noun ("Consent"). */
 const ACCEPT_NAME = /(^|[-_\s])(accept|allow|agree|all|cta-consent)([-_\s]|$)/i;
+/** Ids and classes of accept-all buttons labelled only "Confirm" / "Save". */
+export const ACCEPT_ALL_NAME = /(accept|allow|agree)[-_]?all/i;
+/** Labels that answer a banner. */
+const ANSWERS: ReadonlySet<ButtonClass> = new Set(['ACCEPT_ALL', 'ACCEPT', 'ACKNOWLEDGE', 'REJECT', 'SAVE']);
 
-const nameOf = (el: Element) => `${el.id} ${el.getAttribute('class') ?? ''}`;
+export const nameOf = (el: Element) => `${el.id} ${el.getAttribute('class') ?? ''}`;
 
 /** Icon fonts whose glyph is written as a word ("arrow_forward"). */
 const ICON_LIGATURE = '[class*="material-icons"],[class*="material-symbols"]';
@@ -42,6 +46,8 @@ function labelOf(el: HTMLElement): string {
     textOf(el) ||
     // Only form controls have a text value (<li value> is a number).
     (el instanceof HTMLInputElement || el instanceof HTMLButtonElement ? el.value.trim() : '') ||
+    // <a href="…"><input type="button" value="Allow"></a>
+    (el.querySelector<HTMLInputElement>('input[type=button],input[type=submit]')?.value.trim() ?? '') ||
     el.getAttribute('aria-label')?.trim() ||
     el.getAttribute('title')?.trim() ||
     '';
@@ -61,7 +67,7 @@ function labelOf(el: HTMLElement): string {
 }
 
 /** Addresses of consent endpoints ("/cookies/accept", "?cookie_all=1", "/dismiss-notice"). */
-const CONSENT_ENDPOINT = /cookie|consent|accept|agree|allow|dismiss|gdpr|dsgvo|opt-?in/i;
+const CONSENT_ENDPOINT = /cookie|consent|accept|agree|allow|dismiss|gdpr|dsgvo|opt-?in|souhlas|suhlas|zgod|samtykk|piskot/i;
 
 /** Information pages a consent banner links to – never a consent endpoint. */
 const INFO_PAGE = /polic|privacy|datenschutz|richtlinie|impressum|imprint|legal|terms|agb|conditions|cookie-?(info|notice|statement|erklaerung)/i;
@@ -149,7 +155,11 @@ export function extractButtons(banner: Element): ButtonCandidate[] {
   for (const el of roots.flatMap((r) => pointerControls(r, elements))) elements.add(el);
   // Keep the outermost clickable of nested ones (<button><span role=button>…</span></button>).
   // Tabs of a dialog ("Consent | Details | About") are navigation, category switches are settings – no answers.
-  for (const el of elements) if (el.closest('[role=tab],[role=tablist],[role=switch],[role=checkbox]') || el.matches('[aria-checked],input[type=checkbox]')) elements.delete(el);
+  // A tab list around the answer buttons themselves ("Accept all | Reject all | Customise") still holds answers.
+  for (const el of elements) {
+    const tab = el.closest('[role=tab],[role=switch],[role=checkbox]') || el.matches('[aria-checked],input[type=checkbox]');
+    if (tab || (el.closest('[role=tablist]') && !ANSWERS.has(classifyLabel(labelOf(el))))) elements.delete(el);
+  }
   // A "clickable" around several controls or a lot of text is a container (e.g. a dialog with onclick), not a button.
   for (const el of [...elements]) {
     const inner = [...elements].filter((other) => other !== el && el.contains(other));
@@ -172,6 +182,8 @@ export function extractButtons(banner: Element): ButtonCandidate[] {
       let cls = classifyLabel(label.length > 48 && firstLine ? firstLine : label);
       // "Consent" next to "Consent to selected": the bare noun is the accept-all button when its name says so.
       if (cls === 'OTHER' && isConsentNoun(label) && ACCEPT_NAME.test(nameOf(el))) cls = 'ACCEPT_ALL';
+      // "Confirm" whose id says accept all (id="btn-accept-all").
+      if (cls === 'SAVE' && ACCEPT_ALL_NAME.test(nameOf(el))) cls = 'ACCEPT_ALL';
       return label ? [{ element: box, label, cls, navigates: navigatesAway(el, ACCEPTING.has(cls)), prominence: Math.round(Math.min(rect.height, 64) * 1000 + Math.min(rect.width, 400)) }] : [];
     });
 }
