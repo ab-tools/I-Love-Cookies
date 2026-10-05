@@ -19,7 +19,7 @@ export interface HeuristicScan {
 const SCAN_DELAYS_MS = [2500, 5000, 9000, 15000, 25000, 40000, 60000];
 /** Scans after the first scroll and after in-page (SPA) navigation. */
 const RESCAN_DELAYS_MS = [1000, 3000, 8000];
-const MIN_FRAME = { width: 300, height: 150 };
+const MIN_FRAME = { width: 300, height: 80 };
 
 /** Buttons that answer the banner (a remaining settings icon does not). */
 const CHOICES: ReadonlySet<ButtonClass> = new Set(['ACCEPT_ALL', 'ACCEPT', 'ACKNOWLEDGE', 'REJECT']);
