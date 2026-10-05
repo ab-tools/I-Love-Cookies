@@ -1,0 +1,17 @@
+[
+  {
+    "name": "cookie-law-info",
+    "comment": "CookieLawInfo (WebToffee GDPR Cookie Consent). Replaces autoconsent's rule: newer versions have a separate \"accept all\" button (data-cli_action=accept_all) and no plain accept button.",
+    "detectCmp": [{ "exists": "#cookie-law-info-bar" }, { "eval": "EVAL_COOKIE_LAW_INFO_DETECT" }],
+    "detectPopup": [{ "visible": "#cookie-law-info-bar" }],
+    "optIn": [
+      {
+        "if": { "visible": "#cookie-law-info-bar [data-cli_action=accept_all]", "check": "any" },
+        "then": [{ "click": "#cookie-law-info-bar [data-cli_action=accept_all]" }],
+        "else": [{ "click": "[data-cli_action=\"accept\"]" }]
+      }
+    ],
+    "optOut": [],
+    "test": [{ "cookieContains": "cookielawinfo-checkbox-non-necessary=yes", "negated": true }]
+  }
+]
