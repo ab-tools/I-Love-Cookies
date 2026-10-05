@@ -775,6 +775,9 @@ export function onTopLevelCommitted(tabId: number, url: string) {
       log(next, 0, 'page reloaded after consent');
       next.counted = true;
       if (!previous.counted) void countHandled();
+      // The banner came back after the last reload: the site does not keep the consent – stop after a few rounds.
+      next.reloadsAfterConsent = (previous.reloadsAfterConsent ?? 0) + 1;
+      if (next.reloadsAfterConsent > 1) await bumpDaily(next.site, 'failures');
     }
     await saveState(next);
   });

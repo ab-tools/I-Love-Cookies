@@ -42,6 +42,8 @@ export interface TabState {
   trustedTried?: boolean;
   /** This document's answered banner was added to the user's counter. */
   counted?: boolean;
+  /** Reloads after consent in a row in this tab (a site that never keeps the consent reloads forever). */
+  reloadsAfterConsent?: number;
   /** API fallback already tried for the current popup. */
   apiTried?: boolean;
   outcome?: Outcome;
