@@ -201,6 +201,16 @@ async function confirmFollowUp(
   textBefore = (banner as HTMLElement).innerText ?? '',
 ): Promise<void> {
   await sleep(800);
+  // "Accept" that opens a second dialog with "accept all" (the categories to confirm).
+  if (clicked.cls !== 'ACCEPT_ALL') {
+    const second = findConsentBanners()
+      .map((b) => extractButtons(b.element).find((c) => c.cls === 'ACCEPT_ALL' && !isVetoed(c) && !banner.contains(c.element)))
+      .find(Boolean);
+    if (second) {
+      void realisticClick(second.element);
+      return;
+    }
+  }
   if (!banner.isConnected || !isOnScreen(banner)) return;
   const all = extractButtons(banner);
   const buttons = all.filter((b) => !isVetoed(b));

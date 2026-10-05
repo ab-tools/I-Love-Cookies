@@ -651,6 +651,7 @@ export const ALL = [
   'сите',
   'сви',
   `minden${W}`,
+  'mindet',
   'tot',
   'toate',
   'всички',
