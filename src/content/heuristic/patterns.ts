@@ -124,6 +124,7 @@ export const REJECT = [
   'hylkää',
   `keeldu${W}`,
   `noraid${W}`,
+  'refuzo',
   'atmesti',
   'reddet',
   'отклонить',
@@ -252,6 +253,7 @@ export const AGE = [
   'wejdź',
   'wchodzę',
   'vstoupit',
+  'мне (есть|уже) \\d+',
 ];
 
 /** Declining an age check: under age, leave the site. */
@@ -475,6 +477,7 @@ export const ACCEPT = [
   `позвол${W}`,
   'αποδοχή',
   'αποδέχομαι',
+  'δέχομαι',
   'συμφωνώ',
   'επιτρέπω',
   'αποδεχτείτε',
@@ -515,6 +518,10 @@ export const ACCEPT = [
   'patvirtinti visus',
   `прифат${W}`,
   'potrdi vse',
+  'potvrdit (vše|všechny)',
+  'deacord',
+  `pajtoh${W}`,
+  'jasně tady máte',
   'use all cookies',
   'ich bestätige alle',
   `schvál${W}`,
@@ -724,6 +731,8 @@ export const ACKNOWLEDGE = [
   'det er greit',
   'jeg forstår',
   'v poriadku',
+  'skrij obvestilo',
+  'οκ',
   'окей',
   '^nastavi$',
   'bericht verbergen',
