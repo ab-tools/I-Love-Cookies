@@ -1,0 +1,10 @@
+[
+  {
+    "name": "ilc-cookie-accept-span",
+    "comment": "Banner (#cookie with .cookie-header) whose \"accept all\" is a span with data-acceptall inside a script link.",
+    "detectCmp": [{ "exists": "#cookie .cookie-accept[data-acceptall]" }],
+    "detectPopup": [{ "visible": "#cookie .cookie-header .cookie-accept[data-acceptall]" }],
+    "optIn": [{ "waitForThenClick": "#cookie .cookie-header .cookie-accept[data-acceptall]" }],
+    "optOut": []
+  }
+]
