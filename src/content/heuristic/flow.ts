@@ -72,12 +72,12 @@ export function hasToggles(container: Element): boolean {
  * Ticks required "I accept the cookie settings" checkboxes (accepting label of their own), without which the
  * accept button does nothing. Category and other checkboxes are left alone.
  */
-async function tickConsentCheckboxes(container: Element): Promise<void> {
+function consentCheckboxes(container: Element): HTMLElement[] {
   const roots: (Element | ShadowRoot)[] = [container];
   const own = shadowRootOf(container);
   if (own) roots.push(own);
-  for (const box of roots.flatMap((r) => toggleElements(r))) {
-    if (isOn(box) || isDisabled(box)) continue;
+  return roots.flatMap((r) => toggleElements(r)).filter((box) => {
+    if (isOn(box) || isDisabled(box)) return false;
     const root = box.getRootNode() as Document | ShadowRoot;
     const label =
       (box instanceof HTMLInputElement ? box.labels?.[0] : null) ??
@@ -85,8 +85,17 @@ async function tickConsentCheckboxes(container: Element): Promise<void> {
       box.closest('label');
     // Without a <label>: the short text next to the box.
     const nearby = box.parentElement?.innerText ?? '';
-    const text = label?.innerText ?? box.getAttribute('aria-label') ?? (nearby.length <= 120 ? nearby : '');
-    if (!agreesTo(text)) continue;
+    return agreesTo(label?.innerText ?? box.getAttribute('aria-label') ?? (nearby.length <= 120 ? nearby : ''));
+  });
+}
+
+/** An unticked "I accept" checkbox – the answer of banners whose button appears only once it is ticked. */
+export function hasConsentCheckbox(container: Element): boolean {
+  return consentCheckboxes(container).length > 0;
+}
+
+async function tickConsentCheckboxes(container: Element): Promise<void> {
+  for (const box of consentCheckboxes(container)) {
     // The box itself: its label often holds links to the policies.
     if (box.getBoundingClientRect().width > 0) await realisticClick(box);
     if (!isOn(box)) box.click();
@@ -117,6 +126,12 @@ export async function acceptBanner(banner: Element): Promise<HeuristicResult> {
   const result: HeuristicResult = { done: false, clicked: [], toggled: 0, partial: false };
   const initial = extractButtons(banner);
   let decision = decide(initial, hasToggles(banner), lockedAccept(banner));
+  // "☐ Accept all" without a visible button: the button appears once the box is ticked.
+  if (decision.action === 'none' && hasConsentCheckbox(banner)) {
+    await tickConsentCheckboxes(banner);
+    await sleep(400);
+    decision = decide(extractButtons(banner), false);
+  }
   if (decision.action === 'toggles') {
     const { toggled } = await enableAllToggles(banner);
     result.toggled = toggled;
@@ -171,15 +186,19 @@ export async function acceptBanner(banner: Element): Promise<HeuristicResult> {
  * preferences. OK"), an "accept all" the first click unlocked, or – where "accept all" only switched every
  * purpose on in a preferences dialog – saving.
  */
-async function confirmFollowUp(banner: Element, clicked: ButtonCandidate, before: ReadonlySet<string>): Promise<void> {
+async function confirmFollowUp(banner: Element, clicked: ButtonCandidate, before: ReadonlySet<string>, step = 1): Promise<void> {
   await sleep(800);
   if (!banner.isConnected || !isOnScreen(banner)) return;
   const all = extractButtons(banner);
   const buttons = all.filter((b) => !isVetoed(b));
-  // "Accept all" that only became available through the first click (e.g. enabled after "read more").
-  const unlocked = buttons.find((b) => b.cls === 'ACCEPT_ALL' && !before.has(b.label));
+  // An answer that only appeared through the click: "accept all" enabled after "read more", or the next step
+  // of a banner that asks one category at a time ("Performance cookies? Disable | Sounds good").
+  const unlocked =
+    buttons.find((b) => b.cls === 'ACCEPT_ALL' && !before.has(b.label)) ??
+    (step < 5 ? buttons.find((b) => (b.cls === 'ACCEPT' || b.cls === 'ACKNOWLEDGE') && !before.has(b.label)) : undefined);
   if (unlocked) {
-    void realisticClick(unlocked.element);
+    await realisticClick(unlocked.element);
+    if (unlocked.cls !== 'ACCEPT_ALL') await confirmFollowUp(banner, unlocked, new Set([...before, ...all.map((b) => b.label)]), step + 1);
     return;
   }
   const save = clicked.cls === 'ACCEPT_ALL' || clicked.cls === 'SELECT_ALL' ? buttons.find((b) => b.cls === 'SAVE') : undefined;

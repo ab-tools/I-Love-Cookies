@@ -1,7 +1,7 @@
 import { isMostlyOnScreen, trustedClicksOn } from '../dom';
 import { findConsentBanners } from './banner';
 import { extractButtons } from './candidates';
-import { acceptBanner, hasToggles, lockedAccept, type HeuristicResult } from './flow';
+import { acceptBanner, hasConsentCheckbox, hasToggles, lockedAccept, type HeuristicResult } from './flow';
 import { decide } from './policy';
 import type { ButtonClass } from './text';
 
@@ -72,7 +72,8 @@ export class HeuristicController {
     // The best banner that can be answered; otherwise the best one (for logs and reports).
     const evaluated = findConsentBanners().map((banner) => {
       const buttons = extractButtons(banner.element);
-      return { banner, buttons, decision: decide(buttons, hasToggles(banner.element), lockedAccept(banner.element)).action };
+      const action = decide(buttons, hasToggles(banner.element), lockedAccept(banner.element)).action;
+      return { banner, buttons, decision: action === 'none' && hasConsentCheckbox(banner.element) ? ('toggles' as const) : action };
     });
     const chosen = evaluated.find((e) => e.decision !== 'none') ?? evaluated[0];
     if (!chosen) return null;

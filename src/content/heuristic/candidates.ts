@@ -1,4 +1,4 @@
-import { isOnScreen, shadowRootOf } from '../dom';
+import { isOnScreen, isVisible, shadowRootOf } from '../dom';
 import { ACCEPTING, classifyLabel, isConsentNoun, type ButtonClass } from './text';
 
 export interface ButtonCandidate {
@@ -12,7 +12,7 @@ export interface ButtonCandidate {
 }
 
 /** Real controls. */
-const CLICKABLE = 'button,[role=button],a,input[type=button],input[type=submit],[onclick]';
+const CLICKABLE = 'button,[role=button],a,input[type=button],input[type=submit],[onclick],summary';
 /** Elements styled as buttons – only used when they contain no other control (not whole button groups). */
 const BUTTON_LIKE = '[class*="btn"],[class*="button"],[tabindex="0"]';
 /** Close icons without text ("<div class=close><i class=icon-close></i></div>"). */
@@ -76,7 +76,8 @@ const INFO_PAGE = /polic|privacy|datenschutz|richtlinie|impressum|imprint|legal|
  * Following the element would leave the page. Accepting links to the same site (consent endpoints like
  * "/cookies/accept" or "?cookie_all=1" that return to the page) do not count; other links, other sites and new tabs do.
  */
-function navigatesAway(el: HTMLElement, accepting: boolean): boolean {
+function navigatesAway(el: HTMLElement, cls: ButtonClass): boolean {
+  const accepting = ACCEPTING.has(cls);
   const anchor = el.closest('a[href]') as HTMLAnchorElement | null;
   if (!anchor) return false;
   const href = (anchor.getAttribute('href') ?? '').trim();
@@ -88,6 +89,8 @@ function navigatesAway(el: HTMLElement, accepting: boolean): boolean {
     const url = new URL(anchor.href, location.href);
     if (url.origin !== location.origin) return true;
     if (url.pathname === location.pathname) return false;
+    // "I am 18 or older – enter" leads into the site itself.
+    if (cls === 'AGE_CONFIRM') return INFO_PAGE.test(url.pathname);
     return !accepting || INFO_PAGE.test(url.pathname) || !CONSENT_ENDPOINT.test(url.pathname + url.search);
   } catch {
     return true;
@@ -108,6 +111,17 @@ function isHitTestable(el: HTMLElement, banner: Element, box: Element = el): boo
   // Hit-testing inside a custom element (<music-button>) can report its host.
   for (let r = el.getRootNode(); r instanceof ShadowRoot; r = r.host.getRootNode()) if (hit === r.host || hit.contains(r.host)) return true;
   return !banner.contains(hit) && !(shadowRootOf(banner)?.contains(hit) ?? false) && !hit.contains(banner);
+}
+
+/** Below the viewport in a part of the banner that scrolls (the footer of a tall modal) – clicking scrolls to it. */
+function belowTheFold(el: HTMLElement, banner: Element): boolean {
+  if (!isVisible(el) || el.getBoundingClientRect().top < window.innerHeight) return false;
+  for (let p = el.parentElement; p; p = p.parentElement) {
+    const overflow = getComputedStyle(p).overflowY;
+    if ((overflow === 'auto' || overflow === 'scroll') && p.scrollHeight > p.clientHeight) return banner.contains(p) || p.contains(banner);
+    if (p === banner) break;
+  }
+  return false;
 }
 
 /**
@@ -173,8 +187,8 @@ export function extractButtons(banner: Element): ButtonCandidate[] {
     .flatMap((el) => {
       // Links sized only by their content (0 px high) are seen – and clicked – through their first visible
       // child; the click bubbles up to the link, while a handler on the child would not see a click on the link.
-      const box = isOnScreen(el) ? el : (Array.from(el.querySelectorAll<HTMLElement>('*')).find(isOnScreen) ?? null);
-      if (!box || !isHitTestable(el, banner, box) || (el as HTMLButtonElement).disabled) return [];
+      const box = isOnScreen(el) ? el : (Array.from(el.querySelectorAll<HTMLElement>('*')).find(isOnScreen) ?? (belowTheFold(el, banner) ? el : null));
+      if (!box || (box !== el || isOnScreen(el) ? !isHitTestable(el, banner, box) : false) || (el as HTMLButtonElement).disabled) return [];
       const label = labelOf(el);
       const rect = box.getBoundingClientRect();
       // Buttons with a description under the label ("Accept all", then ": consent to all cookies …"): the first line decides.
@@ -184,6 +198,6 @@ export function extractButtons(banner: Element): ButtonCandidate[] {
       if (cls === 'OTHER' && isConsentNoun(label) && ACCEPT_NAME.test(nameOf(el))) cls = 'ACCEPT_ALL';
       // "Confirm" whose id says accept all (id="btn-accept-all").
       if (cls === 'SAVE' && ACCEPT_ALL_NAME.test(nameOf(el))) cls = 'ACCEPT_ALL';
-      return label ? [{ element: box, label, cls, navigates: navigatesAway(el, ACCEPTING.has(cls)), prominence: Math.round(Math.min(rect.height, 64) * 1000 + Math.min(rect.width, 400)) }] : [];
+      return label ? [{ element: box, label, cls, navigates: navigatesAway(el, cls), prominence: Math.round(Math.min(rect.height, 64) * 1000 + Math.min(rect.width, 400)) }] : [];
     });
 }
