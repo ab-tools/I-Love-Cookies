@@ -1,5 +1,10 @@
 import type { ButtonCandidate } from './candidates';
 import { heuristicOptions } from './options';
+import { normalizeLabel } from './text';
+
+/** "Settings" labels that only promise more information. */
+const INFO_LABEL =
+  /^(more info\p{L}*|more information|learn more|read more|mehr (erfahren|infos?|informationen)|en savoir plus|plus d informations|mas informacion|maggiori informazioni|meer (info|informatie)|wiecej informacji|saiba mais|mais informacoes)$/u;
 
 export type Decision =
   | { action: 'click'; button: ButtonCandidate; kind: 'accept_all' | 'accept' | 'acknowledge' | 'age' | 'close' }
@@ -47,11 +52,13 @@ export function decide(buttons: readonly ButtonCandidate[], hasToggles = false, 
   // "Select all" without a save button is the banner's accept-all button.
   if (selectAll) return { action: 'click', button: selectAll, kind: 'accept_all' };
   const settings = first('SETTINGS');
+  // A notice with "Close" next to "More information": the information link often leads to the policy page.
+  const close = first('CLOSE');
+  if (settings && close && INFO_LABEL.test(normalizeLabel(settings.label))) return { action: 'click', button: close, kind: 'close' };
   if (settings) return { action: 'settings', button: settings };
   // Locked accept button, or a settings screen offering only "necessary only": switch everything on, then decide again.
   if (hasToggles && (lockedAccept || buttons.some((b) => b.cls === 'REJECT'))) return { action: 'toggles' };
   // Nothing to consent to: closed so the page is usable as if there never was a banner.
-  const close = first('CLOSE');
   if (close) return { action: 'click', button: close, kind: 'close' };
   return { action: 'none', reason: buttons.length ? 'no accepting button' : 'no buttons' };
 }
