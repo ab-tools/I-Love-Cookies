@@ -224,6 +224,15 @@ async function confirmFollowUp(
     if (done) await realisticClick(done.element);
     return;
   }
+  // A category's "Allow" did not close the notice: finish with its save / close button ("Close this notice –
+  // I hereby allow the use of data for all purposes").
+  if (clicked.cls === 'ACCEPT') {
+    const finish = buttons.find((b) => b.cls === 'SAVE') ?? buttons.find((b) => b.cls === 'CLOSE');
+    if (finish) {
+      void realisticClick(finish.element);
+      return;
+    }
+  }
   if (all.some((b) => b.cls === 'REJECT')) return;
   const confirming = heuristicOptions.ageGates ? ['ACKNOWLEDGE', 'ACCEPT', 'ACCEPT_ALL', 'AGE_CONFIRM'] : ['ACKNOWLEDGE', 'ACCEPT', 'ACCEPT_ALL'];
   const confirm = buttons.find((b) => confirming.includes(b.cls) && b.label !== clicked.label);
