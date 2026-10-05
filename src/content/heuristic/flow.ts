@@ -186,19 +186,26 @@ export async function acceptBanner(banner: Element): Promise<HeuristicResult> {
  * preferences. OK"), an "accept all" the first click unlocked, or – where "accept all" only switched every
  * purpose on in a preferences dialog – saving.
  */
-async function confirmFollowUp(banner: Element, clicked: ButtonCandidate, before: ReadonlySet<string>, step = 1): Promise<void> {
+async function confirmFollowUp(
+  banner: Element,
+  clicked: ButtonCandidate,
+  before: ReadonlySet<string>,
+  step = 1,
+  textBefore = (banner as HTMLElement).innerText ?? '',
+): Promise<void> {
   await sleep(800);
   if (!banner.isConnected || !isOnScreen(banner)) return;
   const all = extractButtons(banner);
   const buttons = all.filter((b) => !isVetoed(b));
   // An answer that only appeared through the click: "accept all" enabled after "read more", or the next step
-  // of a banner that asks one category at a time ("Performance cookies? Disable | Sounds good").
-  const unlocked =
-    buttons.find((b) => b.cls === 'ACCEPT_ALL' && !before.has(b.label)) ??
-    (step < 5 ? buttons.find((b) => (b.cls === 'ACCEPT' || b.cls === 'ACKNOWLEDGE') && !before.has(b.label)) : undefined);
+  // of a banner that asks one category at a time ("Performance cookies? Disable | Sounds good" – the same
+  // buttons with a new text).
+  const text = (banner as HTMLElement).innerText ?? '';
+  const nextStep = (b: ButtonCandidate) => (b.cls === 'ACCEPT' || b.cls === 'ACKNOWLEDGE') && (!before.has(b.label) || text !== textBefore);
+  const unlocked = buttons.find((b) => b.cls === 'ACCEPT_ALL' && !before.has(b.label)) ?? (step < 6 ? buttons.find(nextStep) : undefined);
   if (unlocked) {
     await realisticClick(unlocked.element);
-    if (unlocked.cls !== 'ACCEPT_ALL') await confirmFollowUp(banner, unlocked, new Set([...before, ...all.map((b) => b.label)]), step + 1);
+    if (unlocked.cls !== 'ACCEPT_ALL') await confirmFollowUp(banner, unlocked, new Set([...before, ...all.map((b) => b.label)]), step + 1, text);
     return;
   }
   const save = clicked.cls === 'ACCEPT_ALL' || clicked.cls === 'SELECT_ALL' ? buttons.find((b) => b.cls === 'SAVE') : undefined;
