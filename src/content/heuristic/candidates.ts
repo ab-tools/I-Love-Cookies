@@ -22,6 +22,8 @@ const CLOSE_NAME = /(^|[-_\s])(close|closer|close-?btn|close-?button|close-?icon
 const ACCEPT_NAME = /(^|[-_\s])(accept|allow|agree|all|cta-consent)([-_\s]|$)/i;
 /** Ids and classes of accept-all buttons labelled only "Confirm" / "Save". */
 export const ACCEPT_ALL_NAME = /(accept|allow|agree)[-_]?all/i;
+/** Ids and classes of accept buttons. */
+const ACCEPT_ID = /(^|[-_\s])(accept|allow|agree)([-_\s]|$)/i;
 /** Labels that answer a banner. */
 const ANSWERS: ReadonlySet<ButtonClass> = new Set(['ACCEPT_ALL', 'ACCEPT', 'ACKNOWLEDGE', 'REJECT', 'SAVE']);
 
@@ -198,6 +200,8 @@ export function extractButtons(banner: Element): ButtonCandidate[] {
       if (cls === 'OTHER' && isConsentNoun(label) && ACCEPT_NAME.test(nameOf(el))) cls = 'ACCEPT_ALL';
       // "Confirm" whose id says accept all (id="btn-accept-all").
       if (cls === 'SAVE' && ACCEPT_ALL_NAME.test(nameOf(el))) cls = 'ACCEPT_ALL';
+      // A button whose id says accept but whose label means nothing (a wrong translation like "Always active").
+      if (cls === 'OTHER' && el.matches('button,[role=button]') && ACCEPT_ID.test(nameOf(el))) cls = 'ACCEPT';
       return label ? [{ element: box, label, cls, navigates: navigatesAway(el, cls), prominence: Math.round(Math.min(rect.height, 64) * 1000 + Math.min(rect.width, 400)) }] : [];
     });
 }
