@@ -86,7 +86,11 @@ function compactSnapshot(snapshot: ReportSnapshot, level: number): ReportSnapsho
 
 export function buildReport(state: TabState, ctx: ReportContext, snapshot?: ReportSnapshot, problem?: ReportProblem, note?: string): Report {
   const site = state.site || 'unknown site';
-  const title = `[Site] ${site}: ${state.outcome ?? state.phase}${state.cmp ? ` (${state.cmp})` : ''}`;
+  const status =
+    state.outcome ??
+    ({ idle: 'no banner detected', paused: `paused${state.pausedReason ? ` (${state.pausedReason})` : ''}`, stuck: 'stopped after failures' } as Record<string, string>)[state.phase] ??
+    'still working';
+  const title = `[Site] ${site}: ${status}${state.cmp ? ` (${state.cmp})` : ''}`;
   const params = new URLSearchParams({
     template: ISSUE_TEMPLATE,
     title,
