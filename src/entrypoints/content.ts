@@ -195,12 +195,17 @@ async function verifyFrame(
     const timeout = new Promise<boolean>((resolve) => setTimeout(() => resolve(false), 4000));
     popupVisible = await Promise.race([cmp.detectPopup().catch(() => false), timeout]);
   }
-  // The CMP's own dialog container (its prehide selectors) or known accept button still on screen.
+  // The CMP's own dialog container (its prehide selectors) or known accept button still on screen. A container
+  // reduced to the small "cookie settings" button left after consent is no dialog.
+  const dialogSized = (el: Element) => {
+    const r = el.getBoundingClientRect();
+    return isOnScreen(el) && r.width * r.height >= 0.01 * window.innerWidth * window.innerHeight;
+  };
   const popupOnScreen =
     (acceptButton !== undefined && isDeepVisible(acceptButton)) ||
     (cmp?.prehideSelectors ?? []).some((selector) => {
       try {
-        return Array.from(document.querySelectorAll(selector)).some(isOnScreen);
+        return Array.from(document.querySelectorAll(selector)).some(dialogSized);
       } catch {
         return false;
       }
