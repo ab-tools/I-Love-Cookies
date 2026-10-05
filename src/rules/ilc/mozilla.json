@@ -15,6 +15,10 @@
    {
     "visible": ".a8c-cookie-banner",
     "check": "any"
+   },
+   {
+    "visible": ".a8c-cookie-banner-accept-all-button",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -39,6 +43,10 @@
   "detectPopup": [
    {
     "visible": "div#cookie-banner, #wcpConsentBannerCtrl",
+    "check": "any"
+   },
+   {
+    "visible": "div._2j0fmugLb1FgYz6KPuB91w  > button",
     "check": "any"
    }
   ],
@@ -65,6 +73,10 @@
    {
     "visible": ".js-consent-banner",
     "check": "any"
+   },
+   {
+    "visible": ".js-accept-cookies",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -89,6 +101,10 @@
   "detectPopup": [
    {
     "visible": "div.global-alert-banner",
+    "check": "any"
+   },
+   {
+    "visible": "div.global-alert-banner button[action-type=ACCEPT]",
     "check": "any"
    }
   ],
@@ -115,6 +131,10 @@
    {
     "visible": "div#fides-banner",
     "check": "any"
+   },
+   {
+    "visible": "button.fides-accept-all-button",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -139,6 +159,10 @@
   "detectPopup": [
    {
     "visible": ".root__XMKIj",
+    "check": "any"
+   },
+   {
+    "visible": ".root__OblK1:not(.secondaryButton__N1rJw)",
     "check": "any"
    }
   ],
@@ -165,6 +189,10 @@
    {
     "visible": "#cookie-disclosure",
     "check": "any"
+   },
+   {
+    "visible": "#cookie-disclosure-accept",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -189,6 +217,10 @@
   "detectPopup": [
    {
     "visible": "div#bnp_cookie_banner",
+    "check": "any"
+   },
+   {
+    "visible": "button#bnp_btn_accept",
     "check": "any"
    }
   ],
@@ -215,6 +247,10 @@
    {
     "visible": "[data-t=\"cookiesMessage\"]",
     "check": "any"
+   },
+   {
+    "visible": "[data-t=\"acceptAllBtn\"]",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -239,6 +275,10 @@
   "detectPopup": [
    {
     "visible": "div#banner-cookie",
+    "check": "any"
+   },
+   {
+    "visible": "span#banner-cookie--button",
     "check": "any"
    }
   ],
@@ -265,6 +305,10 @@
    {
     "visible": "div#consent-page",
     "check": "any"
+   },
+   {
+    "visible": "button.accept-all",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -289,6 +333,10 @@
   "detectPopup": [
    {
     "visible": "button.wt-btn--filled",
+    "check": "any"
+   },
+   {
+    "visible": "div#gdpr-single-choice-overlay",
     "check": "any"
    }
   ],
@@ -315,6 +363,10 @@
    {
     "visible": "div.message-column main-container",
     "check": "any"
+   },
+   {
+    "visible": "button.agree-btn",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -339,6 +391,10 @@
   "detectPopup": [
    {
     "visible": "div.aspXfg",
+    "check": "any"
+   },
+   {
+    "visible": "button.RMlTST",
     "check": "any"
    }
   ],
@@ -365,6 +421,10 @@
    {
     "visible": "div.spoKVd",
     "check": "any"
+   },
+   {
+    "visible": "button#L2AGLb",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -389,6 +449,10 @@
   "detectPopup": [
    {
     "visible": "div.submitButton",
+    "check": "any"
+   },
+   {
+    "visible": "button.submitAll",
     "check": "any"
    }
   ],
@@ -415,6 +479,10 @@
    {
     "visible": "div.almacmp-controls",
     "check": "any"
+   },
+   {
+    "visible": "button#almacmp-modalConfirmBtn",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -439,6 +507,10 @@
   "detectPopup": [
    {
     "visible": "div.cmp-popup_popup",
+    "check": "any"
+   },
+   {
+    "visible": "button.cmp-intro_acceptAll",
     "check": "any"
    }
   ],
@@ -465,6 +537,10 @@
    {
     "visible": "div.actions",
     "check": "any"
+   },
+   {
+    "visible": "button#accept-all",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -489,6 +565,10 @@
   "detectPopup": [
    {
     "visible": ".cookie-banner-buttons",
+    "check": "any"
+   },
+   {
+    "visible": ".js-accept",
     "check": "any"
    }
   ],
@@ -515,6 +595,10 @@
    {
     "visible": "div.CookieConsent_holder__ZsT3G",
     "check": "any"
+   },
+   {
+    "visible": "button.CookieConsent_button__FJrIc",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -539,6 +623,10 @@
   "detectPopup": [
    {
     "visible": "div.fucking-eu-cookies",
+    "check": "any"
+   },
+   {
+    "visible": "button",
     "check": "any"
    }
   ],
@@ -565,6 +653,10 @@
    {
     "visible": "div.css-pp-box",
     "check": "any"
+   },
+   {
+    "visible": "button.css-pp-ok",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -589,6 +681,10 @@
   "detectPopup": [
    {
     "visible": "div#cookiesBar",
+    "check": "any"
+   },
+   {
+    "visible": "button.cookie-close",
     "check": "any"
    }
   ],
@@ -615,6 +711,10 @@
    {
     "visible": "div.privacy-cp-wall",
     "check": "any"
+   },
+   {
+    "visible": "button#privacy-cp-wall-accept",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -639,6 +739,10 @@
   "detectPopup": [
    {
     "visible": "div#cookie-banner",
+    "check": "any"
+   },
+   {
+    "visible": "button.cookie-banner__button",
     "check": "any"
    }
   ],
@@ -665,6 +769,10 @@
    {
     "visible": "div.button",
     "check": "any"
+   },
+   {
+    "visible": "button#usage_notice_button",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -689,6 +797,10 @@
   "detectPopup": [
    {
     "visible": "div.Modal__Content-sc-1sm9281-2",
+    "check": "any"
+   },
+   {
+    "visible": "button#accept-ufti",
     "check": "any"
    }
   ],
@@ -715,6 +827,10 @@
    {
     "visible": "div.fc-footer-buttons",
     "check": "any"
+   },
+   {
+    "visible": "button.fc-primary-button",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -739,6 +855,10 @@
   "detectPopup": [
    {
     "visible": "div#popup-buttons",
+    "check": "any"
+   },
+   {
+    "visible": "button.eu-cookie-compliance-secondary-button",
     "check": "any"
    }
   ],
@@ -765,6 +885,10 @@
    {
     "visible": "#__tealiumGDPRecModal",
     "check": "any"
+   },
+   {
+    "visible": ".t_cm_ec_continue_button",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -789,6 +913,10 @@
   "detectPopup": [
    {
     "visible": ".vfcc__overlay",
+    "check": "any"
+   },
+   {
+    "visible": "[value=\"allowAll\"]",
     "check": "any"
    }
   ],
@@ -815,6 +943,10 @@
    {
     "visible": "#cpnb",
     "check": "any"
+   },
+   {
+    "visible": "#cpnb-accept-btn",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -839,6 +971,10 @@
   "detectPopup": [
    {
     "visible": "#cookiesModal",
+    "check": "any"
+   },
+   {
+    "visible": ".ebu-cookies-layer__modal-buttons > .confirm",
     "check": "any"
    }
   ],
@@ -865,6 +1001,10 @@
    {
     "visible": "div.ocm-footer",
     "check": "any"
+   },
+   {
+    "visible": "button#ocm-button.ocm-button--accept-all",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -889,6 +1029,10 @@
   "detectPopup": [
    {
     "visible": "div.gdpr-consent-modal-footer",
+    "check": "any"
+   },
+   {
+    "visible": "button#gdpr-consent-banner-accept-button",
     "check": "any"
    }
   ],
@@ -915,6 +1059,10 @@
    {
     "visible": "div.iOMuvDyuoMKpVRzmevldA3KUmWI2t3RJ",
     "check": "any"
+   },
+   {
+    "visible": "button#save-all-action",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -939,6 +1087,10 @@
   "detectPopup": [
    {
     "visible": "div.gdprcookie",
+    "check": "any"
+   },
+   {
+    "visible": "button",
     "check": "any"
    }
   ],
@@ -965,6 +1117,10 @@
    {
     "visible": "div.gdpr-lmd-wall",
     "check": "any"
+   },
+   {
+    "visible": "button.gdpr-lmd-button--main",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -989,6 +1145,10 @@
   "detectPopup": [
    {
     "visible": "div.privacy-cp-wall",
+    "check": "any"
+   },
+   {
+    "visible": "button#privacy-cp-wall-accept",
     "check": "any"
    }
   ],
@@ -1015,6 +1175,10 @@
    {
     "visible": "div.button",
     "check": "any"
+   },
+   {
+    "visible": "button.cookiebtn",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -1039,6 +1203,10 @@
   "detectPopup": [
    {
     "visible": "div.woahbar",
+    "check": "any"
+   },
+   {
+    "visible": "a.close-accept",
     "check": "any"
    }
   ],
@@ -1065,6 +1233,10 @@
    {
     "visible": "div.coi-button-group",
     "check": "any"
+   },
+   {
+    "visible": "button.coi-banner__accept",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -1089,6 +1261,10 @@
   "detectPopup": [
    {
     "visible": "div.cookies-info__buttons",
+    "check": "any"
+   },
+   {
+    "visible": "a.js-cookies-info-accept",
     "check": "any"
    }
   ],
@@ -1115,6 +1291,10 @@
    {
     "visible": "div.privacyNotification",
     "check": "any"
+   },
+   {
+    "visible": "button.noticeButton",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -1139,6 +1319,10 @@
   "detectPopup": [
    {
     "visible": "div.fc-footer-buttons",
+    "check": "any"
+   },
+   {
+    "visible": "button.fc-primary-button",
     "check": "any"
    }
   ],
@@ -1165,6 +1349,10 @@
    {
     "visible": "div.almacmp-controls",
     "check": "any"
+   },
+   {
+    "visible": "button#almacmp-modalConfirmBtn",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -1189,6 +1377,10 @@
   "detectPopup": [
    {
     "visible": "div#startsiden-gdpr-disclaimer",
+    "check": "any"
+   },
+   {
+    "visible": "a#startsiden-gdpr-disclaimer-confirm",
     "check": "any"
    }
   ],
@@ -1215,6 +1407,10 @@
    {
     "visible": "div#cmp-consent",
     "check": "any"
+   },
+   {
+    "visible": "button#cmp-btn-accept",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -1239,6 +1435,10 @@
   "detectPopup": [
    {
     "visible": "div#almacmp-footer--layer1",
+    "check": "any"
+   },
+   {
+    "visible": "button#almacmp-modalConfirmBtn",
     "check": "any"
    }
   ],
@@ -1265,6 +1465,10 @@
    {
     "visible": "div#cookieContent",
     "check": "any"
+   },
+   {
+    "visible": "a#cookieAccept",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -1289,6 +1493,10 @@
   "detectPopup": [
    {
     "visible": "div.orejime-Notice",
+    "check": "any"
+   },
+   {
+    "visible": "button.orejime-Notice-saveButton",
     "check": "any"
    }
   ],
@@ -1315,6 +1523,10 @@
    {
     "visible": "div.orejime-Notice",
     "check": "any"
+   },
+   {
+    "visible": "button.orejime-Notice-saveButton",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -1339,6 +1551,10 @@
   "detectPopup": [
    {
     "visible": "div#popin_tc_privacy_container_button",
+    "check": "any"
+   },
+   {
+    "visible": "button#popin_tc_privacy_button_2",
     "check": "any"
    }
   ],
@@ -1365,6 +1581,10 @@
    {
     "visible": "div.cookies-info__buttons",
     "check": "any"
+   },
+   {
+    "visible": "a.js-cookies-info-accept",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -1389,6 +1609,10 @@
   "detectPopup": [
    {
     "visible": "div.as-oil-l-wrapper-layout-max-width",
+    "check": "any"
+   },
+   {
+    "visible": "button.as-js-optin",
     "check": "any"
    }
   ],
@@ -1415,6 +1639,10 @@
    {
     "visible": "div.almacmp-controls",
     "check": "any"
+   },
+   {
+    "visible": "button#almacmp-modalConfirmBtn",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -1439,6 +1667,10 @@
   "detectPopup": [
    {
     "visible": "div#consent-info",
+    "check": "any"
+   },
+   {
+    "visible": "button#button_i_accept",
     "check": "any"
    }
   ],
@@ -1465,6 +1697,10 @@
    {
     "visible": "div.sfc-col-lg-3",
     "check": "any"
+   },
+   {
+    "visible": "button.sfc-button--primary-white",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -1489,6 +1725,10 @@
   "detectPopup": [
    {
     "visible": "div#popup-buttons",
+    "check": "any"
+   },
+   {
+    "visible": "button.eu-cookie-compliance-default-button",
     "check": "any"
    }
   ],
@@ -1515,6 +1755,10 @@
    {
     "visible": "div.kmcc-cookie-bar__footer__preferences__second",
     "check": "any"
+   },
+   {
+    "visible": "a#kmcc-accept-all-cookies",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -1539,6 +1783,10 @@
   "detectPopup": [
    {
     "visible": "div.wscrBannerContent",
+    "check": "any"
+   },
+   {
+    "visible": "a.wscrOk",
     "check": "any"
    }
   ],
@@ -1565,6 +1813,10 @@
    {
     "visible": "div#cookie-banner-lgpd",
     "check": "any"
+   },
+   {
+    "visible": "button.cookie-banner-lgpd_accept-button",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -1589,6 +1841,10 @@
   "detectPopup": [
    {
     "visible": "div.kitt-cookie-warning__content",
+    "check": "any"
+   },
+   {
+    "visible": "button.kitt-cookie-warning__close",
     "check": "any"
    }
   ],
@@ -1615,6 +1871,10 @@
    {
     "visible": "div#cookie-notice",
     "check": "any"
+   },
+   {
+    "visible": "a#cn-accept-cookie",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -1639,6 +1899,10 @@
   "detectPopup": [
    {
     "visible": "div#consent-accept",
+    "check": "any"
+   },
+   {
+    "visible": "button.consent-accept",
     "check": "any"
    }
   ],
@@ -1665,6 +1929,10 @@
    {
     "visible": "div.cookie-label__btn-set",
     "check": "any"
+   },
+   {
+    "visible": "button.js-cookies-hide",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -1689,6 +1957,10 @@
   "detectPopup": [
    {
     "visible": "div.modal__body",
+    "check": "any"
+   },
+   {
+    "visible": "button.button--primary",
     "check": "any"
    }
   ],
@@ -1715,6 +1987,10 @@
    {
     "visible": "div.almacmp-controls",
     "check": "any"
+   },
+   {
+    "visible": "button#almacmp-modalConfirmBtn",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -1739,6 +2015,10 @@
   "detectPopup": [
    {
     "visible": "div#cookies-banner",
+    "check": "any"
+   },
+   {
+    "visible": "a.cookies-banner-button",
     "check": "any"
    }
   ],
@@ -1765,6 +2045,10 @@
    {
     "visible": "div#cookies-overlay",
     "check": "any"
+   },
+   {
+    "visible": "a.cookies-button",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -1789,6 +2073,10 @@
   "detectPopup": [
    {
     "visible": "div#CkC",
+    "check": "any"
+   },
+   {
+    "visible": "a.A",
     "check": "any"
    }
   ],
@@ -1815,6 +2103,10 @@
    {
     "visible": "div.cc_banner-wrapper",
     "check": "any"
+   },
+   {
+    "visible": "a.cc_btn_accept_all",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -1839,6 +2131,10 @@
   "detectPopup": [
    {
     "visible": "div#popup_cookies",
+    "check": "any"
+   },
+   {
+    "visible": "div.boton_cookies",
     "check": "any"
    }
   ],
@@ -1865,6 +2161,10 @@
    {
     "visible": "div.cookie-popup",
     "check": "any"
+   },
+   {
+    "visible": "button.blue",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -1889,6 +2189,10 @@
   "detectPopup": [
    {
     "visible": "div.coi-button-group",
+    "check": "any"
+   },
+   {
+    "visible": "button#acceptButton",
     "check": "any"
    }
   ],
@@ -1915,6 +2219,10 @@
    {
     "visible": "div#pubtech-cmp",
     "check": "any"
+   },
+   {
+    "visible": "button#pt-accept-all",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -1939,6 +2247,10 @@
   "detectPopup": [
    {
     "visible": "div#__tealiumGDPRecModal",
+    "check": "any"
+   },
+   {
+    "visible": "a#consent_prompt_submit",
     "check": "any"
    }
   ],
@@ -1965,6 +2277,10 @@
    {
     "visible": "footer._nlniiu",
     "check": "any"
+   },
+   {
+    "visible": "div._euwdl0",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -1989,6 +2305,10 @@
   "detectPopup": [
    {
     "visible": "div.rodo-popup-buttons",
+    "check": "any"
+   },
+   {
+    "visible": "button.rodo-popup-agree",
     "check": "any"
    }
   ],
@@ -2015,6 +2335,10 @@
    {
     "visible": "div.cookie-banner-content",
     "check": "any"
+   },
+   {
+    "visible": "button.accept-cookie-button",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -2039,6 +2363,10 @@
   "detectPopup": [
    {
     "visible": "div.stampenCookieContainer",
+    "check": "any"
+   },
+   {
+    "visible": "input.btn-secondary",
     "check": "any"
    }
   ],
@@ -2065,6 +2393,10 @@
    {
     "visible": "section#cookie-banner",
     "check": "any"
+   },
+   {
+    "visible": "button.mat-button-base",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -2089,6 +2421,10 @@
   "detectPopup": [
    {
     "visible": "div.cli-bar-container",
+    "check": "any"
+   },
+   {
+    "visible": "a#wt-cli-accept-all-btn",
     "check": "any"
    }
   ],
@@ -2115,6 +2451,10 @@
    {
     "visible": "div.legal-consent",
     "check": "any"
+   },
+   {
+    "visible": "button.rounded-button--tertiary",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -2139,6 +2479,10 @@
   "detectPopup": [
    {
     "visible": "div#CookieReportsPanel",
+    "check": "any"
+   },
+   {
+    "visible": "a.wscrOk",
     "check": "any"
    }
   ],
@@ -2165,6 +2509,10 @@
    {
     "visible": "div.alert-secondary",
     "check": "any"
+   },
+   {
+    "visible": "button.btn-primary",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -2189,6 +2537,10 @@
   "detectPopup": [
    {
     "visible": "div[data-testid=\"dl-cookieBanner\"]",
+    "check": "any"
+   },
+   {
+    "visible": "button[data-testid=\"cookie-banner-strict-accept-all\"]",
     "check": "any"
    }
   ],
@@ -2215,6 +2567,10 @@
    {
     "visible": "div#c-right",
     "check": "any"
+   },
+   {
+    "visible": "a#accept-button",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -2239,6 +2595,10 @@
   "detectPopup": [
    {
     "visible": "div#consent",
+    "check": "any"
+   },
+   {
+    "visible": "button.pr-riqlv6",
     "check": "any"
    }
   ],
@@ -2265,6 +2625,10 @@
    {
     "visible": "div#ip",
     "check": "any"
+   },
+   {
+    "visible": "div.tvp-covl__ab",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -2289,6 +2653,10 @@
   "detectPopup": [
    {
     "visible": ".js-cookie-notification__form",
+    "check": "any"
+   },
+   {
+    "visible": "button[name=accept_cookie]",
     "check": "any"
    }
   ],
@@ -2315,6 +2683,10 @@
    {
     "visible": "div.cookie-initial-buttons",
     "check": "any"
+   },
+   {
+    "visible": "button#cookie-banner-initial-accept-all",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -2339,6 +2711,10 @@
   "detectPopup": [
    {
     "visible": "div.consent_prompt_footer",
+    "check": "any"
+   },
+   {
+    "visible": "button#consent_prompt_submit",
     "check": "any"
    }
   ],
@@ -2365,6 +2741,10 @@
    {
     "visible": "div#rgpd",
     "check": "any"
+   },
+   {
+    "visible": "button#btn-agree-all",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -2389,6 +2769,10 @@
   "detectPopup": [
    {
     "visible": "div#notice-cookie-block",
+    "check": "any"
+   },
+   {
+    "visible": "span.inline-block",
     "check": "any"
    }
   ],
@@ -2415,6 +2799,10 @@
    {
     "visible": "div.cookie-alert-extended-controls",
     "check": "any"
+   },
+   {
+    "visible": "button.cookie-alert-extended-button",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -2439,6 +2827,10 @@
   "detectPopup": [
    {
     "visible": "div.politic_confidel",
+    "check": "any"
+   },
+   {
+    "visible": "button",
     "check": "any"
    }
   ],
@@ -2465,6 +2857,10 @@
    {
     "visible": "div#coi-banner-wrapper",
     "check": "any"
+   },
+   {
+    "visible": "button.coi-banner__accept",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -2489,6 +2885,10 @@
   "detectPopup": [
    {
     "visible": ".kc-onsent",
+    "check": "any"
+   },
+   {
+    "visible": "#kc-acceptAndHide",
     "check": "any"
    }
   ],
@@ -2515,6 +2915,10 @@
    {
     "visible": "div#tc-privacy-wrapper",
     "check": "any"
+   },
+   {
+    "visible": "button#footer_tc_privacy_button_2",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -2539,6 +2943,10 @@
   "detectPopup": [
    {
     "visible": "div#tc-privacy-wrapper",
+    "check": "any"
+   },
+   {
+    "visible": "button#footer_tc_privacy_button_3",
     "check": "any"
    }
   ],
@@ -2565,6 +2973,10 @@
    {
     "visible": "div.cookie-policy",
     "check": "any"
+   },
+   {
+    "visible": "p.cookie-policy-btn",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -2589,6 +3001,10 @@
   "detectPopup": [
    {
     "visible": "div.legal-consent",
+    "check": "any"
+   },
+   {
+    "visible": "button.rounded-button--tertiary",
     "check": "any"
    }
   ],
@@ -2615,6 +3031,10 @@
    {
     "visible": "div.cookies-buttons",
     "check": "any"
+   },
+   {
+    "visible": "a#cookies-agree",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -2639,6 +3059,10 @@
   "detectPopup": [
    {
     "visible": "div.cc-cookies",
+    "check": "any"
+   },
+   {
+    "visible": "a.cc-cookie-accept",
     "check": "any"
    }
   ],
@@ -2665,6 +3089,10 @@
    {
     "visible": "div#gravitoCMP-modal-layer1",
     "check": "any"
+   },
+   {
+    "visible": "button#modalConfirmBtn",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -2689,6 +3117,10 @@
   "detectPopup": [
    {
     "visible": ".pt-VnJ",
+    "check": "any"
+   },
+   {
+    "visible": "#pt-accept-all",
     "check": "any"
    }
   ],
@@ -2715,6 +3147,10 @@
    {
     "visible": "div#finansavisen-gdpr-disclaimer",
     "check": "any"
+   },
+   {
+    "visible": "a#finansavisen-gdpr-disclaimer-confirm",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -2739,6 +3175,10 @@
   "detectPopup": [
    {
     "visible": "div.cookie-banner",
+    "check": "any"
+   },
+   {
+    "visible": "button#AcceptCookieLawButton",
     "check": "any"
    }
   ],
@@ -2765,6 +3205,10 @@
    {
     "visible": "div#privacy-policy-link-wrapper",
     "check": "any"
+   },
+   {
+    "visible": "a.info-link-close",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -2789,6 +3233,10 @@
   "detectPopup": [
    {
     "visible": "div.cookies-notify",
+    "check": "any"
+   },
+   {
+    "visible": "a.cookies-agree",
     "check": "any"
    }
   ],
@@ -2815,6 +3263,10 @@
    {
     "visible": "div.cc-compliance",
     "check": "any"
+   },
+   {
+    "visible": "a.cc-dismiss",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -2839,6 +3291,10 @@
   "detectPopup": [
    {
     "visible": "div.cookie-label",
+    "check": "any"
+   },
+   {
+    "visible": "button.js-cookies-hide",
     "check": "any"
    }
   ],
@@ -2865,6 +3321,10 @@
    {
     "visible": "div.woahbar",
     "check": "any"
+   },
+   {
+    "visible": "a.close-accept",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -2889,6 +3349,10 @@
   "detectPopup": [
    {
     "visible": "div#cookie-banner",
+    "check": "any"
+   },
+   {
+    "visible": "button#AcceptButton-cookie-banner",
     "check": "any"
    }
   ],
@@ -2915,6 +3379,10 @@
    {
     "visible": "div#camus-cookie-disclaimer",
     "check": "any"
+   },
+   {
+    "visible": "button.primary",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -2939,6 +3407,10 @@
   "detectPopup": [
    {
     "visible": "div.ModalInner__Backdrop-sc-1ghkydj-1",
+    "check": "any"
+   },
+   {
+    "visible": "button#cookie-accept-all-secondary",
     "check": "any"
    }
   ],
@@ -2965,6 +3437,10 @@
    {
     "visible": "div#info-modal",
     "check": "any"
+   },
+   {
+    "visible": "button#btnInfo",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -2989,6 +3465,10 @@
   "detectPopup": [
    {
     "visible": "div.cookie-pop",
+    "check": "any"
+   },
+   {
+    "visible": "div.accept-btn",
     "check": "any"
    }
   ],
@@ -3015,6 +3495,10 @@
    {
     "visible": ".cc-banner",
     "check": "any"
+   },
+   {
+    "visible": "button.cc-banner__button-accept",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -3039,6 +3523,10 @@
   "detectPopup": [
    {
     "visible": "div.CoZ9Nu8Z",
+    "check": "any"
+   },
+   {
+    "visible": "button.fZYtinTR",
     "check": "any"
    }
   ],
@@ -3065,6 +3553,10 @@
    {
     "visible": "div#cmc-cookie-policy-banner",
     "check": "any"
+   },
+   {
+    "visible": "div.cmc-cookie-policy-banner__close",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -3089,6 +3581,10 @@
   "detectPopup": [
    {
     "visible": "div.sn-inner",
+    "check": "any"
+   },
+   {
+    "visible": "div#accept-choices",
     "check": "any"
    }
   ],
@@ -3115,6 +3611,10 @@
    {
     "visible": "div#_evidon_banner",
     "check": "any"
+   },
+   {
+    "visible": "button#_evidon-accept-button",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -3139,6 +3639,10 @@
   "detectPopup": [
    {
     "visible": "div#toast-container",
+    "check": "any"
+   },
+   {
+    "visible": "a#okck",
     "check": "any"
    }
   ],
@@ -3165,6 +3669,10 @@
    {
     "visible": "div.welcome__cookie-notice",
     "check": "any"
+   },
+   {
+    "visible": "button.welcome__button--accept",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -3189,6 +3697,10 @@
   "detectPopup": [
    {
     "visible": "div.css-103nllw",
+    "check": "any"
+   },
+   {
+    "visible": "button.css-quk35p",
     "check": "any"
    }
   ],
@@ -3215,6 +3727,10 @@
    {
     "visible": "div.o-cookie-message",
     "check": "any"
+   },
+   {
+    "visible": "a.o-cookie-message__button",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -3239,6 +3755,10 @@
   "detectPopup": [
    {
     "visible": "div.ReadPolicy",
+    "check": "any"
+   },
+   {
+    "visible": "a.close",
     "check": "any"
    }
   ],
@@ -3265,6 +3785,10 @@
    {
     "visible": "div#_evidon_banner",
     "check": "any"
+   },
+   {
+    "visible": "button#_evidon-accept-button",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -3289,6 +3813,10 @@
   "detectPopup": [
    {
     "visible": "section.CookieBanner_notificationBar__nn49h",
+    "check": "any"
+   },
+   {
+    "visible": "button.CookieBanner_button__P6xCl",
     "check": "any"
    }
   ],
@@ -3315,6 +3843,10 @@
    {
     "visible": "div.tbp-container",
     "check": "any"
+   },
+   {
+    "visible": "a#tbp-consent-confirm",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -3339,6 +3871,10 @@
   "detectPopup": [
    {
     "visible": "div#cookieMessage_content",
+    "check": "any"
+   },
+   {
+    "visible": "a.cookiepolicycontinue",
     "check": "any"
    }
   ],
@@ -3365,6 +3901,10 @@
    {
     "visible": "div#cx_bottom_banner",
     "check": "any"
+   },
+   {
+    "visible": "button#cx_button_close",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -3389,6 +3929,10 @@
   "detectPopup": [
    {
     "visible": "div.cookie-banner__cta",
+    "check": "any"
+   },
+   {
+    "visible": "button.cta--is-1",
     "check": "any"
    }
   ],
@@ -3415,6 +3959,10 @@
    {
     "visible": "div.cc-window",
     "check": "any"
+   },
+   {
+    "visible": "a.cc-dismiss",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -3439,6 +3987,10 @@
   "detectPopup": [
    {
     "visible": "div#gdpr",
+    "check": "any"
+   },
+   {
+    "visible": "div#gdpr_accept",
     "check": "any"
    }
   ],
@@ -3465,6 +4017,10 @@
    {
     "visible": "div.zbottom-cookie-container",
     "check": "any"
+   },
+   {
+    "visible": "div.zbc-cta-accept",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -3489,6 +4045,10 @@
   "detectPopup": [
    {
     "visible": "div.modal-window",
+    "check": "any"
+   },
+   {
+    "visible": "button#gdpr-modal-agree",
     "check": "any"
    }
   ],
@@ -3515,6 +4075,10 @@
    {
     "visible": "div.DesignSystem",
     "check": "any"
+   },
+   {
+    "visible": "span.js-dismiss-cookie-banner",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -3539,6 +4103,10 @@
   "detectPopup": [
    {
     "visible": "div.cookies",
+    "check": "any"
+   },
+   {
+    "visible": "button.eu-cookie-compliance-default-button",
     "check": "any"
    }
   ],
@@ -3565,6 +4133,10 @@
    {
     "visible": "[data-testid=\"cookie-wall-modal\"]",
     "check": "any"
+   },
+   {
+    "visible": "[data-testid=\"cookie-wall-accept\"]",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -3589,6 +4161,10 @@
   "detectPopup": [
    {
     "visible": "form.a8c-cookie-banner",
+    "check": "any"
+   },
+   {
+    "visible": "a.a8c-cookie-banner__accept-all-button",
     "check": "any"
    }
   ],
@@ -3615,6 +4191,10 @@
    {
     "visible": "section.jsx-539809080",
     "check": "any"
+   },
+   {
+    "visible": "span.flex-button",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -3639,6 +4219,10 @@
   "detectPopup": [
    {
     "visible": "div#cu-privacy-notice",
+    "check": "any"
+   },
+   {
+    "visible": "button.cu-privacy-notice-close",
     "check": "any"
    }
   ],
@@ -3665,6 +4249,10 @@
    {
     "visible": "section#cookieconsentpopup",
     "check": "any"
+   },
+   {
+    "visible": "button.accept-consent",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -3689,6 +4277,10 @@
   "detectPopup": [
    {
     "visible": "div#feedback-bar",
+    "check": "any"
+   },
+   {
+    "visible": "button#close_feedback_btn",
     "check": "any"
    }
   ],
@@ -3715,6 +4307,10 @@
    {
     "visible": "div.footer_footer__ZK5Q_",
     "check": "any"
+   },
+   {
+    "visible": "button.color-secondary",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -3739,6 +4335,10 @@
   "detectPopup": [
    {
     "visible": "div.cookie-consent-area",
+    "check": "any"
+   },
+   {
+    "visible": "button.cookie-accept-btn",
     "check": "any"
    }
   ],
@@ -3765,6 +4365,10 @@
    {
     "visible": "div.opt-in-modal__inner",
     "check": "any"
+   },
+   {
+    "visible": "button.js-opt-in-consent-button",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -3789,6 +4393,10 @@
   "detectPopup": [
    {
     "visible": "div#modal",
+    "check": "any"
+   },
+   {
+    "visible": "button#cookie-policy-button-accept",
     "check": "any"
    }
   ],
@@ -3815,6 +4423,10 @@
    {
     "visible": "div#privacy-consent",
     "check": "any"
+   },
+   {
+    "visible": "button#privacy-consent-button",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -3839,6 +4451,10 @@
   "detectPopup": [
    {
     "visible": "div#cookiebanner",
+    "check": "any"
+   },
+   {
+    "visible": "a.c-button",
     "check": "any"
    }
   ],
@@ -3865,6 +4481,10 @@
    {
     "visible": "div.consent-banner-buttons",
     "check": "any"
+   },
+   {
+    "visible": "button.consent--accept",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -3889,6 +4509,10 @@
   "detectPopup": [
    {
     "visible": "div.cookie-notice",
+    "check": "any"
+   },
+   {
+    "visible": "a.accept-cookies",
     "check": "any"
    }
   ],
@@ -3915,6 +4539,10 @@
    {
     "visible": "div.cookiePolicy",
     "check": "any"
+   },
+   {
+    "visible": "span.cookiePolicy-close",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -3939,6 +4567,10 @@
   "detectPopup": [
    {
     "visible": "div.cc-banner__content",
+    "check": "any"
+   },
+   {
+    "visible": "button.cc-banner__button-accept",
     "check": "any"
    }
   ],
@@ -3965,6 +4597,10 @@
    {
     "visible": "div.b-policy-info",
     "check": "any"
+   },
+   {
+    "visible": "span.b-policy-info__cross",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -3989,6 +4625,10 @@
   "detectPopup": [
    {
     "visible": "div.cookie",
+    "check": "any"
+   },
+   {
+    "visible": "button#cookie-policy-btn",
     "check": "any"
    }
   ],
@@ -4015,6 +4655,10 @@
    {
     "visible": "div#_evidon-message",
     "check": "any"
+   },
+   {
+    "visible": "button#_evidon-accept-button",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -4039,6 +4683,10 @@
   "detectPopup": [
    {
     "visible": "div#_evidon-banner-content",
+    "check": "any"
+   },
+   {
+    "visible": "button#_evidon-banner-acceptbutton",
     "check": "any"
    }
   ],
@@ -4065,6 +4713,10 @@
    {
     "visible": "div#cookie-notification",
     "check": "any"
+   },
+   {
+    "visible": "a.button--default",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -4089,6 +4741,10 @@
   "detectPopup": [
    {
     "visible": ".css-1243dq3",
+    "check": "any"
+   },
+   {
+    "visible": ".css-15sam98",
     "check": "any"
    }
   ],
@@ -4115,6 +4771,10 @@
    {
     "visible": "div#_evidon-message",
     "check": "any"
+   },
+   {
+    "visible": "button#_evidon-decline-button",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -4139,6 +4799,10 @@
   "detectPopup": [
    {
     "visible": "div.css-fPpfoE",
+    "check": "any"
+   },
+   {
+    "visible": "button.css-ZtxlD",
     "check": "any"
    }
   ],
@@ -4165,6 +4829,10 @@
    {
     "visible": "#cookie-policy-info",
     "check": "any"
+   },
+   {
+    "visible": ".btn-ok",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -4189,6 +4857,10 @@
   "detectPopup": [
    {
     "visible": "div.unic-bar",
+    "check": "any"
+   },
+   {
+    "visible": "button#unic-agree",
     "check": "any"
    }
   ],
@@ -4215,6 +4887,10 @@
    {
     "visible": "div.sc-36lcln-0",
     "check": "any"
+   },
+   {
+    "visible": "button#consent-accept-button",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -4239,6 +4915,10 @@
   "detectPopup": [
    {
     "visible": "div#cookie-banner",
+    "check": "any"
+   },
+   {
+    "visible": "span#cookie-banner-close",
     "check": "any"
    }
   ],
@@ -4265,6 +4945,10 @@
    {
     "visible": "div.et_cookie_consent",
     "check": "any"
+   },
+   {
+    "visible": "a#et_cookie_consent_allow",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -4289,6 +4973,10 @@
   "detectPopup": [
    {
     "visible": "div.cookie-consent-banner-opt-out",
+    "check": "any"
+   },
+   {
+    "visible": "button.cookie-consent-banner-opt-out__action",
     "check": "any"
    }
   ],
@@ -4315,6 +5003,10 @@
    {
     "visible": "div.vue-component",
     "check": "any"
+   },
+   {
+    "visible": "button.btn-success",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -4339,6 +5031,10 @@
   "detectPopup": [
    {
     "visible": ".eu-cookie-compliance-banner.eu-cookie-compliance-banner-info.eu-cookie-compliance-banner--categories",
+    "check": "any"
+   },
+   {
+    "visible": ".agree-button.eu-cookie-compliance-default-button",
     "check": "any"
    }
   ],
@@ -4365,6 +5061,10 @@
    {
     "visible": "div.cookieBanner",
     "check": "any"
+   },
+   {
+    "visible": "button.closeButton",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -4389,6 +5089,10 @@
   "detectPopup": [
    {
     "visible": "div.banner-overlay",
+    "check": "any"
+   },
+   {
+    "visible": "button.button-accept-cookie",
     "check": "any"
    }
   ],
@@ -4415,6 +5119,10 @@
    {
     "visible": "div.widget-GdprCookieBanner",
     "check": "any"
+   },
+   {
+    "visible": "a.js-gdpr-cookie-acceptLink",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -4439,6 +5147,10 @@
   "detectPopup": [
    {
     "visible": "div#nhsuk-cookie-banner",
+    "check": "any"
+   },
+   {
+    "visible": "button#nhsuk-cookie-banner__link_accept_analytics",
     "check": "any"
    }
   ],
@@ -4465,6 +5177,10 @@
    {
     "visible": "div.modalStyle_modrqv7",
     "check": "any"
+   },
+   {
+    "visible": "button.button_b1lbbqqt",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -4489,6 +5205,10 @@
   "detectPopup": [
    {
     "visible": ".ch2-dialog",
+    "check": "any"
+   },
+   {
+    "visible": ".ch2-allow-all-btn",
     "check": "any"
    }
   ],
@@ -4515,6 +5235,10 @@
    {
     "visible": "div.cc-window",
     "check": "any"
+   },
+   {
+    "visible": "a.cc-dismiss",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -4539,6 +5263,10 @@
   "detectPopup": [
    {
     "visible": "div#cookie-law-info-bar",
+    "check": "any"
+   },
+   {
+    "visible": "a#cookie_action_close_header",
     "check": "any"
    }
   ],
@@ -4565,6 +5293,10 @@
    {
     "visible": "div.e4Qmjw",
     "check": "any"
+   },
+   {
+    "visible": "button.NT2yCg",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -4589,6 +5321,10 @@
   "detectPopup": [
    {
     "visible": "div.container_1gQfi",
+    "check": "any"
+   },
+   {
+    "visible": "button.primary_2xk2l",
     "check": "any"
    }
   ],
@@ -4615,6 +5351,10 @@
    {
     "visible": ".cookie-notice-banner",
     "check": "any"
+   },
+   {
+    "visible": "button[data-component-name=\"consent\"]",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -4639,6 +5379,10 @@
   "detectPopup": [
    {
     "visible": "div#GDPR-cookies-notice",
+    "check": "any"
+   },
+   {
+    "visible": "div.gdpr-agree-btn",
     "check": "any"
    }
   ],
@@ -4665,6 +5409,10 @@
    {
     "visible": "div.gmjWml",
     "check": "any"
+   },
+   {
+    "visible": "button.kcLcLu",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -4689,6 +5437,10 @@
   "detectPopup": [
    {
     "visible": "div.nrk-masthead__info-banner--cookie",
+    "check": "any"
+   },
+   {
+    "visible": "span.nrk-sr",
     "check": "any"
    }
   ],
@@ -4715,6 +5467,10 @@
    {
     "visible": "div#checkUPcookies",
     "check": "any"
+   },
+   {
+    "visible": "div.ok",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -4739,6 +5495,10 @@
   "detectPopup": [
    {
     "visible": "div#gdpr",
+    "check": "any"
+   },
+   {
+    "visible": "div.gdpr-trigger",
     "check": "any"
    }
   ],
@@ -4765,6 +5525,10 @@
    {
     "visible": "div#gdpr",
     "check": "any"
+   },
+   {
+    "visible": "div.gdpr-trigger",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -4789,6 +5553,10 @@
   "detectPopup": [
    {
     "visible": "div.consent-container",
+    "check": "any"
+   },
+   {
+    "visible": "button.allow-all-cookies-button",
     "check": "any"
    }
   ],
@@ -4815,6 +5583,10 @@
    {
     "visible": "div#cc_div",
     "check": "any"
+   },
+   {
+    "visible": "button#c-p-bn",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -4839,6 +5611,10 @@
   "detectPopup": [
    {
     "visible": "div.c-alert__box",
+    "check": "any"
+   },
+   {
+    "visible": "button#cookieBtn",
     "check": "any"
    }
   ],
@@ -4865,6 +5641,10 @@
    {
     "visible": "div.cookieWarning",
     "check": "any"
+   },
+   {
+    "visible": "i.fa-times",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -4889,6 +5669,10 @@
   "detectPopup": [
    {
     "visible": "div.polopolyNotification",
+    "check": "any"
+   },
+   {
+    "visible": "button.notificationButton",
     "check": "any"
    }
   ],
@@ -4915,6 +5699,10 @@
    {
     "visible": ".ulheJb0a",
     "check": "any"
+   },
+   {
+    "visible": ".qxOn2zvg.e1sXLPUy",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -4939,6 +5727,10 @@
   "detectPopup": [
    {
     "visible": "div#js_cookie-monster",
+    "check": "any"
+   },
+   {
+    "visible": "button.js_cookie-monster-agree",
     "check": "any"
    }
   ],
@@ -4965,6 +5757,10 @@
    {
     "visible": "div.jsGdprNoticeHolder",
     "check": "any"
+   },
+   {
+    "visible": "a.js-accept-cookies",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -4989,6 +5785,10 @@
   "detectPopup": [
    {
     "visible": "div.SnowPrivacyPolicyBanner_SnowPrivacyPolicyBanner__privacyPolicyBanner__1jg07",
+    "check": "any"
+   },
+   {
+    "visible": "button.snow-ali-kit_Button-Floating__button__ph4zrl",
     "check": "any"
    }
   ],
@@ -5015,6 +5815,10 @@
    {
     "visible": "div#cookie-disclaimer",
     "check": "any"
+   },
+   {
+    "visible": "a.dismiss",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -5039,6 +5843,10 @@
   "detectPopup": [
    {
     "visible": "div.cookieinfo",
+    "check": "any"
+   },
+   {
+    "visible": "div.cookieinfo-close",
     "check": "any"
    }
   ],
@@ -5065,6 +5873,10 @@
    {
     "visible": "div.c-notifier-container",
     "check": "any"
+   },
+   {
+    "visible": "label.c-notifier-btn",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -5089,6 +5901,10 @@
   "detectPopup": [
    {
     "visible": "div#cookie-popover",
+    "check": "any"
+   },
+   {
+    "visible": "button#acceptAllCookiesBtn",
     "check": "any"
    }
   ],
@@ -5115,6 +5931,10 @@
    {
     "visible": "div#gdpr-box",
     "check": "any"
+   },
+   {
+    "visible": "a.btn",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -5139,6 +5959,10 @@
   "detectPopup": [
    {
     "visible": "div.cookie-bar-wrap",
+    "check": "any"
+   },
+   {
+    "visible": "button.orange-gradient",
     "check": "any"
    }
   ],
@@ -5165,6 +5989,10 @@
    {
     "visible": "div#cmp-main",
     "check": "any"
+   },
+   {
+    "visible": "button.jad_cmp_paywall_button-cookies",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -5189,6 +6017,10 @@
   "detectPopup": [
    {
     "visible": "div.cookie-consent-overlay",
+    "check": "any"
+   },
+   {
+    "visible": "button.primary",
     "check": "any"
    }
   ],
@@ -5215,6 +6047,10 @@
    {
     "visible": "div#cookieConsentContainer",
     "check": "any"
+   },
+   {
+    "visible": "div.cookieButton",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -5239,6 +6075,10 @@
   "detectPopup": [
    {
     "visible": "div#TRCO-application",
+    "check": "any"
+   },
+   {
+    "visible": "button.PONCHO-button--decide",
     "check": "any"
    }
   ],
@@ -5265,6 +6105,10 @@
    {
     "visible": "div#consent-modal-yr73k",
     "check": "any"
+   },
+   {
+    "visible": "button.shared-module_w-full_3cBSk",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -5289,6 +6133,10 @@
   "detectPopup": [
    {
     "visible": "div#cookiescript_injected",
+    "check": "any"
+   },
+   {
+    "visible": "div#cookiescript_accept",
     "check": "any"
    }
   ],
@@ -5315,6 +6163,10 @@
    {
     "visible": "div#cookieBar",
     "check": "any"
+   },
+   {
+    "visible": "a.cookieBarConsentButton",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -5339,6 +6191,10 @@
   "detectPopup": [
    {
     "visible": "div.duet--cta--cookie-banner",
+    "check": "any"
+   },
+   {
+    "visible": "div.duet--cta--cookie-banner button.py-12",
     "check": "any"
    }
   ],
@@ -5365,6 +6221,10 @@
    {
     "visible": "div.banner",
     "check": "any"
+   },
+   {
+    "visible": "button#cookie-accept",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -5389,6 +6249,10 @@
   "detectPopup": [
    {
     "visible": "div.banner-lgpd-consent-container",
+    "check": "any"
+   },
+   {
+    "visible": "button.banner-lgpd-consent__accept",
     "check": "any"
    }
   ],
@@ -5415,6 +6279,10 @@
    {
     "visible": ".cc-window.cc-banner",
     "check": "any"
+   },
+   {
+    "visible": ".cc-btn.cc-allow",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -5439,6 +6307,10 @@
   "detectPopup": [
    {
     "visible": "div.bcpNotificationBar",
+    "check": "any"
+   },
+   {
+    "visible": "button.bcpConsentButton",
     "check": "any"
    }
   ],
@@ -5465,6 +6337,10 @@
    {
     "visible": "div.cc-window",
     "check": "any"
+   },
+   {
+    "visible": "a.cc-dismiss",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -5489,6 +6365,10 @@
   "detectPopup": [
    {
     "visible": "div#cookiebanner",
+    "check": "any"
+   },
+   {
+    "visible": "a#cookie-allow-all",
     "check": "any"
    }
   ],
@@ -5515,6 +6395,10 @@
    {
     "visible": "div#hs-eu-cookie-confirmation",
     "check": "any"
+   },
+   {
+    "visible": "button#hs-eu-confirmation-button",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -5539,6 +6423,10 @@
   "detectPopup": [
    {
     "visible": "#cookiePrefPopup",
+    "check": "any"
+   },
+   {
+    "visible": "#acceptAllButton",
     "check": "any"
    }
   ],
@@ -5565,6 +6453,10 @@
    {
     "visible": ".tc-privacy-wrapper.tc-privacy-override.tc-privacy-wrapper",
     "check": "any"
+   },
+   {
+    "visible": "#footer_tc_privacy_button",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -5589,6 +6481,10 @@
   "detectPopup": [
    {
     "visible": ".implicit_privacy_prompt",
+    "check": "any"
+   },
+   {
+    "visible": ".implicit_privacy_prompt > .close_btn_thick",
     "check": "any"
    }
   ],
@@ -5615,6 +6511,10 @@
    {
     "visible": "#modals",
     "check": "any"
+   },
+   {
+    "visible": "#modals #accept-all",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -5639,6 +6539,10 @@
   "detectPopup": [
    {
     "visible": "#__tealiumGDPRecModal",
+    "check": "any"
+   },
+   {
+    "visible": "#consentAcceptAll",
     "check": "any"
    }
   ],
@@ -5665,6 +6569,10 @@
    {
     "visible": "#cookiesModal",
     "check": "any"
+   },
+   {
+    "visible": "#cookiesModal #all-cookies-btn",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -5689,6 +6597,10 @@
   "detectPopup": [
    {
     "visible": "#gdpr-component",
+    "check": "any"
+   },
+   {
+    "visible": "#acceptAllQuick",
     "check": "any"
    }
   ],
@@ -5715,6 +6627,10 @@
    {
     "visible": "div[data-tracking-opt-in-overlay=\"true\"]",
     "check": "any"
+   },
+   {
+    "visible": "div[data-tracking-opt-in-accept=\"true\"]",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -5739,6 +6655,10 @@
   "detectPopup": [
    {
     "visible": "[data-test=\"mms-privacy-layer\"]",
+    "check": "any"
+   },
+   {
+    "visible": "#pwa-consent-layer-accept-all-button",
     "check": "any"
    }
   ],
@@ -5765,6 +6685,10 @@
    {
     "visible": ".cookiesjsr-banner",
     "check": "any"
+   },
+   {
+    "visible": ".allowAll",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -5789,6 +6713,10 @@
   "detectPopup": [
    {
     "visible": ".disc-cp-modal__modal",
+    "check": "any"
+   },
+   {
+    "visible": ".js-disc-cp-accept-all",
     "check": "any"
    }
   ],
@@ -5815,6 +6743,10 @@
    {
     "visible": "div[data-name=\"comp-banner\"]",
     "check": "any"
+   },
+   {
+    "visible": "div[data-name=\"comp-banner\"] button[aria-label=\"Dismiss\"]",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -5839,6 +6771,10 @@
   "detectPopup": [
    {
     "visible": ".cookielaw-banner",
+    "check": "any"
+   },
+   {
+    "visible": ".cookielaw-banner .btn-default",
     "check": "any"
    }
   ],
@@ -5865,6 +6801,10 @@
    {
     "visible": "dialog.consent",
     "check": "any"
+   },
+   {
+    "visible": "button#cookie-consent-button",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -5889,6 +6829,10 @@
   "detectPopup": [
    {
     "visible": "div#cookieconsent",
+    "check": "any"
+   },
+   {
+    "visible": "button#cookieok",
     "check": "any"
    }
   ],
@@ -5915,6 +6859,10 @@
    {
     "visible": "[data-qa=\"privacy-settings\"]",
     "check": "any"
+   },
+   {
+    "visible": "button[data-qa=\"privacy-settings-action-info\"]",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -5939,6 +6887,10 @@
   "detectPopup": [
    {
     "visible": "div#cl-consent",
+    "check": "any"
+   },
+   {
+    "visible": "button.cl-consent__btn",
     "check": "any"
    }
   ],
@@ -5965,6 +6917,10 @@
    {
     "visible": "div#toast-container",
     "check": "any"
+   },
+   {
+    "visible": "button.js-cookie-accept",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -5989,6 +6945,10 @@
   "detectPopup": [
    {
     "visible": "#js_reveal_cookie_content",
+    "check": "any"
+   },
+   {
+    "visible": "button[data-cookie_consent=\"1\"]",
     "check": "any"
    }
   ],
@@ -6015,6 +6975,10 @@
    {
     "visible": "[data-testid=\"cookie-banner\"]",
     "check": "any"
+   },
+   {
+    "visible": "button[data-testid=\"gdpr-btn-accept-all\"]",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -6039,6 +7003,10 @@
   "detectPopup": [
    {
     "visible": "#cookiesPrivacyPolicyContainerWrapper",
+    "check": "any"
+   },
+   {
+    "visible": "#cookiesPrivacyPolicyAllowBtn",
     "check": "any"
    }
   ],
@@ -6065,6 +7033,10 @@
    {
     "visible": ".cookie-banner",
     "check": "any"
+   },
+   {
+    "visible": ".cookie-accept",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -6089,6 +7061,10 @@
   "detectPopup": [
    {
     "visible": ".ck-notiz",
+    "check": "any"
+   },
+   {
+    "visible": "[name=\"accept\"]",
     "check": "any"
    }
   ],
@@ -6115,6 +7091,10 @@
    {
     "visible": "#qkies_info",
     "check": "any"
+   },
+   {
+    "visible": "#Cookies_consent_btn",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -6139,6 +7119,10 @@
   "detectPopup": [
    {
     "visible": "#cookie-law-info-bar",
+    "check": "any"
+   },
+   {
+    "visible": "#wt-cli-accept-all-btn",
     "check": "any"
    }
   ],
@@ -6165,6 +7149,10 @@
    {
     "visible": "#moove_gdpr_cookie_info_bar",
     "check": "any"
+   },
+   {
+    "visible": ".moove-gdpr-infobar-allow-all",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -6189,6 +7177,10 @@
   "detectPopup": [
    {
     "visible": "#Footer_Cookie",
+    "check": "any"
+   },
+   {
+    "visible": "#Footer_butAccept",
     "check": "any"
    }
   ],
@@ -6215,6 +7207,10 @@
    {
     "visible": "#pp_info",
     "check": "any"
+   },
+   {
+    "visible": "[value=\"Accept\"]",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -6239,6 +7235,10 @@
   "detectPopup": [
    {
     "visible": "#cp-overlay",
+    "check": "any"
+   },
+   {
+    "visible": "#cp-yes",
     "check": "any"
    }
   ],
@@ -6265,6 +7265,10 @@
    {
     "visible": ".syno_cookie_element",
     "check": "any"
+   },
+   {
+    "visible": ".btn_accept",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -6289,6 +7293,10 @@
   "detectPopup": [
    {
     "visible": ".privacyArea",
+    "check": "any"
+   },
+   {
+    "visible": ".acceptAll",
     "check": "any"
    }
   ],
@@ -6315,6 +7323,10 @@
    {
     "visible": "#tp-cookie",
     "check": "any"
+   },
+   {
+    "visible": ".tp-cookie-accept-all",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -6339,6 +7351,10 @@
   "detectPopup": [
    {
     "visible": "#legal_notice",
+    "check": "any"
+   },
+   {
+    "visible": "[onclick*=\"cookie_Agree()\"]",
     "check": "any"
    }
   ],
@@ -6365,6 +7381,10 @@
    {
     "visible": "#cc-window",
     "check": "any"
+   },
+   {
+    "visible": "#btn-allowAllCookie",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -6389,6 +7409,10 @@
   "detectPopup": [
    {
     "visible": ".cc-window",
+    "check": "any"
+   },
+   {
+    "visible": ".cc-dismiss",
     "check": "any"
    }
   ],
@@ -6415,6 +7439,10 @@
    {
     "visible": ".new-policy-box",
     "check": "any"
+   },
+   {
+    "visible": ".modal-box__buttons--save-all",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -6439,6 +7467,10 @@
   "detectPopup": [
    {
     "visible": ".cc-window",
+    "check": "any"
+   },
+   {
+    "visible": ".cc-allow",
     "check": "any"
    }
   ],
@@ -6465,6 +7497,10 @@
    {
     "visible": ".cc-window",
     "check": "any"
+   },
+   {
+    "visible": ".cc-allow",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -6489,6 +7525,10 @@
   "detectPopup": [
    {
     "visible": ".CookieBanner_cookieBanner__R_BOh",
+    "check": "any"
+   },
+   {
+    "visible": ".CookieBanner_buttonContainer__NOZxH:nth-child(1) button",
     "check": "any"
    }
   ],
@@ -6515,6 +7555,10 @@
    {
     "visible": "#gdpr-cookie-message",
     "check": "any"
+   },
+   {
+    "visible": "#gdpr-cookie-accept",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -6539,6 +7583,10 @@
   "detectPopup": [
    {
     "visible": "div[data-testid=\"cookie-popover\"]",
+    "check": "any"
+   },
+   {
+    "visible": "button[data-testid=\"allow-all-cookies-button\"]",
     "check": "any"
    }
   ],
@@ -6565,6 +7613,10 @@
    {
     "visible": ".kDNyTh.hbTFXs",
     "check": "any"
+   },
+   {
+    "visible": "button.fcQwZX",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -6589,6 +7641,10 @@
   "detectPopup": [
    {
     "visible": "#cookieman-modal",
+    "check": "any"
+   },
+   {
+    "visible": "[data-cookieman-accept-all]",
     "check": "any"
    }
   ],
@@ -6615,6 +7671,10 @@
    {
     "visible": "#privacy-init-wall",
     "check": "any"
+   },
+   {
+    "visible": "#privacy-init-wall-button-accept",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -6639,6 +7699,10 @@
   "detectPopup": [
    {
     "visible": "#cookiescript_injected_wrapper",
+    "check": "any"
+   },
+   {
+    "visible": "#cookiescript_accept",
     "check": "any"
    }
   ],
@@ -6665,6 +7729,10 @@
    {
     "visible": "#tc-privacy-wrapper",
     "check": "any"
+   },
+   {
+    "visible": "#popin_tc_privacy_button",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -6689,6 +7757,10 @@
   "detectPopup": [
    {
     "visible": "#tc-privacy-wrapper",
+    "check": "any"
+   },
+   {
+    "visible": "#popin_tc_privacy_button",
     "check": "any"
    }
   ],
@@ -6715,6 +7787,10 @@
    {
     "visible": "#tc-privacy-wrapper",
     "check": "any"
+   },
+   {
+    "visible": "#popin_tc_privacy_button_3",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -6739,6 +7815,10 @@
   "detectPopup": [
    {
     "visible": "#tc-privacy-wrapper",
+    "check": "any"
+   },
+   {
+    "visible": "#popin_tc_privacy_button_2",
     "check": "any"
    }
   ],
@@ -6765,6 +7845,10 @@
    {
     "visible": "#tc-privacy-wrapper",
     "check": "any"
+   },
+   {
+    "visible": "#popin_tc_privacy_button_2",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -6789,6 +7873,10 @@
   "detectPopup": [
    {
     "visible": "#tc-privacy-wrapper",
+    "check": "any"
+   },
+   {
+    "visible": "#header_tc_privacy_button_3",
     "check": "any"
    }
   ],
@@ -6815,6 +7903,10 @@
    {
     "visible": "#GDPRConsentManagerContainer",
     "check": "any"
+   },
+   {
+    "visible": "#ccmgt_explicit_accept",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -6839,6 +7931,10 @@
   "detectPopup": [
    {
     "visible": "#as24-cmp-popup",
+    "check": "any"
+   },
+   {
+    "visible": "[data-testid=\"as24-cmp-accept-all-button\"]",
     "check": "any"
    }
   ],
@@ -6865,6 +7961,10 @@
    {
     "visible": ".lnc-firstRunPopup",
     "check": "any"
+   },
+   {
+    "visible": ".lnc-acceptCookiesButton",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -6889,6 +7989,10 @@
   "detectPopup": [
    {
     "visible": "#cmp-modal",
+    "check": "any"
+   },
+   {
+    "visible": ".cmp-accept",
     "check": "any"
    }
   ],
@@ -6915,6 +8019,10 @@
    {
     "visible": "#consent-wall",
     "check": "any"
+   },
+   {
+    "visible": "#consent_wall_optin",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -6939,6 +8047,10 @@
   "detectPopup": [
    {
     "visible": "#ccm-widget",
+    "check": "any"
+   },
+   {
+    "visible": ".ccm--save-settings",
     "check": "any"
    }
   ],
@@ -6965,6 +8077,10 @@
    {
     "visible": "#kick__logi-container",
     "check": "any"
+   },
+   {
+    "visible": ".kick__data-grid__main .kick__btn",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -6989,6 +8105,10 @@
   "detectPopup": [
    {
     "visible": ".cookie_consent_withings",
+    "check": "any"
+   },
+   {
+    "visible": "#cookieBtnAll",
     "check": "any"
    }
   ],
@@ -7015,6 +8135,10 @@
    {
     "visible": "#cookieLB",
     "check": "any"
+   },
+   {
+    "visible": ".ei_btn_typ_validate",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -7039,6 +8163,10 @@
   "detectPopup": [
    {
     "visible": "#cookieConsentBanner",
+    "check": "any"
+   },
+   {
+    "visible": "#cookieConsentAcceptButton",
     "check": "any"
    }
   ],
@@ -7065,6 +8193,10 @@
    {
     "visible": "#modalTpl",
     "check": "any"
+   },
+   {
+    "visible": "#rgpd-btn-index-accept",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -7089,6 +8221,10 @@
   "detectPopup": [
    {
     "visible": "#cm",
+    "check": "any"
+   },
+   {
+    "visible": "#c-bns #c-p-bn",
     "check": "any"
    }
   ],
@@ -7115,6 +8251,10 @@
    {
     "visible": "#privacy-manager-popin",
     "check": "any"
+   },
+   {
+    "visible": "#accept-btn",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -7139,6 +8279,10 @@
   "detectPopup": [
    {
     "visible": "#tarteaucitronAlertBig",
+    "check": "any"
+   },
+   {
+    "visible": ".accept",
     "check": "any"
    }
   ],
@@ -7165,6 +8309,10 @@
    {
     "visible": "#tarteaucitronWelcome",
     "check": "any"
+   },
+   {
+    "visible": ".allow",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -7189,6 +8337,10 @@
   "detectPopup": [
    {
     "visible": "#tc-privacy-wrapper",
+    "check": "any"
+   },
+   {
+    "visible": "#popin_tc_privacy_button_2",
     "check": "any"
    }
   ],
@@ -7215,6 +8367,10 @@
    {
     "visible": "#ppms_cm_popup_overlay",
     "check": "any"
+   },
+   {
+    "visible": "#ppms_cm_agree-to-all",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -7239,6 +8395,10 @@
   "detectPopup": [
    {
     "visible": "#shopify-pc__banner",
+    "check": "any"
+   },
+   {
+    "visible": "#shopify-pc__banner__btn-accept",
     "check": "any"
    }
   ],
@@ -7265,6 +8425,10 @@
    {
     "visible": "#fancybox-container-1",
     "check": "any"
+   },
+   {
+    "visible": ".js-accept",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -7289,6 +8453,10 @@
   "detectPopup": [
    {
     "visible": ".cookie-banner",
+    "check": "any"
+   },
+   {
+    "visible": ".js--cookie-banner-accept",
     "check": "any"
    }
   ],
@@ -7315,6 +8483,10 @@
    {
     "visible": "#cookieConsentModal",
     "check": "any"
+   },
+   {
+    "visible": "#acceptAllCookiesBtn",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -7339,6 +8511,10 @@
   "detectPopup": [
    {
     "visible": "#modal-cookie-info",
+    "check": "any"
+   },
+   {
+    "visible": ".cookie-agree",
     "check": "any"
    }
   ],
@@ -7365,6 +8541,10 @@
    {
     "visible": "#__tealiumGDPRecModal",
     "check": "any"
+   },
+   {
+    "visible": "#consent_prompt_submit",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -7389,6 +8569,10 @@
   "detectPopup": [
    {
     "visible": "#__tealiumGDPRecModal",
+    "check": "any"
+   },
+   {
+    "visible": "#consent_optin",
     "check": "any"
    }
   ],
@@ -7415,6 +8599,10 @@
    {
     "visible": ".fancybox-type-html",
     "check": "any"
+   },
+   {
+    "visible": ".js-consent-all-submit",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -7440,6 +8628,10 @@
    {
     "visible": "main[data-consent-main]",
     "check": "any"
+   },
+   {
+    "visible": "custom-button#consentAccept",
+    "check": "any"
    }
   ],
   "optIn": [
@@ -7464,6 +8656,10 @@
   "detectPopup": [
    {
     "visible": "#cookie-consent-banner",
+    "check": "any"
+   },
+   {
+    "visible": ".cookie-consent-banner__btn-primary",
     "check": "any"
    }
   ],
