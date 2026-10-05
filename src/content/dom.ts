@@ -48,6 +48,15 @@ export function isOnScreen(el: Element): boolean {
   return rect.bottom > 0 && rect.right > 0 && rect.top < window.innerHeight && rect.left < window.innerWidth;
 }
 
+/** On screen with at least 30 % of its height – a banner that slid out leaves only an edge behind. */
+export function isMostlyOnScreen(el: Element): boolean {
+  if (!isOnScreen(el)) return false;
+  const rect = el.getBoundingClientRect();
+  if (rect.height <= 0) return true;
+  const visible = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+  return visible / rect.height >= 0.3;
+}
+
 let pageWorldClick: ((el: HTMLElement) => void) | null = null;
 
 /**

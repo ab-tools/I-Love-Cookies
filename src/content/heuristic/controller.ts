@@ -1,4 +1,4 @@
-import { isOnScreen, trustedClicksOn } from '../dom';
+import { isMostlyOnScreen, trustedClicksOn } from '../dom';
 import { findConsentBanners } from './banner';
 import { extractButtons } from './candidates';
 import { acceptBanner, hasToggles, lockedAccept, type HeuristicResult } from './flow';
@@ -112,6 +112,6 @@ export class HeuristicController {
    * "cookie settings" icon), so the banner counts as shown only while it still offers a consent choice. */
   bannerOnScreen(): boolean | null {
     if (!this.banner) return null;
-    return this.banner.isConnected && isOnScreen(this.banner) && extractButtons(this.banner).some((b) => CHOICES.has(b.cls));
+    return this.banner.isConnected && isMostlyOnScreen(this.banner) && extractButtons(this.banner).some((b) => CHOICES.has(b.cls));
   }
 }
