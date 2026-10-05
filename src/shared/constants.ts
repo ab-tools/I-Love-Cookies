@@ -18,6 +18,8 @@ export const ISSUE_TEMPLATE = 'site-report.yml';
 
 /** Loop guards and timeouts. */
 export const LIMITS = {
+  /** Second look at a banner reported as still on screen (slow closing animations). */
+  lateCheckMs: 6000,
   /** Accept attempts per frame per page load. */
   attemptsPerDocument: 2,
   /** Failed attempts per site and day before we stop and show "needs attention". */

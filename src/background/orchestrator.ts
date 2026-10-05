@@ -513,6 +513,12 @@ async function verify(tabId: number, frameId: number, docId: number | undefined)
     await sleep(LIMITS.settleMs);
     frame = await askFrame<FrameVerification>(tabId, frameId, verifyMsg, LIMITS.verifyTimeoutMs);
   }
+  // Banners that close slowly (long slide-out, closing after a delay): one more look before failing.
+  if (frame?.popupOnScreen) {
+    await sleep(LIMITS.lateCheckMs);
+    if (documentIds.get(tabId) !== docId) return;
+    frame = await askFrame<FrameVerification>(tabId, frameId, verifyMsg, LIMITS.verifyTimeoutMs);
+  }
   const top = frameId === 0 ? frame : await askFrame<FrameVerification>(tabId, 0, { type: 'ilc:verify' }, 2000);
   const signals = (await runSnippet(tabId, 0, 'ILC_READ_CONSENT_SIGNALS', [state.signalMark ?? 0]).catch(() => null)) as ConsentSignals | null;
   if (documentIds.get(tabId) !== docId) return;

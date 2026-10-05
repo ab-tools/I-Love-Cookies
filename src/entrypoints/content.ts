@@ -199,7 +199,9 @@ async function verifyFrame(
   // reduced to the small "cookie settings" button left after consent is no dialog.
   const dialogSized = (el: Element) => {
     const r = el.getBoundingClientRect();
-    return isOnScreen(el) && r.width * r.height >= 0.01 * window.innerWidth * window.innerHeight;
+    // Only the part inside the viewport counts: a bar slid out below the edge can keep a fraction of a pixel in it.
+    const visible = Math.max(0, Math.min(r.right, window.innerWidth) - Math.max(r.left, 0)) * Math.max(0, Math.min(r.bottom, window.innerHeight) - Math.max(r.top, 0));
+    return isOnScreen(el) && visible >= 0.01 * window.innerWidth * window.innerHeight;
   };
   const popupOnScreen =
     (acceptButton !== undefined && isDeepVisible(acceptButton)) ||
