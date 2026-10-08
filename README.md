@@ -1,6 +1,6 @@
 # I Love Cookies 🍪❤️
 
-A Chrome / Firefox extension (Manifest V3) that **answers every cookie banner with the maximum consent it offers**
+A Chrome / Firefox / Edge / Opera extension (Manifest V3) that **answers every cookie banner with the maximum consent it offers**
 ("Accept all"), so websites work 100 % – videos, maps, embeds, comments, logins – without you ever clicking a banner.
 
 Unlike "I don't care about cookies"-style extensions, it never just *hides* banners (which leaves half-broken
@@ -72,7 +72,8 @@ Requires Node.js ≥ 22.
 npm install            # also builds the rule bundle (src/rules/generated/)
 npm run dev            # Chrome with hot reload   (npm run dev:firefox for Firefox)
 npm run build          # .output/chrome-mv3       (npm run build:firefox → .output/firefox-mv3)
-npm run zip            # store packages           (npm run zip:firefox also creates the AMO source zip)
+npm run zip            # store packages           (npm run zip:firefox also creates the AMO source zip,
+                       #                           npm run zip:opera: not minified, as Opera's review requires)
 npm run compile        # type check
 npm test               # unit tests (Vitest)
 npm run lint:firefox   # AMO linter on the Firefox build

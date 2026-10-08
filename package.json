@@ -1,7 +1,7 @@
 {
   "name": "i-love-cookies",
   "description": "Automatically accepts ALL cookies on EU cookie consent banners so websites work 100 %.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "type": "module",
   "license": "MPL-2.0",
@@ -16,7 +16,8 @@
     "compile": "npm run rules && tsc --noEmit",
     "test": "npm run rules && vitest run",
     "postinstall": "node scripts/build-rules.mjs && wxt prepare",
-    "lint:firefox": "web-ext lint -s .output/firefox-mv3"
+    "lint:firefox": "web-ext lint -s .output/firefox-mv3",
+    "zip:opera": "npm run rules && wxt zip -b opera"
   },
   "dependencies": {
     "@duckduckgo/autoconsent": "16.44.0"

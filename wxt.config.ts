@@ -10,10 +10,12 @@ export default defineConfig({
   manifestVersion: 3,
   // autoconsent's TS sources (its package only exports a prebuilt bundle). Bundler-only alias: TypeScript uses
   // the declarations in src/types/autoconsent-src.d.ts instead of type-checking autoconsent's sources.
-  vite: () => ({
+  vite: ({ browser }) => ({
     resolve: { alias: { '@autoconsent-src': resolve('node_modules/@duckduckgo/autoconsent/lib') } },
     // Build identifier in problem reports: the commit the package was built from (+ marker for local changes).
     define: { __ILC_BUILD__: JSON.stringify(buildId()) },
+    // Opera's review only accepts readable (not minified) code.
+    ...(browser === 'opera' ? { build: { minify: false } } : {}),
   }),
   // Source archive for AMO review: everything needed to reproduce the build, nothing else.
   zip: { excludeSources: ['.github/**'] },
