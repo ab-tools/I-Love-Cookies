@@ -25,14 +25,19 @@ export const DEFAULT_SETTINGS: Settings = {
   ageGates: true,
 };
 
+/** Settings follow the user across devices where the browser syncs extension data; Opera has no storage.sync. */
+export function settingsArea(): 'sync' | 'local' {
+  return browser.storage.sync ? 'sync' : 'local';
+}
+
 export async function getSettings(): Promise<Settings> {
-  const stored = await browser.storage.sync.get('settings');
+  const stored = await browser.storage[settingsArea()].get('settings');
   return { ...DEFAULT_SETTINGS, ...((stored.settings as Partial<Settings>) ?? {}) };
 }
 
 export async function updateSettings(change: Partial<Settings>): Promise<Settings> {
   const settings = { ...(await getSettings()), ...change };
-  await browser.storage.sync.set({ settings });
+  await browser.storage[settingsArea()].set({ settings });
   return settings;
 }
 

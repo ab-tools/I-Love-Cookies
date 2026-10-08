@@ -11,7 +11,7 @@ import { clickDeepUntilGone, isDeepVisible, isOnScreen, setPageWorldClick, setTr
 import { ConsentOMaticCMP, type ComRule } from '../content/consent-o-matic';
 import { HeuristicController } from '../content/heuristic/controller';
 import { heuristicOptions } from '../content/heuristic/options';
-import { getSettings, type Settings } from '../shared/settings';
+import { getSettings, settingsArea, type Settings } from '../shared/settings';
 import { announceFrame, frameInfo, listenForFrameTokens } from '../content/frames';
 import { bannerElement, collectFrameSnapshot, offersPaidOption } from '../content/report-snapshot';
 
@@ -48,7 +48,7 @@ export default defineContentScript({
     };
     void getSettings().then(applySettings, () => undefined);
     browser.storage.onChanged.addListener((changes, area) => {
-      if (area === 'sync' && changes.settings) void getSettings().then(applySettings, () => undefined);
+      if (area === settingsArea() && changes.settings) void getSettings().then(applySettings, () => undefined);
     });
     setPageWorldClick((el) => {
       const token = Math.random().toString(36).slice(2);
