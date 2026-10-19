@@ -2,7 +2,8 @@ import { hasBox, isOnScreen, isVisible, renderedElements, shadowRootOf } from '.
 import { ACCEPTING, classifyLabel, isConsentNoun, type ButtonClass } from './text';
 
 export interface ButtonCandidate {
-  element: HTMLElement;
+  /** What is clicked: the control, or the icon inside a text-less one. */
+  element: Element;
   label: string;
   cls: ButtonClass;
   /** Following this element would leave the page (link to another URL or new tab). */
@@ -145,6 +146,13 @@ function clippedAway(el: HTMLElement, banner: Element): boolean {
   return false;
 }
 
+/** The only icon of a control without text: pages may listen on the icon itself, and its click bubbles up anyway. */
+function iconOf(el: HTMLElement): Element | null {
+  if (textOf(el)) return null;
+  const icons = el.querySelectorAll('svg,img');
+  return icons.length === 1 && isOnScreen(icons[0]!) ? icons[0]! : null;
+}
+
 /**
  * Script-driven controls without button markup: short, labelled leaf elements with a pointer cursor. Never
  * labels or anything tied to a form control – clicking those would switch a setting instead of answering.
@@ -225,6 +233,6 @@ export function extractButtons(banner: Element): ButtonCandidate[] {
       if (cls === 'SAVE' && ACCEPT_ALL_NAME.test(nameOf(el))) cls = 'ACCEPT_ALL';
       // A button whose id says accept but whose label means nothing (a wrong translation like "Always active").
       if (cls === 'OTHER' && el.matches('button,[role=button]') && ACCEPT_ID.test(nameOf(el))) cls = 'ACCEPT';
-      return label ? [{ element: box, label, cls, navigates: navigatesAway(el, cls), prominence: Math.round(Math.min(rect.height, 64) * 1000 + Math.min(rect.width, 400)) }] : [];
+      return label ? [{ element: iconOf(el) ?? box, label, cls, navigates: navigatesAway(el, cls), prominence: Math.round(Math.min(rect.height, 64) * 1000 + Math.min(rect.width, 400)) }] : [];
     });
 }

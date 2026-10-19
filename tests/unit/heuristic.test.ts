@@ -4,6 +4,7 @@ import { extractButtons } from '../../src/content/heuristic/candidates';
 import { acceptBanner } from '../../src/content/heuristic/flow';
 import { heuristicOptions } from '../../src/content/heuristic/options';
 import { decide } from '../../src/content/heuristic/policy';
+import { realisticClick } from '../../src/content/dom';
 
 // happy-dom has no layout: every element gets a box (data-rect="x,y,w,h" or a default one).
 const originalRect = Element.prototype.getBoundingClientRect;
@@ -268,6 +269,18 @@ describe('buttons without button markup', () => {
       <button data-rect="30,610,40,40">Cookie preferences</button>
       <button data-rect="265,615,74,34">Reject</button><button data-rect="351,616,83,32">Allow all</button></div>`;
     expect(extractButtons(document.getElementById('cmp')!).map((b) => b.label)).toEqual(['Cookie preferences']);
+  });
+
+  it('clicks the icon of a close button without text (pages listen on the icon)', async () => {
+    document.body.innerHTML = `<div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT}
+      <div class="close-error" data-rect="980,505,40,40"><svg class="close-error-icon" data-rect="988,513,24,24"></svg></div></div>`;
+    let closed = false;
+    document.querySelector('svg')!.addEventListener('click', () => (closed = true));
+    const [close] = extractButtons(document.getElementById('cmp')!);
+    expect(close).toMatchObject({ cls: 'CLOSE', label: '×' });
+    expect(close!.element.tagName.toLowerCase()).toBe('svg');
+    await realisticClick(close!.element);
+    expect(closed).toBe(true);
   });
 
   it('reads no style sheets of a shadow root as banner text', () => {

@@ -123,7 +123,9 @@ export async function realisticClick(el: Element): Promise<void> {
     pageWorldClick(scriptLink);
     return;
   }
-  (el as HTMLElement).click();
+  // SVG icons have no click().
+  if (el instanceof HTMLElement) el.click();
+  else el.dispatchEvent(new MouseEvent('click', init));
 }
 
 /** Clicks the first visible element matched by a shadow selector chain. */
