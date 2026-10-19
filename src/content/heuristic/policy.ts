@@ -36,6 +36,8 @@ export function decide(buttons: readonly ButtonCandidate[], hasToggles = false, 
   const first = (cls: ButtonCandidate['cls']) =>
     allowed.filter((b) => b.cls === cls).reduce<ButtonCandidate | undefined>((best, b) => (!best || better(b, best) ? b : best), undefined);
 
+  // A link to another page ("More details on essential cookies") is no answer to the banner.
+  const rejects = (b: ButtonCandidate) => b.cls === 'REJECT' && !b.navigates;
   const acceptAll = first('ACCEPT_ALL');
   if (acceptAll) return { action: 'click', button: acceptAll, kind: 'accept_all' };
   const accept = first('ACCEPT');
@@ -48,7 +50,7 @@ export function decide(buttons: readonly ButtonCandidate[], hasToggles = false, 
   const selectAll = first('SELECT_ALL');
   if (save && (hasToggles || selectAll)) return { action: 'save', button: save };
   // A notice whose only answer is "Confirm" / "Save" (no categories, no reject) is acknowledged with it.
-  if (save && !hasToggles && !buttons.some((b) => b.cls === 'REJECT')) return { action: 'click', button: save, kind: 'acknowledge' };
+  if (save && !hasToggles && !buttons.some(rejects)) return { action: 'click', button: save, kind: 'acknowledge' };
   // "Select all" without a save button is the banner's accept-all button.
   if (selectAll) return { action: 'click', button: selectAll, kind: 'accept_all' };
   const settings = first('SETTINGS');
@@ -57,7 +59,7 @@ export function decide(buttons: readonly ButtonCandidate[], hasToggles = false, 
   if (settings && close && INFO_LABEL.test(normalizeLabel(settings.label))) return { action: 'click', button: close, kind: 'close' };
   if (settings) return { action: 'settings', button: settings };
   // Locked accept button, or a settings screen offering only "necessary only": switch everything on, then decide again.
-  if (hasToggles && (lockedAccept || buttons.some((b) => b.cls === 'REJECT'))) return { action: 'toggles' };
+  if (hasToggles && (lockedAccept || buttons.some(rejects))) return { action: 'toggles' };
   // Nothing to consent to: closed so the page is usable as if there never was a banner.
   if (close) return { action: 'click', button: close, kind: 'close' };
   return { action: 'none', reason: buttons.length ? 'no accepting button' : 'no buttons' };

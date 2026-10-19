@@ -250,7 +250,41 @@ describe('links', () => {
   });
 });
 
+describe('buttons without button markup', () => {
+  it('finds pointer headings, spans next to hidden fields and elements whose id or class says so', () => {
+    document.body.innerHTML = `<div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT}
+      <div><input type="hidden" name="referer"><span id="cookie-settings" style="cursor:pointer">Einstellungen</span></div>
+      <h6 style="cursor:pointer">Akzeptieren</h6>
+      <div id="optout-agree" class="white pointer">Ich stimme zu</div></div>`;
+    expect(extractButtons(document.getElementById('cmp')!).map((b) => `${b.cls}:${b.label}`)).toEqual([
+      'ACCEPT:Ich stimme zu',
+      'SETTINGS:Einstellungen',
+      'ACCEPT:Akzeptieren',
+    ]);
+  });
+
+  it('ignores buttons outside a banner that hides its overflow (collapsed to an icon)', () => {
+    document.body.innerHTML = `<div id="cmp" style="position:fixed; overflow:hidden" data-rect="24,600,61,64">${BANNER_TEXT}
+      <button data-rect="30,610,40,40">Cookie preferences</button>
+      <button data-rect="265,615,74,34">Reject</button><button data-rect="351,616,83,32">Allow all</button></div>`;
+    expect(extractButtons(document.getElementById('cmp')!).map((b) => b.label)).toEqual(['Cookie preferences']);
+  });
+
+  it('reads no style sheets of a shadow root as banner text', () => {
+    document.body.innerHTML = `<div id="chat" style="position:fixed" data-rect="0,500,1024,260"></div>`;
+    document.getElementById('chat')!.attachShadow({ mode: 'open' }).innerHTML =
+      `<style>.cookie-consent-partners-privacy-tracking { color: red } .cookie { display: none }</style><button>Chat with us</button>`;
+    expect(findConsentBanners()).toEqual([]);
+  });
+});
+
 describe('decision', () => {
+  it('saves a settings layer whose only "reject" is a link to another page', () => {
+    document.body.innerHTML = `<div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT}
+      <a href="/cookie-policy/essential">More details on essential cookies</a><button>Save cookie settings</button></div>`;
+    expect(decide(extractButtons(document.getElementById('cmp')!))).toMatchObject({ action: 'click', kind: 'acknowledge', button: { label: 'Save cookie settings' } });
+  });
+
   it('prefers accept all and never clicks reject, paid, login or navigating buttons', () => {
     document.body.innerHTML = `
       <div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT}

@@ -1,0 +1,14 @@
+[
+  {
+    "name": "ilc-matronics-dk",
+    "comment": "Welcome dialog with language, country and cookie choice. Selects Danish first: with the preselected English, \"Continue with cookies\" moves to matronics.eu.",
+    "runContext": { "main": true, "frame": false, "urlPattern": "^https?://([^/]*\\.)?matronics\\.dk(:\\d+)?/" },
+    "detectCmp": [{ "exists": ".remodal-wrapper button[name=cookieoption][value=cookies]" }],
+    "detectPopup": [{ "visible": ".remodal-wrapper button[name=cookieoption][value=cookies]", "check": "any" }],
+    "optIn": [
+      { "if": { "exists": "input.danish-radio:not(:checked)" }, "then": [{ "click": "input.danish-radio" }, { "wait": 300 }] },
+      { "waitForThenClick": ".remodal-wrapper button[name=cookieoption][value=cookies]" }
+    ],
+    "optOut": []
+  }
+]

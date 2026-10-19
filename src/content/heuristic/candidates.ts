@@ -13,8 +13,8 @@ export interface ButtonCandidate {
 
 /** Real controls. */
 const CLICKABLE = 'button,[role=button],a,input[type=button],input[type=submit],[onclick],summary';
-/** Elements styled as buttons – only used when they contain no other control (not whole button groups). */
-const BUTTON_LIKE = '[class*="btn"],[class*="button"],[tabindex="0"]';
+/** Elements styled or named as buttons – only used when they contain no other control (not whole button groups). */
+const BUTTON_LIKE = '[class*="btn"],[class*="button"],[tabindex="0"],[class~="pointer"],[id*="accept" i],[id*="agree" i]';
 /** Close icons without text ("<div class=close><i class=icon-close></i></div>"). */
 const CLOSE_ICON = '[class*="close" i],[id*="close" i],[aria-label*="close" i],[title*="close" i]';
 const CLOSE_NAME = /(^|[-_\s])(close|closer|close-?btn|close-?button|close-?icon)([-_\s]|$)|(icon|eico|ico|fa)-(close|times|x)\b/i;
@@ -127,15 +127,33 @@ function belowTheFold(el: HTMLElement, banner: Element): boolean {
   return false;
 }
 
+/** Outside a part of the banner that hides its overflow (a banner collapsed to an icon keeps its buttons there). */
+function clippedAway(el: HTMLElement, banner: Element): boolean {
+  const rect = el.getBoundingClientRect();
+  const x = rect.left + rect.width / 2;
+  const y = rect.top + rect.height / 2;
+  for (let p = el.parentElement; p; p = p.parentElement) {
+    const style = getComputedStyle(p);
+    const clipsX = /hidden|clip/.test(style.overflowX || style.overflow);
+    const clipsY = /hidden|clip/.test(style.overflowY || style.overflow);
+    if (clipsX || clipsY) {
+      const box = p.getBoundingClientRect();
+      if ((clipsX && (x < box.left || x > box.right)) || (clipsY && (y < box.top || y > box.bottom))) return true;
+    }
+    if (p === banner) break;
+  }
+  return false;
+}
+
 /**
  * Script-driven controls without button markup: short, labelled leaf elements with a pointer cursor. Never
  * labels or anything tied to a form control – clicking those would switch a setting instead of answering.
  */
 function pointerControls(root: Element | ShadowRoot, known: Set<HTMLElement>): HTMLElement[] {
   const found: HTMLElement[] = [];
-  for (const el of Array.from(root.querySelectorAll<HTMLElement>('div,span,li,p'))) {
+  for (const el of Array.from(root.querySelectorAll<HTMLElement>('div,span,li,p,h1,h2,h3,h4,h5,h6'))) {
     if (known.has(el) || !hasBox(el) || el.closest(`${CLICKABLE},label`) || el.querySelector(`${CLICKABLE},${BUTTON_LIKE},input,select,textarea,label`)) continue;
-    if (el.parentElement?.querySelector(':scope > input, :scope > label')) continue;
+    if (el.parentElement?.querySelector(':scope > input:not([type=hidden]), :scope > label')) continue;
     const text = el.innerText?.trim() ?? '';
     if (!text || text.length > 40 || el.children.length > 2) continue;
     if (getComputedStyle(el).cursor !== 'pointer') continue;
@@ -195,7 +213,7 @@ export function extractButtons(banner: Element): ButtonCandidate[] {
       // Links sized only by their content (0 px high) are seen – and clicked – through their first visible
       // child; the click bubbles up to the link, while a handler on the child would not see a click on the link.
       const box = isOnScreen(el) ? el : (Array.from(el.querySelectorAll<HTMLElement>('*')).find(isOnScreen) ?? (belowTheFold(el, banner) ? el : null));
-      if (!box || (box !== el || isOnScreen(el) ? !isHitTestable(el, banner, box) : false) || (el as HTMLButtonElement).disabled) return [];
+      if (!box || (box !== el || isOnScreen(el) ? !isHitTestable(el, banner, box) : false) || (el as HTMLButtonElement).disabled || clippedAway(box, banner)) return [];
       const label = labelOf(el);
       const rect = box.getBoundingClientRect();
       // Buttons with a description under the label ("Accept all", then ": consent to all cookies …"): the first line decides.

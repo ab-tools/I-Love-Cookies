@@ -63,6 +63,8 @@ describe('classifyLabel examples', () => {
     ['ACCEPTAȚI TOATE', 'ACCEPT_ALL'],
     ['Zustimmen und weiter mit Werbung', 'ACCEPT_ALL'],
     ['Continue with recommended cookies', 'ACCEPT_ALL'],
+    ['Accept the suggested cookie settings', 'ACCEPT_ALL'],
+    ['ПОГОДЖУЮСЯ', 'ACCEPT'],
     ['Akzeptieren', 'ACCEPT'],
     ['I agree', 'ACCEPT'],
     ["J'accepte", 'ACCEPT'],

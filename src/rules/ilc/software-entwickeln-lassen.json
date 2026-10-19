@@ -1,0 +1,11 @@
+[
+  {
+    "name": "ilc-software-entwickeln-lassen",
+    "comment": "Own dialog without consent wording on its buttons: \"Alle Features erleben\" accepts, \"Eingeschränkte Nutzererfahrung\" declines.",
+    "runContext": { "main": true, "frame": false, "urlPattern": "^https?://([^/]*\\.)?software-entwickeln-lassen\\.com(:\\d+)?/" },
+    "detectCmp": [{ "exists": "div.fixed.inset-0.z-50 button.bg-rech-primary" }],
+    "detectPopup": [{ "visible": "div.fixed.inset-0.z-50 button.bg-rech-primary" }],
+    "optIn": [{ "waitForThenClick": "div.fixed.inset-0.z-50 button.bg-rech-primary" }],
+    "optOut": []
+  }
+]

@@ -46,6 +46,16 @@ export interface Banner {
   area: number;
 }
 
+/** Text of a shadow root without its style sheets and scripts. */
+function shadowText(root: ShadowRoot): string {
+  const walker = root.ownerDocument.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode: (node) => (node.parentElement?.closest('style,script,noscript,template') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT),
+  });
+  const parts: string[] = [];
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) parts.push(node.nodeValue ?? '');
+  return parts.join(' ');
+}
+
 /** Visible text of an element including its shadow trees. */
 export function deepText(element: Element): string {
   const parts = [(element as HTMLElement).innerText ?? element.textContent ?? ''];
@@ -53,14 +63,14 @@ export function deepText(element: Element): string {
     for (const el of renderedElements(root)) {
       const shadow = shadowRootOf(el);
       if (shadow) {
-        parts.push(shadow.textContent ?? '');
+        parts.push(shadowText(shadow));
         collect(shadow);
       }
     }
   };
   const own = shadowRootOf(element);
   if (own) {
-    parts.push(own.textContent ?? '');
+    parts.push(shadowText(own));
     collect(own);
   }
   collect(element);
