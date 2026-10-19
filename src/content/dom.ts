@@ -41,6 +41,27 @@ export function isVisible(el: Element): boolean {
   return style.visibility !== 'hidden' && style.display !== 'none' && style.opacity !== '0';
 }
 
+/** Rendered at all (not inside a display:none subtree) – a cheap first check before anything else. */
+export function hasBox(el: Element): boolean {
+  return (el as Element & { checkVisibility?: () => boolean }).checkVisibility?.() !== false;
+}
+
+/** Descendant elements outside hidden subtrees (display:none layers are skipped as a whole). */
+export function renderedElements(root: Document | ShadowRoot | Element): Element[] {
+  const doc = root.ownerDocument ?? (root as Document);
+  const walker = doc.createTreeWalker(root, NodeFilter.SHOW_ELEMENT, {
+    acceptNode: (node) => {
+      const el = node as HTMLElement;
+      if (el.offsetParent !== null || el.offsetParent === undefined || hasBox(el)) return NodeFilter.FILTER_ACCEPT;
+      // display: contents has no box of its own, but its children have.
+      return getComputedStyle(el).display === 'contents' ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+    },
+  });
+  const found: Element[] = [];
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) found.push(node as Element);
+  return found;
+}
+
 /** Visible and at least partly inside the viewport. */
 export function isOnScreen(el: Element): boolean {
   if (!isVisible(el)) return false;

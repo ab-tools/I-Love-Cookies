@@ -38,6 +38,14 @@ describe('banner detection', () => {
     expect(findConsentBanners().map((b) => b.element.id)).toEqual(['cmp']);
   });
 
+  it('ignores fixed menus inside a navigation landmark (admin sidebars listing cookie plugins)', () => {
+    document.body.innerHTML = `
+      <div id="adminmenumain" role="navigation"><div id="adminmenuwrap" style="position:fixed" data-rect="0,32,160,800">
+        <ul><li><a href="admin.php?page=borlabs-cookie">Borlabs Cookie</a></li><li><a href="admin.php?page=consent">Consent Log</a></li>
+        <li><a href="options-privacy.php">Datenschutz</a></li><li><a href="admin.php?page=wc-settings">Einstellungen</a></li></ul></div></div>`;
+    expect(findConsentBanners()).toEqual([]);
+  });
+
   it('finds the banner when the page locks scrolling with a fixed <body>', () => {
     document.body.style.position = 'fixed';
     document.body.innerHTML = `<div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT}<button>Accept all</button></div>`;
@@ -226,6 +234,19 @@ describe('links', () => {
     const nav = Object.fromEntries(buttons.map((b) => [b.element.id, b.navigates]));
     expect(nav).toEqual({ same: false, info: true, away: true, tab: true, policy: true, shop: true });
     expect(decide(buttons)).toMatchObject({ action: 'click', button: { label: 'Accept all cookies' } });
+  });
+
+  it('treats links to the same address with another query as leaving, unless they accept or name consent', () => {
+    const before = location.href;
+    history.replaceState(null, '', '/wp-admin/admin.php?page=orders');
+    document.body.innerHTML = `
+      <div id="cmp" style="position:fixed" data-rect="0,500,1024,260">${BANNER_TEXT}
+        <a id="settings" href="admin.php?page=wc-settings">Einstellungen</a>
+        <a id="prefs" href="admin.php?show=cookie-settings">Cookie-Einstellungen</a>
+        <a id="accept" href="admin.php?do=1">Alle akzeptieren</a></div>`;
+    const nav = Object.fromEntries(extractButtons(document.getElementById('cmp')!).map((b) => [b.element.id, b.navigates]));
+    history.replaceState(null, '', before);
+    expect(nav).toEqual({ settings: true, prefs: false, accept: false });
   });
 });
 

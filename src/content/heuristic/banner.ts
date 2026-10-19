@@ -1,4 +1,4 @@
-import { isOnScreen, isVisible, shadowRootOf } from '../dom';
+import { hasBox, isOnScreen, isVisible, renderedElements, shadowRootOf } from '../dom';
 import { extractButtons } from './candidates';
 import { heuristicOptions } from './options';
 
@@ -33,6 +33,7 @@ const STRONG_CONSENT_SCORE = 6;
 const FRAME_DOCUMENT_MIN_SCORE = 4;
 
 const NAVIGATION = 'header,nav,footer,main,[role=banner],[role=navigation],[role=contentinfo],[role=main],[role=menu],[role=tooltip]';
+const MENU = 'nav,[role=navigation],[role=menu],[role=menubar]';
 const CLICKABLE =
   'button,[role=button],a,input[type=button],input[type=submit],[onclick],[class*="btn"],[class*="button"],[class*="close" i],[aria-label*="close" i]';
 
@@ -49,7 +50,7 @@ export interface Banner {
 export function deepText(element: Element): string {
   const parts = [(element as HTMLElement).innerText ?? element.textContent ?? ''];
   const collect = (root: Element | ShadowRoot) => {
-    for (const el of Array.from(root.querySelectorAll('*'))) {
+    for (const el of renderedElements(root)) {
       const shadow = shadowRootOf(el);
       if (shadow) {
         parts.push(shadow.textContent ?? '');
@@ -103,14 +104,16 @@ const CONSENT_NAMED = '[id*="cookie" i],[class*="cookie" i],[id*="consent" i],[c
  */
 function mayBeOverlay(el: Element): boolean {
   if (!(el instanceof HTMLElement)) return true;
-  if (el.offsetParent === null || el.style.position === 'fixed' || el.style.position === 'sticky') return true;
+  // No offsetParent: fixed – or not rendered at all (hidden layers of a dialog), which is never a banner.
+  if (el.offsetParent === null) return hasBox(el);
+  if (el.style.position === 'fixed' || el.style.position === 'sticky') return true;
   if (el.matches('dialog,[role=dialog],[role=alertdialog],[aria-modal]')) return true;
   return NAMED_LIKE_CONSENT.test(`${el.id} ${el.getAttribute('class') ?? ''}`);
 }
 
 /** All overlay-like elements, including those inside open and closed shadow roots. */
 function overlayElements(root: Document | ShadowRoot | Element, found: Element[] = []): Element[] {
-  for (const el of Array.from(root.querySelectorAll('*'))) {
+  for (const el of renderedElements(root)) {
     // Pages lock scrolling with position: fixed on <html>/<body> – never banners themselves.
     if (el === document.documentElement || el === document.body) continue;
     if (mayBeOverlay(el) && isOverlayLike(el)) found.push(el);
@@ -156,7 +159,8 @@ export function findConsentBanners(doc: Document = document): Banner[] {
     return ((Math.min(rect.right, window.innerWidth) - Math.max(rect.left, 0)) * (Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0))) / viewport;
   };
   // Only visible overlays count – an invisible wrapper must not hide the dialog inside it.
-  const set = new Set([...all].filter((el) => !el.matches(NAVIGATION) && isOnScreen(el) && areaOf(el) >= 0.01));
+  // Menus (a fixed sidebar inside a navigation landmark) are never banners, whatever their entries say.
+  const set = new Set([...all].filter((el) => !el.matches(NAVIGATION) && !el.closest(MENU) && isOnScreen(el) && areaOf(el) >= 0.01));
   const banners: Banner[] = [];
   const rejected: Element[] = [];
   for (const el of set) {

@@ -1,4 +1,4 @@
-import { isOnScreen, isVisible, shadowRootOf } from '../dom';
+import { hasBox, isOnScreen, isVisible, renderedElements, shadowRootOf } from '../dom';
 import { ACCEPTING, classifyLabel, isConsentNoun, type ButtonClass } from './text';
 
 export interface ButtonCandidate {
@@ -87,10 +87,11 @@ function navigatesAway(el: HTMLElement, cls: ButtonClass): boolean {
   if (!href || href.startsWith('#') || href.toLowerCase().startsWith('javascript:')) return false;
   if (anchor.target && anchor.target !== '_self') return true;
   try {
-    // Same page with only a different query (e.g. "?do=AcceptConsent") is a consent action, not leaving.
+    // Same page with only a different query (e.g. "?do=AcceptConsent") is a consent action, not leaving – for
+    // other buttons only when the query says so ("admin.php?page=settings" is another page).
     const url = new URL(anchor.href, location.href);
     if (url.origin !== location.origin) return true;
-    if (url.pathname === location.pathname) return false;
+    if (url.pathname === location.pathname) return !accepting && url.search !== location.search && !CONSENT_ENDPOINT.test(url.search);
     // "I am 18 or older – enter" leads into the site itself.
     if (cls === 'AGE_CONFIRM') return INFO_PAGE.test(url.pathname);
     return !accepting || INFO_PAGE.test(url.pathname) || !CONSENT_ENDPOINT.test(url.pathname + url.search);
@@ -133,7 +134,7 @@ function belowTheFold(el: HTMLElement, banner: Element): boolean {
 function pointerControls(root: Element | ShadowRoot, known: Set<HTMLElement>): HTMLElement[] {
   const found: HTMLElement[] = [];
   for (const el of Array.from(root.querySelectorAll<HTMLElement>('div,span,li,p'))) {
-    if (known.has(el) || el.closest(`${CLICKABLE},label`) || el.querySelector(`${CLICKABLE},${BUTTON_LIKE},input,select,textarea,label`)) continue;
+    if (known.has(el) || !hasBox(el) || el.closest(`${CLICKABLE},label`) || el.querySelector(`${CLICKABLE},${BUTTON_LIKE},input,select,textarea,label`)) continue;
     if (el.parentElement?.querySelector(':scope > input, :scope > label')) continue;
     const text = el.innerText?.trim() ?? '';
     if (!text || text.length > 40 || el.children.length > 2) continue;
@@ -155,7 +156,7 @@ function clickablesIn(root: Element | ShadowRoot, found: HTMLElement[] = []): HT
     if (el.matches(CLICKABLE) || el.closest(CLICKABLE) || el.querySelector(`${CLICKABLE},${BUTTON_LIKE}`) || (el.innerText ?? '').trim().length > 2) continue;
     if (CLOSE_NAME.test(nameOf(el)) || el.matches('[aria-label*="close" i],[title*="close" i]')) found.push(el);
   }
-  for (const el of Array.from(root.querySelectorAll('*'))) {
+  for (const el of renderedElements(root)) {
     const shadow = shadowRootOf(el);
     if (shadow) clickablesIn(shadow, found);
   }
@@ -167,7 +168,8 @@ export function extractButtons(banner: Element): ButtonCandidate[] {
   const roots: (Element | ShadowRoot)[] = [banner];
   const own = shadowRootOf(banner);
   if (own) roots.push(own);
-  const elements = new Set(roots.flatMap((r) => clickablesIn(r)));
+  // Hidden layers (vendor lists with thousands of links) are left out before any costly check.
+  const elements = new Set(roots.flatMap((r) => clickablesIn(r)).filter(hasBox));
   for (const el of roots.flatMap((r) => pointerControls(r, elements))) elements.add(el);
   // Keep the outermost clickable of nested ones (<button><span role=button>…</span></button>).
   // Tabs of a dialog ("Consent | Details | About") are navigation, category switches are settings – no answers.
@@ -177,9 +179,12 @@ export function extractButtons(banner: Element): ButtonCandidate[] {
     if (tab || (el.closest('[role=tablist]') && !ANSWERS.has(classifyLabel(labelOf(el))))) elements.delete(el);
   }
   // A "clickable" around several controls or a lot of text is a container (e.g. a dialog with onclick), not a button.
-  for (const el of [...elements]) {
-    const inner = [...elements].filter((other) => other !== el && el.contains(other));
-    if (inner.length >= 2 || (inner.length >= 1 && (el.innerText ?? '').trim().length > 60)) elements.delete(el);
+  const inner = new Map<Element, number>();
+  for (const el of elements) {
+    for (let p = el.parentElement; p; p = p.parentElement) if (elements.has(p as HTMLElement)) inner.set(p, (inner.get(p) ?? 0) + 1);
+  }
+  for (const [el, count] of inner) {
+    if (count >= 2 || ((el as HTMLElement).innerText ?? '').trim().length > 60) elements.delete(el as HTMLElement);
   }
   const outermost = [...elements].filter((el) => {
     for (let p = el.parentElement; p; p = p.parentElement) if (elements.has(p as HTMLElement)) return false;
