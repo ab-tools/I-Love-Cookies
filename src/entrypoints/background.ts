@@ -9,6 +9,9 @@ import { collectReportSnapshot } from '../background/report-snapshot';
 import { pauseSite } from '../background/site-actions';
 import { sendReport } from '../background/report-send';
 
+/** Navigations the user started from the browser itself (address bar, bookmarks, start page). */
+const USER_NAVIGATION = new Set(['typed', 'auto_bookmark', 'generated', 'keyword', 'keyword_generated', 'start_page']);
+
 export default defineBackground(() => {
   void scheduleRuleUpdates();
   browser.alarms.onAlarm.addListener((alarm) => {
@@ -52,8 +55,8 @@ export default defineBackground(() => {
     return false;
   });
 
-  browser.webNavigation.onCommitted.addListener(({ tabId, frameId, url }) => {
-    if (frameId === 0 && /^https?:/.test(url)) void onTopLevelCommitted(tabId, url);
+  browser.webNavigation.onCommitted.addListener(({ tabId, frameId, url, transitionType }) => {
+    if (frameId === 0 && /^https?:/.test(url)) void onTopLevelCommitted(tabId, url, USER_NAVIGATION.has(transitionType));
   });
 
   browser.webNavigation.onHistoryStateUpdated.addListener(({ tabId, frameId }) => {

@@ -761,13 +761,14 @@ async function onUserDecided(tabId: number, frameId: number) {
 // ---------------------------------------------------------------------------------------------
 
 
-export function onTopLevelCommitted(tabId: number, url: string) {
+export function onTopLevelCommitted(tabId: number, url: string, byUser = false) {
   documentIds.set(tabId, (documentIds.get(tabId) ?? 0) + 1);
   return withTab(tabId, async () => {
     const previous = await loadState(tabId);
     if (previous?.trustedTried) void detachDebugger(tabId);
     const next = freshState(tabId, url);
-    const acting = previous && (previous.phase === 'acting' || previous.phase === 'verifying');
+    // A new address typed while a banner was being answered is the user's navigation, not the click's.
+    const acting = previous && !byUser && (previous.phase === 'acting' || previous.phase === 'verifying');
     // After consent, sites reload, move within the same site, or a separate consent page returns to its callback URL.
     const expected = previous && (baseDomain(previous.site) === baseDomain(next.site) || returnsToCallback(previous.actionUrl ?? previous.url, url));
     if (previous && acting && previous.strategy === 'heuristic' && !expected) {
