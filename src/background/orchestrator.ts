@@ -567,9 +567,9 @@ async function finish(state: TabState, frameId: number, result: VerificationResu
   await saveState(state);
   if (state.trustedTried) {
     void detachDebugger(state.tabId);
-    if (state.strategy === 'heuristic' && isSuccess(result.outcome)) await browser.storage.local.set({ [trustedKey(state.site)]: Date.now() });
+    if (state.strategy === 'heuristic' && isSuccess(result.outcome) && trustedClicksAvailable()) await browser.storage.local.set({ [trustedKey(state.site)]: Date.now() });
   }
-  if (result.outcome === 'FAILED' && state.strategy === 'heuristic' && !state.trustedTried && trustedClicksAvailable()) {
+  if (result.outcome === 'FAILED' && state.strategy === 'heuristic' && !state.trustedTried) {
     const docId = documentIds.get(state.tabId);
     setTimeout(() => {
       if (documentIds.get(state.tabId) === docId) void withTab(state.tabId, () => trustedRetry(state.tabId));
@@ -637,7 +637,10 @@ async function bestBanner(tabId: number): Promise<{ frameId: number; scan: Heuri
   return best;
 }
 
-/** The generic answer did not take: some pages only react to real mouse clicks – answer once more with those. */
+/**
+ * The generic answer did not take: some pages only react to real mouse clicks – answer once more with those. Without
+ * them (Firefox) once more with ordinary clicks: the first answer may have left a step behind ("settings saved – close").
+ */
 async function trustedRetry(tabId: number) {
   const state = await loadState(tabId);
   if (!state || state.trustedTried || state.phase !== 'done' || state.outcome !== 'FAILED' || state.strategy !== 'heuristic') return;
@@ -645,11 +648,12 @@ async function trustedRetry(tabId: number) {
   if (!best) return;
   state.trustedTried = true;
   await saveState(state);
-  if (!(await attachDebugger(tabId))) return;
-  log(state, best.frameId, `generic banner ${best.scan.fingerprint}: answering with real mouse clicks`);
-  await runHeuristic(tabId, best.frameId, true);
+  const trusted = trustedClicksAvailable();
+  if (trusted && !(await attachDebugger(tabId))) return;
+  log(state, best.frameId, `generic banner ${best.scan.fingerprint}: ${trusted ? 'answering with real mouse clicks' : 'answering once more'}`);
+  await runHeuristic(tabId, best.frameId, trusted, true);
   const current = await loadState(tabId);
-  if (current?.phase !== 'acting' && current?.phase !== 'verifying') await detachDebugger(tabId);
+  if (trusted && current?.phase !== 'acting' && current?.phase !== 'verifying') await detachDebugger(tabId);
 }
 
 /** Real mouse click requested by a frame during a trusted run. */
@@ -681,9 +685,9 @@ async function isVisibleOverlayFrame(tabId: number, frameId: number): Promise<bo
   return Boolean(frame && top && frame.width * frame.height >= LIMITS.unlinkedFrameMinArea * top.width * top.height);
 }
 
-async function runHeuristic(tabId: number, frameId: number, trusted = false) {
+async function runHeuristic(tabId: number, frameId: number, trusted = false, retry = false) {
   const state = await loadState(tabId);
-  if (!state || (state.heuristicTried && !trusted)) return;
+  if (!state || (state.heuristicTried && !retry)) return;
   if (frameId !== 0 && !(await isVisibleOverlayFrame(tabId, frameId))) {
     log(state, frameId, 'generic banner in a frame that is not a visible overlay – ignored');
     await saveState(state);
