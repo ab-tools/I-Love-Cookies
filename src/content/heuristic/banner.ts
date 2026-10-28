@@ -4,9 +4,9 @@ import { heuristicOptions } from './options';
 
 /** Consent wording: strong words alone identify a banner, weak words only support it. */
 const STRONG =
-  /cookie|consent|einwillig|zustimmung|gdpr|dsgvo|rgpd|toestemming|souhlas|zgod[ay]|consentimiento|consenso|samtykke|samtycke|suostum|evästee|sütik|kolačić|piškot|slapuk|sīkdat|küpsis|çerez|куки|cookies|бисквитк|колачи|ciastecz|ქუქი|privacy (choices|preferences|settings)|datenschutz-?(einstellungen|präferenzen)|préférences de confidentialité/i;
+  /cookie|consent|einwillig|zustimmung|gdpr|dsgvo|rgpd|toestemming|souhlas|zgod[ay]|consentimiento|consenso|samtykke|samtycke|suostum|evästee|sütik|kolačić|piškot|slapuk|sīkdat|küpsis|çerez|куки|cookies|бисквитк|колачи|ciastecz|ქუქი|vafrakök|privacy (choices|preferences|settings)|datenschutz-?(einstellungen|präferenzen)|préférences de confidentialité/i;
 const WEAK =
-  /partner|vendor|anbieter|fournisseur|proveedor|fornitor|tracking|personali[sz]|werbung|advertis|publicit|pubblicit|reklam|analy|datenschutz|privacy|confidentialit|privacidad|privatnost|adatvédel|prywatnoś|soukromí|integritet|privatliv|yksityisyy|ιδιωτικ|защит|gizlilik/gi;
+  /partner|vendor|anbieter|fournisseur|proveedor|fornitor|tracking|personali[sz]|werbung|advertis|publicit|pubblicit|reklam|analy|datenschutz|privacy|confidentialit|privacidad|privatnost|adatvédel|prywatnoś|soukromí|integritet|privatliv|yksityisyy|ιδιωτικ|защит|gizlilik|persónuvern/gi;
 
 /** Age checks (confirmed only when switched on in the settings). */
 const AGE_TEXT =
@@ -27,7 +27,7 @@ const ageGateText = (text: string) =>
   AGE_TEXT.test(text.replace(PARENTAL_CONSENT, '').replace(AGE_CONDITION, (s) => (CONSENT_WORD.test(s) ? '' : s)));
 
 /** Newsletter / app / notification prompts – unless the consent wording is strong (banners mention them too). */
-const SOFT_NEGATIVE_TEXT = /newsletter|subscribe to our|anmelden zum|install (our|the) app|download (our|the) app|push.?notification|benachrichtigungen/i;
+const SOFT_NEGATIVE_TEXT = /newsletter|subscribe to our|anmelden zum|install (our|the) app|download (our|the) app|push.?notification|benachrichtigungen|checking your browser|cookies and javascript|javascript and cookies/i;
 const STRONG_CONSENT_SCORE = 6;
 /** A whole frame document counts as a banner only with clear consent wording. */
 const FRAME_DOCUMENT_MIN_SCORE = 4;
@@ -126,7 +126,12 @@ function overlayElements(root: Document | ShadowRoot | Element, found: Element[]
   for (const el of renderedElements(root)) {
     // Pages lock scrolling with position: fixed on <html>/<body> – never banners themselves.
     if (el === document.documentElement || el === document.body) continue;
-    if (mayBeOverlay(el) && isOverlayLike(el)) found.push(el);
+    if (mayBeOverlay(el) && isOverlayLike(el)) {
+      found.push(el);
+      // A fixed anchor without height whose content is positioned out of it: that content is the overlay.
+      const rect = el.getBoundingClientRect();
+      if (rect.width < 1 || rect.height < 1) for (const child of Array.from(el.children)) if (getComputedStyle(child).position === 'absolute') found.push(child);
+    }
     const shadow = shadowRootOf(el);
     if (shadow) overlayElements(shadow, found);
   }
@@ -134,7 +139,7 @@ function overlayElements(root: Document | ShadowRoot | Element, found: Element[]
 }
 
 /** "Cookie" and "consent" in the languages whose banners rarely say "cookie". */
-const CONSENT_TEXT = /cookie|consent|einwillig|zustimm|бисквитк|колачи|ciastecz|kolačić|piškot|süti|sušienk|sušenk|eväste|küpsis|slapuk|sīkdat|kakor|çerez/i;
+const CONSENT_TEXT = /cookie|consent|einwillig|zustimm|бисквитк|колачи|ciastecz|kolačić|piškot|süti|sušienk|sušenk|eväste|küpsis|slapuk|sīkdat|kakor|çerez|vafrakök/i;
 
 /**
  * Sticky bars with generated class names pass none of the cheap pre-filters: check the few ancestors of text
@@ -187,7 +192,8 @@ export function findConsentBanners(doc: Document = document): Banner[] {
     if (nested) continue;
     const area = areaOf(el);
     const text = deepText(el);
-    let score = consentScore(text);
+    // Dialogs named "Cookie consent" (aria-label) whose text only lists the trackers.
+    let score = consentScore(`${el.getAttribute('aria-label') ?? ''} ${text}`);
     // Privacy dialogs without the usual words ("Choose how we use your personal information"): an "accept all"
     // button next to privacy wording identifies them.
     if (score < 2 && (text.match(WEAK) ?? []).length >= 2 && extractButtons(el).some((b) => b.cls === 'ACCEPT_ALL')) score = 2;

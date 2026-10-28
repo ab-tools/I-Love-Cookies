@@ -1,0 +1,10 @@
+[
+  {
+    "name": "ilc-age-xvideos-disclaimer",
+    "comment": "Age check of the xvideos network and its partner sites (window.xv.disclaimer), drawn as an absolute layer over the page. Only with age checks switched on.",
+    "detectCmp": [{ "exists": "#disclaimer_background .disclaimer-enter-btn" }],
+    "detectPopup": [{ "visible": "#disclaimer_background .disclaimer-enter-btn" }],
+    "optIn": [{ "click": "#disclaimer_background .disclaimer-enter-btn" }],
+    "optOut": []
+  }
+]

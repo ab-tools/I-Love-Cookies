@@ -54,6 +54,32 @@ describe('banner detection', () => {
     document.body.style.position = '';
   });
 
+  it('finds a banner positioned out of a fixed anchor without height', () => {
+    document.body.innerHTML = `<div class="as-oil" style="position:fixed" data-rect="0,705,1265,0">
+      <div id="cmp" style="position:absolute" data-rect="0,443,1265,262">${BANNER_TEXT}<button>Alle akzeptieren</button></div></div>`;
+    expect(findConsentBanners().map((b) => b.element.id)).toEqual(['cmp']);
+  });
+
+  it('ignores browser checks that ask for cookies', () => {
+    document.body.innerHTML = `<div id="divOverlay" style="position:fixed" data-rect="0,0,1024,760">Checking Your Browser One Moment...
+      <a class="Button CallToAction" href="#">Continue</a> Ensure browser cookies and javascript are enabled.</div>`;
+    expect(findConsentBanners()).toEqual([]);
+  });
+
+  it('finds Icelandic cookie notices', () => {
+    document.body.innerHTML = `<div id="notice" style="position:fixed" data-rect="700,600,320,120">Þessi síða notar vafrakökur. <a href="/cookies">Lesa meira</a>
+      <a id="ok" class="cc-btn">Samþykkja</a></div>`;
+    expect(findConsentBanners().map((b) => b.element.id)).toEqual(['notice']);
+    expect(decide(extractButtons(document.getElementById('notice')!))).toMatchObject({ action: 'click', button: { label: 'Samþykkja' } });
+  });
+
+  it('finds dialogs labelled as cookie consent whose text only names the trackers', () => {
+    document.body.innerHTML = `<div id="cmp" role="dialog" aria-label="Cookie consent" style="position:fixed" data-rect="377,459,520,181">
+      We use Google Analytics, the Meta Pixel, and impact.com to understand how readers use our site and measure campaigns.
+      Choose Accept to allow analytics and affiliate tracking, or Decline to keep them off.<button>Decline</button><button>Accept</button></div>`;
+    expect(findConsentBanners().map((b) => b.element.id)).toEqual(['cmp']);
+  });
+
   it('finds short cookie notices', () => {
     document.body.innerHTML = `
       <div id="notice" style="position:fixed" data-rect="0,700,1024,60">This website uses cookies to ensure you get the best experience.

@@ -35,6 +35,8 @@ export class HeuristicController {
   private banner: Element | null = null;
   private readonly reported = new Set<string>();
   private userDecided = false;
+  /** The banner is an age check: a user answering it has not decided about cookies. */
+  private ageGate = false;
 
   constructor(
     private readonly report: (message: { type: string } & Record<string, unknown>) => void,
@@ -53,6 +55,7 @@ export class HeuristicController {
       (event) => {
         if (!event.isTrusted || trustedClicksOn() || !this.banner || this.userDecided) return;
         if (event.composedPath().includes(this.banner)) {
+          if (this.ageGate) return this.rescan();
           this.userDecided = true;
           this.report({ type: 'ilc:userDecided' });
         }
@@ -93,13 +96,16 @@ export class HeuristicController {
     // The best banner that can be answered; otherwise the best one (for logs and reports).
     const evaluated = findConsentBanners().map((banner) => {
       const buttons = extractButtons(banner.element);
-      const action = decide(buttons, hasToggles(banner.element), lockedAccept(banner.element)).action;
-      return { banner, buttons, decision: action === 'none' && hasConsentCheckbox(banner.element) ? ('toggles' as const) : action };
+      const decided = decide(buttons, hasToggles(banner.element), lockedAccept(banner.element));
+      const { action } = decided;
+      const kind = decided.action === 'click' ? decided.kind : undefined;
+      return { banner, buttons, kind, decision: action === 'none' && hasConsentCheckbox(banner.element) ? ('toggles' as const) : action };
     });
     const chosen = evaluated.find((e) => e.decision !== 'none') ?? evaluated[0];
     if (!chosen) return null;
     const { banner, buttons, decision } = chosen;
     this.banner = banner.element;
+    this.ageGate = chosen.kind === 'age';
     return {
       score: banner.score,
       area: Math.round(banner.area * 100) / 100,
